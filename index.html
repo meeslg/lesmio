@@ -863,12 +863,16 @@ function norm(s, ignoreCase) {
   return ignoreCase ? x.toLowerCase() : x;
 }
 const stripAcc = s => s.replace(/ñ/g, "\u0001").replace(/Ñ/g, "\u0002").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\u0001/g, "ñ").replace(/\u0002/g, "Ñ");
-function variants(ans, ic) {
+function variants(ans, ic, es) {
   const out = new Set();
   const add = x => { const n = norm(x, ic); if (n) out.add(n); };
   const forms = x => { add(x); add(x.replace(/[()]/g, "")); add(x.replace(/\([^)]*\)/g, "")); };
   forms(ans);
   String(ans).split(/[\/;,]/).forEach(forms);
+  if (es) [...out].forEach(v => {   // één Spaans woord: mannelijke en vrouwelijke vorm zijn allebei goed (bonito = bonita)
+    const m = v.match(/^([^\s]*?)(o|a)(s?)$/i);
+    if (m && m[1]) { const o = m[2], sw = o === "o" ? "a" : o === "a" ? "o" : o === "O" ? "A" : "O"; out.add(m[1] + sw + m[3]); }
+  });
   return [...out];
 }
 function lev(a, b) {
@@ -883,11 +887,11 @@ function lev(a, b) {
   return prev[n];
 }
 const tol = n => (n <= 2 ? 0 : n <= 5 ? 1 : n <= 10 ? 2 : 3);
-function check(input, ans, st) {
+function check(input, ans, st, lang) {
   const ic = st.ignoreCase;
   const inp = norm(input, ic);
   if (!inp) return { r: "empty" };
-  const vs = variants(ans, ic);
+  const vs = variants(ans, ic, lang === "es");
   if (vs.includes(inp)) return { r: "correct" };
   const ia = stripAcc(inp);
   if (vs.some(v => stripAcc(v) === ia)) return st.ignoreAccents ? { r: "correct" } : { r: "almost", why: "accent" };
@@ -1701,13 +1705,13 @@ function doCheck() {
   if (s.st === "correct") return advance();
   if (s.st === "wrong") {
     if (state.settings.retype) {
-      const r = check(inp.value, it.a, { ignoreCase: true, ignoreAccents: false });
+      const r = check(inp.value, it.a, { ignoreCase: true, ignoreAccents: false }, it.al);
       if (r.r !== "correct") { shake(inp); inp.select(); return; }
     }
     return advance();
   }
   if (s.st !== "ask" && s.st !== "almost") return;
-  const r = check(inp.value, it.a, state.settings);
+  const r = check(inp.value, it.a, state.settings, it.al);
   if (r.r === "empty") { shake(inp); inp.placeholder = t("typeAnsEmpty"); return; }
   s.given = inp.value;
   if (r.r === "correct") { s.st = "correct"; autoTimer = setTimeout(advance, state.settings.speak && CAN_SPEAK ? 1800 : 950); if (state.settings.speak) speak(it.a, it.al); }
@@ -1959,7 +1963,7 @@ function lrnResume() {
 function lrnCheckInput() {
   const s = state.learn, inp = $("#lrnInput"); if (!s || s.phase !== "type" || s.st !== "ask" || !inp) return;
   const u = lrnInfo(s, s.cur); if (!u) return;
-  const r = check(inp.value, u.a, state.settings);
+  const r = check(inp.value, u.a, state.settings, u.al);
   if (r.r === "empty") { inp.focus(); return; }
   s.given = inp.value;
   if (r.r === "correct") lrnJudge(true, false); else if (r.r === "almost") lrnJudge(true, true); else lrnJudge(false);

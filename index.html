@@ -610,6 +610,20 @@ button.tile:disabled{cursor:default;opacity:.8}
 .chart .gline{fill:none;stroke:var(--violet);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .chart .gd{fill:var(--surface);stroke:var(--violet);stroke-width:3}
 .chart .gd.low{stroke:var(--coral)}
+.cal-h{font-size:13px;font-weight:700;color:var(--muted);margin:0 0 10px}
+.wk-wrap{position:relative}
+.wk{--bh:120px;display:flex;gap:8px;align-items:stretch;height:170px}
+.wk-s{--bh:80px;height:130px}
+.wk-c{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;border-radius:12px;padding:4px 0}
+.wk-a{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.wk-c.wk-now{background:var(--violet-soft)}
+.wk-v{font-size:13px;font-weight:800;color:var(--ink);height:16px;line-height:16px}
+.wk-b{width:70%;max-width:34px;border-radius:8px 8px 4px 4px;background:var(--violet);transition:height .5s}
+.wk-b.hit{background:linear-gradient(180deg,#2fc79a,#14b8a6)}
+.wk-l{align-self:center;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;height:16px;line-height:16px;white-space:nowrap}
+.wk-c.wk-now .wk-l{color:var(--violet-strong)}
+.wk-goal{position:absolute;left:0;right:0;border-top:2px dashed var(--line-strong);pointer-events:none;height:0}
+.wk-goal span{position:absolute;right:0;top:-20px;font-size:11px;font-weight:700;color:var(--muted);background:var(--surface);padding:0 4px}
 .cal{display:grid;grid-template-rows:repeat(7,auto);grid-template-columns:22px repeat(12,minmax(0,1fr));gap:4px}
 .cal-d{font-size:10px;font-weight:700;color:var(--muted);align-self:center;text-transform:uppercase;min-width:0}
 .cc.today{outline:2px solid var(--ink);outline-offset:1px}
@@ -708,7 +722,7 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 
 const I18N = {
 nl: {
-  welcomeTitle: "Welkom bij Lesmio", calDays: "ma,di,wo,do,vr,za,zo", calLess: "minder", calMore: "meer", calHint: "Elk vakje is één dag. Elke kolom is een week, van maandag tot zondag. Hoe donkerder, hoe meer woorden je die dag deed. Vandaag heeft een zwarte rand.", bellOn: "Herinnering aan (20:00)", bellOff: "Herinnering uit", pushOnMsg: "Herinnering aan: elke avond om 20:00 als je nog niets hebt gedaan.", pushOffMsg: "Herinnering uit.", pushDenied: "Meldingen zijn geblokkeerd. Zet ze aan in de instellingen van je telefoon of browser.", pushIos: "Zet Lesmio eerst op je beginscherm (Deel → Zet op beginscherm) en open hem daar.", pushNo: "Dit apparaat ondersteunt geen meldingen.", pushLogin: "Log eerst in.", pushFail: "Aanzetten is niet gelukt. Probeer het later nog eens.", mtTile: "Koppelen", mtTileSub: "Koppel de woorden, tegen de klok", mtQuit: "× Stoppen", mtRound: "Ronde {a} van {b}", mtDone: "Alles gekoppeld!", mtTime: "Tijd", mtMist: "Fouten", mtBest: "Beste tijd", mtNewBest: "Nieuw record!", mtAgain: "Nog een keer", mtNeed: "Je hebt minstens 3 woorden nodig.", mtLeft: "{n} te gaan",
+  welcomeTitle: "Welkom bij Lesmio", calGoal: "Dagdoel {n}", calWeek: "Deze week (ma t/m zo)", calWeeks: "Woorden per week", calNow: "Nu", calDays: "ma,di,wo,do,vr,za,zo", calLess: "minder", calMore: "meer", calHint: "Elk vakje is één dag. Elke kolom is een week, van maandag tot zondag. Hoe donkerder, hoe meer woorden je die dag deed. Vandaag heeft een zwarte rand.", bellOn: "Herinnering aan (20:00)", bellOff: "Herinnering uit", pushOnMsg: "Herinnering aan: elke avond om 20:00 als je nog niets hebt gedaan.", pushOffMsg: "Herinnering uit.", pushDenied: "Meldingen zijn geblokkeerd. Zet ze aan in de instellingen van je telefoon of browser.", pushIos: "Zet Lesmio eerst op je beginscherm (Deel → Zet op beginscherm) en open hem daar.", pushNo: "Dit apparaat ondersteunt geen meldingen.", pushLogin: "Log eerst in.", pushFail: "Aanzetten is niet gelukt. Probeer het later nog eens.", mtTile: "Koppelen", mtTileSub: "Koppel de woorden, tegen de klok", mtQuit: "× Stoppen", mtRound: "Ronde {a} van {b}", mtDone: "Alles gekoppeld!", mtTime: "Tijd", mtMist: "Fouten", mtBest: "Beste tijd", mtNewBest: "Nieuw record!", mtAgain: "Nog een keer", mtNeed: "Je hebt minstens 3 woorden nodig.", mtLeft: "{n} te gaan",
   achTitle: "Prestaties", achNew: "Nieuwe prestatie", achOf: "{a} van {b} behaald",
   ach_words10: "Eerste stappen", achd_words10: "Oefen 10 woorden", ach_words100: "Woordenjager", achd_words100: "Oefen 100 woorden", ach_words500: "Woordenmeester", achd_words500: "Oefen 500 woorden", ach_words1000: "Woordenlegende", achd_words1000: "Oefen 1000 woorden",
   ach_streak3: "Op dreef", achd_streak3: "3 dagen achter elkaar", ach_streak7: "Weekkampioen", achd_streak7: "7 dagen achter elkaar", ach_streak30: "Maandmeester", achd_streak30: "30 dagen achter elkaar",
@@ -742,7 +756,7 @@ nl: {
   lrnNoUnits: "Geen woorden om te oefenen.",
   listen: "Beluister", noVoice: "Dit apparaat heeft geen stem voor {lang}",
   stStreak: "Huidige reeks", stBest: "Beste reeks", stWords: "Woorden geoefend", stTests: "Toetsen", stAvg: "Gemiddeld cijfer", stTime: "Oefentijd",
-  chartGrades: "Je cijfers", chartCal: "Oefenkalender (woorden per dag)", perList: "Per lijst", known: "Gekend", hardS: "Lastig", newS: "Nieuw",
+  chartGrades: "Je cijfers", chartCal: "Oefenen per dag", perList: "Per lijst", known: "Gekend", hardS: "Lastig", newS: "Nieuw",
   topHard: "Lastigste woorden", noData: "Nog niet genoeg gegevens. Doe een toets, dan verschijnt je voortgang hier.", sinceNote: "Reeks, woorden en tijd tellen mee vanaf het moment dat je deze versie gebruikt.",
   failTimes: "{n}× fout", minN: "{n} min", hmN: "{h} u {m} min", weekWords: "woorden deze week", daysN: "{n} dagen",
 
@@ -824,7 +838,7 @@ nl: {
   stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
 },
 es: {
-  welcomeTitle: "Te damos la bienvenida a Lesmio", calDays: "lu,ma,mi,ju,vi,sá,do", calLess: "menos", calMore: "más", calHint: "Cada casilla es un día. Cada columna es una semana, de lunes a domingo. Cuanto más oscura, más palabras practicaste ese día. Hoy tiene un borde negro.", bellOn: "Recordatorio activado (20:00)", bellOff: "Recordatorio desactivado", pushOnMsg: "Recordatorio activado: cada noche a las 20:00 si aún no has practicado.", pushOffMsg: "Recordatorio desactivado.", pushDenied: "Las notificaciones están bloqueadas. Actívalas en los ajustes del teléfono o del navegador.", pushIos: "Primero añade Lesmio a la pantalla de inicio (Compartir → Añadir a pantalla de inicio) y ábrelo desde allí.", pushNo: "Este dispositivo no admite notificaciones.", pushLogin: "Primero inicia sesión.", pushFail: "No se pudo activar. Inténtalo más tarde.", mtTile: "Emparejar", mtTileSub: "Empareja las palabras contra el reloj", mtQuit: "× Salir", mtRound: "Ronda {a} de {b}", mtDone: "¡Todo emparejado!", mtTime: "Tiempo", mtMist: "Errores", mtBest: "Mejor tiempo", mtNewBest: "¡Nuevo récord!", mtAgain: "Otra vez", mtNeed: "Necesitas al menos 3 palabras.", mtLeft: "faltan {n}",
+  welcomeTitle: "Te damos la bienvenida a Lesmio", calGoal: "Meta {n}", calWeek: "Esta semana (lu a do)", calWeeks: "Palabras por semana", calNow: "Ahora", calDays: "lu,ma,mi,ju,vi,sá,do", calLess: "menos", calMore: "más", calHint: "Cada casilla es un día. Cada columna es una semana, de lunes a domingo. Cuanto más oscura, más palabras practicaste ese día. Hoy tiene un borde negro.", bellOn: "Recordatorio activado (20:00)", bellOff: "Recordatorio desactivado", pushOnMsg: "Recordatorio activado: cada noche a las 20:00 si aún no has practicado.", pushOffMsg: "Recordatorio desactivado.", pushDenied: "Las notificaciones están bloqueadas. Actívalas en los ajustes del teléfono o del navegador.", pushIos: "Primero añade Lesmio a la pantalla de inicio (Compartir → Añadir a pantalla de inicio) y ábrelo desde allí.", pushNo: "Este dispositivo no admite notificaciones.", pushLogin: "Primero inicia sesión.", pushFail: "No se pudo activar. Inténtalo más tarde.", mtTile: "Emparejar", mtTileSub: "Empareja las palabras contra el reloj", mtQuit: "× Salir", mtRound: "Ronda {a} de {b}", mtDone: "¡Todo emparejado!", mtTime: "Tiempo", mtMist: "Errores", mtBest: "Mejor tiempo", mtNewBest: "¡Nuevo récord!", mtAgain: "Otra vez", mtNeed: "Necesitas al menos 3 palabras.", mtLeft: "faltan {n}",
   achTitle: "Logros", achNew: "Nuevo logro", achOf: "{a} de {b} conseguidos",
   ach_words10: "Primeros pasos", achd_words10: "Practica 10 palabras", ach_words100: "Cazapalabras", achd_words100: "Practica 100 palabras", ach_words500: "Maestro de palabras", achd_words500: "Practica 500 palabras", ach_words1000: "Leyenda de palabras", achd_words1000: "Practica 1000 palabras",
   ach_streak3: "En racha", achd_streak3: "3 días seguidos", ach_streak7: "Campeón semanal", achd_streak7: "7 días seguidos", ach_streak30: "Maestro del mes", achd_streak30: "30 días seguidos",
@@ -858,7 +872,7 @@ es: {
   lrnNoUnits: "No hay palabras para practicar.",
   listen: "Escuchar", noVoice: "Este dispositivo no tiene voz para {lang}",
   stStreak: "Racha actual", stBest: "Mejor racha", stWords: "Palabras practicadas", stTests: "Tests", stAvg: "Nota media", stTime: "Tiempo de práctica",
-  chartGrades: "Tus notas", chartCal: "Calendario de práctica (palabras por día)", perList: "Por lista", known: "Sabidas", hardS: "Difíciles", newS: "Nuevas",
+  chartGrades: "Tus notas", chartCal: "Práctica por día", perList: "Por lista", known: "Sabidas", hardS: "Difíciles", newS: "Nuevas",
   topHard: "Palabras más difíciles", noData: "Aún no hay suficientes datos. Haz un test y aquí verás tu progreso.", sinceNote: "La racha, las palabras y el tiempo cuentan desde que usas esta versión.",
   failTimes: "{n}× fallada", minN: "{n} min", hmN: "{h} h {m} min", weekWords: "palabras esta semana", daysN: "{n} días",
 
@@ -1565,7 +1579,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 00:52";
+const BUILD = "12-11 00:55";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -1861,17 +1875,19 @@ function gradeChart(res) {
 }
 function calendar(A) {
   const today = new Date(); today.setHours(12, 0, 0, 0);
-  const start = new Date(today); start.setDate(start.getDate() - ((today.getDay() + 6) % 7) - 7 * 11);
-  const dn = t("calDays").split(",");
-  let cells = dn.map((x, i) => `<span class="cal-d" style="grid-row:${i + 1};grid-column:1">${i % 2 === 0 ? esc(x) : ""}</span>`).join("");
-  for (let i = 0; i < 84; i++) {
-    const d = new Date(start); d.setDate(start.getDate() + i);
-    if (d > today) continue;
-    const w = (A[dayKey(d)] || {}).w || 0, lv = w === 0 ? 0 : w <= 10 ? 1 : w <= 25 ? 2 : w <= 50 ? 3 : 4, isT = dayKey(d) === dayKey(today);
-    cells += `<i class="cc l${lv}${isT ? " today" : ""}" style="grid-row:${i % 7 + 1};grid-column:${Math.floor(i / 7) + 2}" title="${esc(d.toLocaleDateString(dateLoc(), { day: "numeric", month: "short" }))}: ${esc(wordsLabel(w))}"></i>`;
-  }
-  const leg = `<div class="cal-leg"><span>${esc(t("calLess"))}</span>${[0, 1, 2, 3, 4].map(n => `<i class="cc l${n}"></i>`).join("")}<span>${esc(t("calMore"))}</span></div>`;
-  return `<div class="cal" role="img" aria-label="${esc(t("chartCal"))}">${cells}</div>${leg}<p class="note" style="margin-top:10px">${esc(t("calHint"))}</p>`;
+  const mon = new Date(today); mon.setDate(mon.getDate() - ((today.getDay() + 6) % 7));
+  const dn = t("calDays").split(","), goal = getGoal(), wd = [];
+  for (let i = 0; i < 7; i++) { const d = new Date(mon); d.setDate(mon.getDate() + i); wd.push({ d, w: d > today ? null : ((A[dayKey(d)] || {}).w || 0), isT: dayKey(d) === dayKey(today) }); }
+  const top = Math.max(goal, ...wd.map(x => x.w || 0));
+  const bars = wd.map((x, i) => {
+    const r = x.w == null ? 0 : x.w / top, hit = x.w != null && x.w >= goal;
+    return `<div class="wk-c${x.isT ? " wk-now" : ""}${x.w == null ? " fut" : ""}"><div class="wk-a"><span class="wk-v">${x.w == null ? "" : x.w}</span><div class="wk-b${hit ? " hit" : ""}" style="height:calc(var(--bh) * ${r.toFixed(3)});${x.w ? "min-height:4px" : ""}"></div></div><span class="wk-l">${esc(dn[i])}</span></div>`;
+  }).join("");
+  const week = `<div class="wk-wrap"><div class="wk-goal" style="bottom:calc(24px + 120px * ${(goal / top).toFixed(3)})"><span>${esc(t("calGoal", { n: goal }))}</span></div><div class="wk">${bars}</div></div>`;
+  const ws = []; for (let k = 5; k >= 0; k--) { const m = new Date(mon); m.setDate(mon.getDate() - 7 * k); let sum = 0; for (let i = 0; i < 7; i++) { const d = new Date(m); d.setDate(m.getDate() + i); if (d <= today) sum += (A[dayKey(d)] || {}).w || 0; } ws.push({ m, sum, cur: k === 0 }); }
+  const wtop = Math.max(1, ...ws.map(x => x.sum));
+  const wbars = ws.map(x => `<div class="wk-c${x.cur ? " wk-now" : ""}"><div class="wk-a"><span class="wk-v">${x.sum}</span><div class="wk-b" style="height:calc(var(--bh) * ${(x.sum / wtop).toFixed(3)});${x.sum ? "min-height:4px" : ""}"></div></div><span class="wk-l">${x.cur ? esc(t("calNow")) : esc(x.m.toLocaleDateString(dateLoc(), { day: "numeric", month: "short" }))}</span></div>`).join("");
+  return `<p class="cal-h">${esc(t("calWeek"))}</p>${week}<p class="cal-h" style="margin-top:22px">${esc(t("calWeeks"))}</p><div class="wk wk-s">${wbars}</div>`;
 }
 function viewStats() {
   const A = state.activity, si = streakInfo(A), days = Object.values(A);

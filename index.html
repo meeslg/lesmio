@@ -1356,6 +1356,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
+const BUILD = "11-11 21:49";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -1380,6 +1381,7 @@ function viewHome() {
   h += `</div>`;
   if (showExample) h += `<p class="note">${t("noteExample")}</p>`;
   if (state.storage === "local") h += `<p class="note">${esc(t("noteLocal"))}</p>`;
+  h += `<p class="note ver">Lesmio ${esc(BUILD)}</p>`;
   if (state.loadNote) h += `<p class="note warn">${esc(t(state.loadNote))}</p>`;
   return h + `</section>`;
 }

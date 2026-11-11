@@ -87,6 +87,14 @@ svg{display:block}
 .wm-i{position:relative;display:inline-block}
 .wm-i::after{content:"";position:absolute;left:50%;top:.075em;width:.2em;height:.2em;border-radius:50%;background:var(--coral);transform:translateX(-50%)}
 .langsel{appearance:none;-webkit-appearance:none;background-color:var(--surface);border:1px solid var(--line-strong);border-radius:99px;padding:8px 34px 8px 16px;min-height:40px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:var(--sh-sm);transition:border-color .15s,box-shadow .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.sndbtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:var(--sh-sm);transition:border-color .15s,transform .15s}
+.sndbtn:hover{border-color:var(--violet)}
+.sndbtn:active{transform:scale(.92)}
+.sndbtn svg{width:20px;height:20px}
+.sndbtn.off{color:var(--muted)}
+.volrow{display:flex;align-items:center;gap:12px;margin-top:12px}
+.volrow svg{width:20px;height:20px;flex:none;color:var(--muted)}
+.volrow input[type=range]{flex:1;accent-color:var(--violet);height:28px}
 .langsel:hover{border-color:var(--violet);box-shadow:0 0 0 3px var(--violet-soft)}
 
 /* knoppen */
@@ -621,6 +629,7 @@ button.tile:disabled{cursor:default;opacity:.8}
   <nav class="nav" aria-label="Lesmio">
     <button type="button" class="logo" data-act="logo" aria-label="Lesmio"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lgG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a6bff"/><stop offset="1" stop-color="#5232d6"/></linearGradient></defs><path d="M22 3h20c11 0 19 8 19 19v18c0 11-8 19-19 19H26L11 61c-1.5 1-3.300 0-3.300-1.800V48C3.500 45 3 41 3 38V22C3 11 11 3 22 3z" fill="url(#lgG)"/><path d="M23 16v23c0 2.500 1.500 4 4 4h13" fill="none" stroke="#fff" stroke-width="7.500" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43" cy="23" r="6" fill="#ff7a66"/></svg><span class="wordmark" aria-hidden="true">Lesm<span class="wm-i">ı</span>o</span></button>
     <div class="nav-r">
+      <button type="button" class="sndbtn" id="sndBtn" data-act="snd-toggle"></button>
       <span id="navUser"></span>
       <label class="sr" for="uiLang" id="uiLangLabel">Taal</label>
       <select class="langsel" id="uiLang"><option value="nl">Nederlands</option><option value="es">Español</option></select>
@@ -658,7 +667,7 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 
 const I18N = {
 nl: {
-  welcomeTitle: "Welkom bij Lesmio", pickDir: "Welke kant op?", zinLearnFirst: "Leer eerst woorden met Woorden leren", goalLeft: "Nog {n} woorden tot je dagdoel.", goalDone: "Dagdoel gehaald! Alles erbij is bonus.", goalStreak: "Je streak staat op {n} dagen. Maak hem vandaag langer.", goalOf: "{a} / {b} woorden vandaag", goalTap: "tik om je doel te wijzigen", buddyDone: "Dagdoel gehaald!", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
+  welcomeTitle: "Welkom bij Lesmio", sndMute: "Geluid uit", sndUnmute: "Geluid aan", optSfx: "Geluidjes", optSfxSub: "Een toon bij goed en fout", sndVol: "Volume", pickDir: "Welke kant op?", zinLearnFirst: "Leer eerst woorden met Woorden leren", goalLeft: "Nog {n} woorden tot je dagdoel.", goalDone: "Dagdoel gehaald! Alles erbij is bonus.", goalStreak: "Je streak staat op {n} dagen. Maak hem vandaag langer.", goalOf: "{a} / {b} woorden vandaag", goalTap: "tik om je doel te wijzigen", buddyDone: "Dagdoel gehaald!", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
   buddyAsk: "Zin om een rondje te doen?", buddyGo: "Lekker bezig vandaag!",
   streak0: "Start je reeks", streakCap1: "dag op rij", streakCapN: "dagen op rij",
   todayCap: "woorden vandaag", hardCap: "lastige woorden", hardGo: "Oefen ze nu", hardNone: "Nog geen lastige woorden",
@@ -768,7 +777,7 @@ nl: {
   stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
 },
 es: {
-  welcomeTitle: "Te damos la bienvenida a Lesmio", pickDir: "¿En qué dirección?", zinLearnFirst: "Primero aprende palabras en Aprender palabras", goalLeft: "Te faltan {n} palabras para tu meta de hoy.", goalDone: "¡Meta cumplida! Todo lo extra es un bonus.", goalStreak: "Tu racha es de {n} días. Hazla más larga hoy.", goalOf: "{a} / {b} palabras hoy", goalTap: "toca para cambiar tu meta", buddyDone: "¡Meta cumplida!", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
+  welcomeTitle: "Te damos la bienvenida a Lesmio", sndMute: "Silenciar", sndUnmute: "Activar sonido", optSfx: "Efectos de sonido", optSfxSub: "Un tono al acertar y al fallar", sndVol: "Volumen", pickDir: "¿En qué dirección?", zinLearnFirst: "Primero aprende palabras en Aprender palabras", goalLeft: "Te faltan {n} palabras para tu meta de hoy.", goalDone: "¡Meta cumplida! Todo lo extra es un bonus.", goalStreak: "Tu racha es de {n} días. Hazla más larga hoy.", goalOf: "{a} / {b} palabras hoy", goalTap: "toca para cambiar tu meta", buddyDone: "¡Meta cumplida!", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
   buddyAsk: "¿Hacemos una ronda?", buddyGo: "¡Buen trabajo hoy!",
   streak0: "Empieza tu racha", streakCap1: "día seguido", streakCapN: "días seguidos",
   todayCap: "palabras hoy", hardCap: "palabras difíciles", hardGo: "Practícalas ya", hardNone: "Aún no hay palabras difíciles",
@@ -1296,6 +1305,23 @@ function speakAudioFallback(text, lang) {   // reservestem via het web, als het 
     const pr = a.play(); if (pr && pr.catch) pr.catch(() => toast(t("noVoice", { lang: langName(lang) })));
   } catch (e) { toast(t("noVoice", { lang: langName(lang) })); }
 }
+/* ---------- geluidjes ---------- */
+const SND = { cfg: Object.assign({ on: true, vol: 0.7 }, LS.get("overhoor.sound", {})), el: {} };
+const ICO_MUTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.500v-13L7.500 9.500z"/><path d="M16 9.500l5 5M21 9.500l-5 5"/></svg>';
+function sndSave() { LS.set("overhoor.sound", SND.cfg); }
+function sndUi() {
+  const b = $("#sndBtn"); if (!b) return;
+  const on = SND.cfg.on && SND.cfg.vol > 0;
+  b.innerHTML = on ? ICO.speaker : ICO_MUTE; b.classList.toggle("off", !on);
+  b.setAttribute("aria-label", t(on ? "sndMute" : "sndUnmute")); b.title = t(on ? "sndMute" : "sndUnmute");
+}
+function sfx(name) {
+  if (!SND.cfg.on || SND.cfg.vol <= 0) return;
+  try {
+    const a = SND.el[name] || (SND.el[name] = new Audio("s/" + name + ".mp3"));
+    a.volume = Math.min(1, SND.cfg.vol); a.currentTime = 0; const pr = a.play(); if (pr && pr.catch) pr.catch(() => {});
+  } catch (e) {}
+}
 function speak(text, lang) {
   if (!CAN_SPEAK) return;
   const clean = String(text || "").replace(/[()]/g, "").split(/\s*[\/;,]\s*/)[0].trim(); if (!clean) return;
@@ -1392,7 +1418,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "11-11 23:42";
+const BUILD = "11-11 23:51";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -1475,7 +1501,10 @@ function viewSetup() {
     ${sw("optAcc", "ignoreAccents", t("optAcc"), t("optAccSub"))}
     ${sw("optRetype", "retype", t("optRetype"), t("optRetypeSub"))}
   </div>
-  ${CAN_SPEAK ? `<div class="panel"><h3>${esc(t("sound"))}</h3>${sw("optSpeak", "speak", t("optSpeak"), t("optSpeakSub"))}</div>` : ""}
+  <div class="panel"><h3>${esc(t("sound"))}</h3>
+    <label class="switch" for="optSfx"><input type="checkbox" id="optSfx" ${SND.cfg.on ? "checked" : ""}><span>${esc(t("optSfx"))}<small>${esc(t("optSfxSub"))}</small></span></label>
+    <div class="volrow">${ICO.speaker}<input type="range" id="sndVol" min="0" max="100" value="${Math.round(SND.cfg.vol * 100)}" aria-label="${esc(t("sndVol"))}"></div>
+    ${CAN_SPEAK ? sw("optSpeak", "speak", t("optSpeak"), t("optSpeakSub")) : ""}</div>
   </div>
   <div class="setup-side">
   ${l.id === "__hard" ? "" : lrnPanel(l)}
@@ -1634,7 +1663,7 @@ function viewResults() {
 function syncChrome() {
   document.documentElement.lang = LANG;
   const sel = $("#uiLang"); if (sel) sel.value = LANG;
-  const lb = $("#uiLangLabel"); if (lb) lb.textContent = t("uiLang");
+  const lb = $("#uiLangLabel"); if (lb) lb.textContent = t("uiLang"); sndUi();
   const nu = $("#navUser");
   if (nu) nu.innerHTML = state.me ? `<button type="button" class="userchip" data-act="profile" aria-label="${esc(t("profile"))}" title="${esc(t("profile"))}"><span class="av${state.avatar ? " emo" : ""}">${esc(state.avatar || state.me.name.charAt(0).toUpperCase())}</span><span class="un">${esc(state.me.name)}</span></button>` : "";
 }
@@ -1843,6 +1872,7 @@ function doCheck() {
   const r = check(inp.value, it.a, state.settings, it.al);
   if (r.r === "empty") { shake(inp); inp.placeholder = t("typeAnsEmpty"); return; }
   s.given = inp.value;
+  if (r.r === "correct") sfx("ok"); else if (r.r !== "almost" || s.st !== "ask") sfx("bad");
   if (r.r === "correct") { s.st = "correct"; autoTimer = setTimeout(advance, state.settings.speak && CAN_SPEAK ? 1800 : 950); if (state.settings.speak) speak(it.a, it.al); }
   else if (r.r === "almost" && s.st === "ask") { s.st = "almost"; s.why = r.why; }
   else { s.st = "wrong"; if (state.settings.speak) speak(it.a, it.al); }
@@ -1850,10 +1880,10 @@ function doCheck() {
 }
 function idk() {
   const s = state.session; if (!s || (s.st !== "ask" && s.st !== "almost")) return;
-  s.given = ""; s.idk = true; s.st = "wrong"; saveSession(); updateTest(false);
+  s.given = ""; s.idk = true; s.st = "wrong"; sfx("bad"); saveSession(); updateTest(false);
 }
 function flip() { const s = state.session; if (s && s.st === "front") { s.st = "back"; saveSession(); updateTest(false); if (state.settings.speak) { const c = cur(); if (c) speak(c.a, c.al); } } }
-function know(ok) { const s = state.session; if (!s || s.st !== "back") return; apply(ok); s.st = "busy"; nextItem(); }
+function know(ok) { const s = state.session; if (!s || s.st !== "back") return; sfx(ok ? "ok" : "bad"); apply(ok); s.st = "busy"; nextItem(); }
 
 const B = (act, label, cls = "") => `<button class="btn ${cls}" data-act="${act}">${esc(label)}</button>`;
 function updateTest(fresh) {
@@ -2058,6 +2088,7 @@ function lrnSpeakIntro() {
 function lrnJudge(ok, almost) {
   const s = state.learn; if (!s || s.st !== "ask" || !s.cur) return;
   const e = s.err[s.cur] || (s.err[s.cur] = { m: 0, t: 0 });
+  sfx(ok ? "ok" : "bad");
   if (ok) { s.ok++; s.st = almost ? "almost" : "right"; }
   else { e[s.phase === "mc" ? "m" : "t"]++; s.st = "wrong"; s.queue.splice(Math.min(s.queue.length, 2 + Math.floor(Math.random() * 2)), 0, s.cur); }
   saveLearn(); updateLearn();
@@ -2320,6 +2351,7 @@ function zinCheckInput() {
 function zinJudge(ok, almost) {
   const s = state.zin; if (!s || s.st !== "ask") return;
   const it = s.queue[0], u = zinInfo(s, it); if (!u) return;
+  sfx(ok ? "ok" : "bad");
   if (ok) { s.st = almost ? "almost" : "right"; s.ok++; }
   else { s.st = "wrong"; s.err[it.wid] = (s.err[it.wid] || 0) + 1; if (s.err[it.wid] <= 1) s.queue.push(it); else s.ok++; }
   if (state.settings.speak && u.gl === "es" && CAN_SPEAK) speak(u.full, "es");
@@ -2468,6 +2500,7 @@ document.addEventListener("click", async ev => {
     case "stats": state.view = "stats"; render(); break;
     case "practice-all": practiceAllHard(); break;
     case "speak": speak(el.dataset.text, el.dataset.lang); break;
+    case "snd-toggle": { const on = SND.cfg.on && SND.cfg.vol > 0; SND.cfg.on = !on; if (SND.cfg.on && SND.cfg.vol <= 0) SND.cfg.vol = 0.7; sndSave(); sndUi(); const c = $("#optSfx"); if (c) c.checked = SND.cfg.on; const v = $("#sndVol"); if (v) v.value = Math.round(SND.cfg.vol * 100); sfx("ok"); break; }
     case "speak-q": { const c = cur(); if (c) speak(c.q, c.ql); break; }
     case "wrong-list": {
       if (!s || !s.result) break;
@@ -2583,6 +2616,7 @@ document.addEventListener("change", ev => {
   if (el.id === "impPhoto") { readImage(el.files && el.files[0]); el.value = ""; return; }
   if (el.id === "impFile") { readFile(el.files && el.files[0]); el.value = ""; return; }
   if (el.id === "impSwap") { state.imp.swap = el.checked; state.imp.touched = true; updateImport(); return; }
+  if (el.id === "optSfx") { SND.cfg.on = el.checked; sndSave(); sndUi(); if (el.checked) sfx("ok"); return; }
   if (el.dataset && el.dataset.set) { state.settings[el.dataset.set] = el.checked; LS.set(K.settings, state.settings); }
 });
 
@@ -2694,6 +2728,9 @@ if (hot && hot.ready) hot.ready(boot); else boot((hot && hot.data) || {});
 
 /* testhaakje voor de motor (geen invloed op de app) */
 window.__lesmio = { check, makeSession, state, apply: ok => apply(ok), I18N, parseImport, parseColumns, detectSwap, render: () => render() };
+document.addEventListener("input", e => { const el = e.target; if (el && el.id === "sndVol") { SND.cfg.vol = el.value / 100; if (SND.cfg.vol > 0) SND.cfg.on = true; sndSave(); sndUi(); const c = $("#optSfx"); if (c) c.checked = SND.cfg.on; } });
+document.addEventListener("change", e => { const el = e.target; if (el && el.id === "sndVol") sfx("ok"); });
+sndUi();
 })();
 </script>
 </body>

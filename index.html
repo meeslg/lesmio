@@ -1449,7 +1449,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 00:12";
+const BUILD = "12-11 00:17";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -2763,28 +2763,6 @@ if (hot && hot.ready) hot.ready(boot); else boot((hot && hot.data) || {});
 window.__lesmio = { check, makeSession, state, apply: ok => apply(ok), I18N, parseImport, parseColumns, detectSwap, render: () => render() };
 document.addEventListener("input", e => { const el = e.target; if (el && el.id === "sndVol") { SND.cfg.vol = el.value / 100; if (SND.cfg.vol > 0) SND.cfg.on = true; sndSave(); sndUi(); const c = $("#optSfx"); if (c) c.checked = SND.cfg.on; } });
 document.addEventListener("change", e => { const el = e.target; if (el && el.id === "sndVol") sfx("ok", true); });
-/* klikgeluiden: verschillend per soort knop. click = hoofdactie, tick = zacht (terug/sluiten), pop = keuze maken, "" = stil */
-const CLICK_SND = {
-  start: "click", "practice-all": "click", "practice-hard": "click", "redo-wrong": "click", "redo-all": "click", "wrong-list": "click",
-  new: "click", open: "click", learn: "click", zin: "click", save: "click", "zin-more": "click", resume: "click", "lrn-resume": "click",
-  profile: "click", stats: "click", "imp-add": "click", edit: "click", "zin-next": "click", "lrn-next": "click",
-  home: "tick", logo: "tick", "zin-list": "tick", "lrn-list": "tick", "cancel-edit": "tick", "zin-quit": "tick", stop: "tick", "lrn-pause": "tick", discard: "tick", "lrn-discard": "tick", "lrn-opt": "tick",
-  "imp-mode": "pop", goal: "pop", dir: "pop",
-  char: "", caps: "", speak: "", "speak-q": "", "snd-toggle": "", flip: "tick", "zin-check": "", "zin-idk": "", "lrn-idk": "", idk: "", know: "", dont: "", delete: "", delrow: ""
-};
-function clickKind(b) {
-  if (b.id === "sndBtn" || b.classList.contains("cap")) return "";
-  if (b.matches(".dp-o, [data-n], [data-d]") || b.closest(".switch")) return "pop";
-  const a = b.dataset && b.dataset.act;
-  if (a && a in CLICK_SND) return CLICK_SND[a];
-  if (b.matches(".btn-primary, .act")) return "click";
-  return "tick";
-}
-document.addEventListener("click", e => {
-  const b = e.target.closest && e.target.closest("button, .act, .lrow, [data-act], .switch"); if (!b || b.disabled) return;
-  const kind = clickKind(b); if (!kind) return;
-  setTimeout(() => { if (Date.now() - SND.last > 250) sfxPlay(kind, true); }, 30);
-}, true);
 sndUi();
 })();
 </script>

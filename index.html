@@ -1233,14 +1233,12 @@ function speak(text, lang) {
   if (!HAS_TTS) return speakAudioFallback(clean, lang);
   if (!VOICES.length) loadVoices();
   const code = SPEAK_LANG[lang] || lang, v = pickVoice(lang);
-  const u = new SpeechSynthesisUtterance(clean); u.lang = code; u.rate = 0.9;
-  if (v) { u.voice = v; u.lang = v.lang; }
-  let started = false, fell = false;
+  if (!v) return speakAudioFallback(clean, lang);   // geen stem in de juiste taal: nooit een verkeerde stem laten voorlezen
+  const u = new SpeechSynthesisUtterance(clean); u.lang = v.lang || code; u.voice = v; u.rate = 0.9;
+  let fell = false;
   const fallback = () => { if (fell) return; fell = true; try { speechSynthesis.cancel(); } catch (e) {} speakAudioFallback(clean, lang); };
-  u.onstart = () => { started = true; };
   u.onerror = e => { if (e && (e.error === "interrupted" || e.error === "canceled")) return; fallback(); };
-  try { speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) { return fallback(); }
-  if (!v) setTimeout(() => { if (!started) fallback(); }, 1500);   // geen herkende stem: even proberen, anders reservestem
+  try { speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) { fallback(); }
 }
 const spkBtn = (text, lang) => CAN_SPEAK ? `<button type="button" class="spk" data-act="speak" data-text="${esc(text)}" data-lang="${lang}" aria-label="${esc(t("listen"))}">${ICO.speaker}</button>` : "";
 const spkQ = () => CAN_SPEAK ? `<button type="button" class="spk spk-q" data-act="speak-q" aria-label="${esc(t("listen"))}">${ICO.speaker}</button>` : "";

@@ -110,6 +110,16 @@ svg{display:block}
 
 
 
+
+.goal{display:block;width:min(100%,380px);margin:18px 0 0;padding:0;border:0;background:none;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.goal-bar{display:block;height:12px;border-radius:99px;background:var(--violet-soft);overflow:hidden}
+.goal-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),var(--coral));transition:width .6s cubic-bezier(.3,1.2,.5,1);min-width:12px}
+.goal.done .goal-bar i{background:linear-gradient(90deg,#2fc79a,#14b8a6)}
+.goal-t{display:flex;flex-wrap:wrap;gap:2px 10px;margin-top:8px;font-size:14px;color:var(--muted);font-weight:600}
+.goal-t b{color:var(--ink)}
+.goal-t em{font-style:normal;font-size:12.5px;opacity:.8}
+.goal:hover .goal-t em{opacity:1;text-decoration:underline}
+
 /* zinnen */
 .act-zin{background:linear-gradient(135deg,#5eead4 0%,#14b8a6 100%);color:var(--on-color);box-shadow:0 18px 30px -16px rgba(20,184,166,.7)}
 .act-zin[disabled]{opacity:.6;cursor:default}
@@ -639,7 +649,7 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 
 const I18N = {
 nl: {
-  welcomeTitle: "Welkom bij Lesmio", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
+  welcomeTitle: "Welkom bij Lesmio", zinLearnFirst: "Leer eerst woorden met Woorden leren", goalLeft: "Nog {n} woorden tot je dagdoel.", goalDone: "Dagdoel gehaald! Alles erbij is bonus.", goalStreak: "Je streak staat op {n} dagen. Maak hem vandaag langer.", goalOf: "{a} / {b} woorden vandaag", goalTap: "tik om je doel te wijzigen", buddyDone: "Dagdoel gehaald!", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
   buddyAsk: "Zin om een rondje te doen?", buddyGo: "Lekker bezig vandaag!",
   streak0: "Start je reeks", streakCap1: "dag op rij", streakCapN: "dagen op rij",
   todayCap: "woorden vandaag", hardCap: "lastige woorden", hardGo: "Oefen ze nu", hardNone: "Nog geen lastige woorden",
@@ -749,7 +759,7 @@ nl: {
   stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
 },
 es: {
-  welcomeTitle: "Te damos la bienvenida a Lesmio", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
+  welcomeTitle: "Te damos la bienvenida a Lesmio", zinLearnFirst: "Primero aprende palabras en Aprender palabras", goalLeft: "Te faltan {n} palabras para tu meta de hoy.", goalDone: "¡Meta cumplida! Todo lo extra es un bonus.", goalStreak: "Tu racha es de {n} días. Hazla más larga hoy.", goalOf: "{a} / {b} palabras hoy", goalTap: "toca para cambiar tu meta", buddyDone: "¡Meta cumplida!", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
   buddyAsk: "¿Hacemos una ronda?", buddyGo: "¡Buen trabajo hoy!",
   streak0: "Empieza tu racha", streakCap1: "día seguido", streakCapN: "días seguidos",
   todayCap: "palabras hoy", hardCap: "palabras difíciles", hardGo: "Practícalas ya", hardNone: "Aún no hay palabras difíciles",
@@ -1350,24 +1360,41 @@ const MSG = {
     retry: ["¡Tú puedes! Volvamos a intentarlo enseguida.", "Sin problema, esta palabra volverá en un momento.", "Equivocarse es parte de aprender. Te daré otra oportunidad.", "Seguro que la próxima vez te sale. Esta palabra volverá.", "No pasa nada, esta palabra vuelve enseguida.", "Aprendes de cada error. Lo intentamos otra vez.", "¡Buen intento! La próxima vez te sale.", "Así la recordarás mejor. Esta palabra volverá.", "Vas muy bien, la repetimos en un momento.", "Esta palabra tendrá otra oportunidad enseguida.", "Con práctica sale. La practicamos otra vez enseguida."]
   }
 };
+MSG.nl.hero = ["Elke dag een beetje. Zo wordt een nieuwe taal vanzelf gewoon.", "Vijf minuten is genoeg om vandaag vooruit te gaan.", "Fouten maken hoort erbij. Zo blijft het hangen.", "Kleine stapjes, grote sprongen. Begin gewoon met één woord.", "Je hoeft niet perfect te zijn, alleen elke dag even te komen.", "Vandaag een paar woorden, over een maand hele gesprekken.", "Samen leren is leuker. Kijk wie er vandaag het eerst begint!", "Herhalen is de geheime truc. Laat de woorden maar terugkomen.", "Elk woord dat je vandaag leert, is morgen van jou.", "Een beetje oefenen vandaag is meer waard dan veel oefenen morgen.", "Jij kan dit. Het wordt elke dag een beetje makkelijker.", "Een nieuwe taal, nieuwe mogelijkheden. Begin er vandaag mee."];
+MSG.es.hero = ["Un poco cada día. Así un idioma nuevo se vuelve natural.", "Cinco minutos bastan para avanzar hoy.", "Equivocarse es parte del proceso. Así se te queda grabado.", "Pasos pequeños, grandes avances. Empieza con una sola palabra.", "Lo importante no es la perfección, sino venir cada día.", "Hoy unas pocas palabras, en un mes conversaciones enteras.", "Aprender juntos es más divertido. ¡A ver quién empieza hoy!", "Repetir es el truco secreto. Deja que las palabras vuelvan.", "Cada palabra que aprendes hoy será tuya mañana.", "Un poco hoy vale más que mucho mañana.", "Tú puedes. Cada día se vuelve un poco más fácil.", "Un idioma nuevo, nuevas posibilidades. Empieza hoy."];
+const HERO_I = Math.floor(Math.random() * 1000);
+const GOALS = [10, 20, 30, 50];
+const getGoal = () => { const g = +LS.get("overhoor.goal", 20); return GOALS.includes(g) ? g : 20; };
+const wordsToday = () => (state.activity[dayKey()] || {}).w || 0;
+function heroLine() {
+  const w = wordsToday(), g = getGoal(), cur = streakInfo(state.activity).cur;
+  if (w >= g) return t("goalDone");
+  if (w > 0) return t("goalLeft", { n: g - w });
+  if (cur > 0 && HERO_I % 3 === 0) return t("goalStreak", { n: cur });
+  const arr = (MSG[LANG] || MSG.nl).hero; return arr[HERO_I % arr.length];
+}
+function goalBar() {
+  const w = wordsToday(), g = getGoal(), pct = Math.min(100, Math.round(w / g * 100));
+  return `<button type="button" class="goal${w >= g ? " done" : ""}" data-act="goal" aria-label="${esc(t("goalTap"))}"><span class="goal-bar"><i style="width:${pct}%"></i></span><span class="goal-t"><b>${esc(t("goalOf", { a: w, b: g }))}</b> <em>${esc(t("goalTap"))}</em></span></button>`;
+}
 const MSGMEM = {};
 function pickMsg(kind, key) {
   const arr = (MSG[LANG] || MSG.nl)[kind], m = MSGMEM[kind] || (MSGMEM[kind] = { k: null, i: -1 });
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "11-11 21:49";
+const BUILD = "11-11 22:28";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
 function gradeMood(g) { return g >= 9 ? "celebrate" : g >= 7.5 ? "thumbs" : g >= 5.5 ? "proud" : "encourage"; }
-function buddyBubble() { const w = (state.activity[dayKey()] || {}).w || 0; return `<div class="buddy" aria-hidden="true"><div class="bub">${esc(t(w ? "buddyGo" : "buddyAsk"))}</div>${mcImg("neutral", "buddy-img")}</div>`; }
+function buddyBubble() { const w = (state.activity[dayKey()] || {}).w || 0; return `<div class="buddy" aria-hidden="true"><div class="bub">${esc(t(w >= getGoal() ? "buddyDone" : w ? "buddyGo" : "buddyAsk"))}</div>${mcImg("neutral", "buddy-img")}</div>`; }
 function viewHome() {
   const lists = [...state.lists].sort((a, b) => (b.used || b.updatedAt || 0) - (a.used || a.updatedAt || 0));
   const loading = state.storage === "loading" || (state.storage === "cloud-loading" && !lists.length);
   const showExample = !loading && !lists.length;
   const saved = LS.get(K.session, null);
-  let h = `<header class="hero"><div class="hero-copy"><span class="eyebrow">Learn your way</span><h1>${esc(t("welcomeTitle")).replace("Lesmio", '<span class="hl">Lesmio</span>')}</h1><p class="tag">${esc(t("tag"))}</p><div class="hero-cta"><button class="btn btn-primary btn-lg" data-act="new">${ICO.plus}${esc(t("newListBtn").replace(/^\+\s*/, ""))}</button></div><div class="duo"><span class="pill">${esc(langName("nl"))}</span><span class="arr" aria-hidden="true">⇄</span><span class="pill">${esc(langName("es"))}</span></div></div><div class="stack" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><div class="vc v1"><span class="vc-l">${esc(langName("nl"))}</span><b>huis</b><i>casa</i></div><div class="vc v2"><span class="vc-l">${esc(langName("es"))}</span><b>gracias</b><i>dank je</i></div><div class="vc v3"><span class="vc-l">${esc(langName("nl"))}</span><b>kaas</b><i>queso</i></div></div>${buddyBubble()}</header>`;
+  let h = `<header class="hero"><div class="hero-copy"><span class="eyebrow">Learn your way</span><h1>${esc(t("welcomeTitle")).replace("Lesmio", '<span class="hl">Lesmio</span>')}</h1><p class="tag">${esc(heroLine())}</p>${goalBar()}<div class="hero-cta"><button class="btn btn-primary btn-lg" data-act="new">${ICO.plus}${esc(t("newListBtn").replace(/^\+\s*/, ""))}</button></div><div class="duo"><span class="pill">${esc(langName("nl"))}</span><span class="arr" aria-hidden="true">⇄</span><span class="pill">${esc(langName("es"))}</span></div></div><div class="stack" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><div class="vc v1"><span class="vc-l">${esc(langName("nl"))}</span><b>huis</b><i>casa</i></div><div class="vc v2"><span class="vc-l">${esc(langName("es"))}</span><b>gracias</b><i>dank je</i></div><div class="vc v3"><span class="vc-l">${esc(langName("nl"))}</span><b>kaas</b><i>queso</i></div></div>${buddyBubble()}</header>`;
   if (!loading) h += homeTiles();
   if (saved && saved.items && saved.items.length) {
     const d = saved.items.filter(i => i.done).length;
@@ -2176,6 +2203,9 @@ const exOk = w => !!(w.ex && w.ex.q && w.ex.a && (!w.ex.k || w.ex.k === w.q + "|
 const exSplit = sn => { const m = String(sn).match(/^([\s\S]*?)\{\{([\s\S]+?)\}\}([\s\S]*)$/); return m ? { pre: m[1], t: m[2], post: m[3] } : { pre: String(sn), t: "", post: "" }; };
 const exPlain = sn => String(sn).replace(/\{\{|\}\}/g, "");
 const zinAvail = l => l.words.filter(exOk).length;
+/* alleen woorden die je al (deels) geleerd hebt: via Woorden leren of via een toets */
+const zinDirs = (w, dir) => { const ds = dirList(dir), have = ds.filter(d => lunit(w, d)); return have.length ? have : (w.n || 0) > 0 ? ds : []; };
+const zinPool = (l, dir) => l.words.filter(w => exOk(w) && zinDirs(w, dir).length);
 const GEN = { busy: {}, fail: {} };
 let zinTimer = null;
 async function ensureSentences(l, manual) {
@@ -2201,18 +2231,20 @@ async function ensureSentences(l, manual) {
 function zinTile(l) {
   if (l.id === "__hard" || !l.words.length) return "";
   const n = zinAvail(l), live = !!(sb && sb.uid);
-  const sub = n >= 3 ? t("zinTileSub") : GEN.busy[l.id] ? t("zinBusy") : !live ? t("zinOnly") : GEN.fail[l.id] ? t("zinFail") : t("zinNone");
-  return `<button class="act act-zin" data-act="zin"${n < 3 && !live ? " disabled" : ""}><span class="act-ic">${ICO.quote}</span><span class="act-t">${esc(t("zinTile"))}</span><span class="act-s">${esc(sub)}</span></button>`;
+  const pool = n >= 3 ? zinPool(l, state.setupDir).length : 0;
+  const sub = n >= 3 ? (pool >= 3 ? t("zinTileSub") : t("zinLearnFirst")) : GEN.busy[l.id] ? t("zinBusy") : !live ? t("zinOnly") : GEN.fail[l.id] ? t("zinFail") : t("zinNone");
+  return `<button class="act act-zin" data-act="zin"${(n < 3 && !live) || (n >= 3 && pool < 3) ? " disabled" : ""}><span class="act-ic">${ICO.quote}</span><span class="act-t">${esc(t("zinTile"))}</span><span class="act-s">${esc(sub)}</span></button>`;
 }
 function zinOpen() {
   const l = getList(state.setupFor); if (!l) return;
   if (zinAvail(l) < 3) { if (GEN.busy[l.id]) toast(t("zinWait")); else ensureSentences(l, true); return; }
+  if (zinPool(l, state.setupDir).length < 3) { toast(t("zinLearnFirst")); return; }
   zinStart(l, state.setupDir);
 }
 function zinStart(l, dir) {
   const now = Date.now(), rank = { needs: 0, learning: 1, new: 2, ready: 3 };
-  const ws = l.words.filter(exOk).map(w => ({ w, r: rank[lstat(w, dir, now)] + Math.random() * 0.9 })).sort((a, b) => a.r - b.r).slice(0, 10).map(x => x.w);
-  const items = shuffle(ws.map(w => ({ wid: w.id, d: dir === "both" ? (Math.random() < 0.5 ? "qa" : "aq") : dir })));
+  const ws = zinPool(l, dir).map(w => ({ w, r: rank[lstat(w, dir, now)] + Math.random() * 0.9 })).sort((a, b) => a.r - b.r).slice(0, 10).map(x => x.w);
+  const items = shuffle(ws.map(w => { const ds = zinDirs(w, dir); return { wid: w.id, d: ds[Math.floor(Math.random() * ds.length)] }; }));
   state.zin = { listId: l.id, dir, items, queue: items.slice(), st: "ask", given: "", err: {}, ok: 0, total: items.length, phase: "play", startedAt: now };
   state.view = "zin"; render();
 }
@@ -2410,6 +2442,7 @@ document.addEventListener("click", async ev => {
     case "lrn-more": { const ls = state.learn, l = ls && getList(ls.listId); if (!l) break; const pl = lrnPlan(l, ls.dir, ls.n || 10); lrnStart(l, ls.dir, pl.done ? "review" : "slim", ls.n || 10); break; }
     case "logout": sbLogout(); break;
     case "profile": profileBox(); break;
+    case "goal": { const g = getGoal(); LS.set("overhoor.goal", GOALS[(GOALS.indexOf(g) + 1) % GOALS.length]); render(); break; }
     case "stats": state.view = "stats"; render(); break;
     case "practice-all": practiceAllHard(); break;
     case "speak": speak(el.dataset.text, el.dataset.lang); break;

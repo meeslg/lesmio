@@ -144,6 +144,28 @@ body.celebrating .fb-mc{visibility:hidden}
 .dp-o:hover{border-color:var(--violet);transform:translateY(-1px)}
 .dp-o[aria-pressed="true"]{border-color:var(--violet);background:var(--violet-soft);color:var(--violet-strong)}
 .dp-o small{color:var(--muted);font-size:13px}
+.act-match{background:linear-gradient(135deg,#38bdf8 0%,#0369a1 100%);color:#fff;box-shadow:0 18px 30px -16px rgba(3,105,161,.7)}
+.mt-info{text-align:center;color:var(--muted);font-weight:600;margin:10px 0 16px}
+.mt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mt-col{display:flex;flex-direction:column;gap:10px}
+.mt-card{font:inherit;font-weight:700;font-size:17px;min-height:64px;padding:12px 10px;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;overflow-wrap:anywhere;transition:transform .15s,border-color .15s,background .2s,opacity .3s;box-shadow:var(--sh-sm)}
+.mt-card:hover{border-color:var(--violet)}
+.mt-card.sel{border-color:var(--violet);background:var(--violet-soft);transform:scale(1.03)}
+.mt-card.ok{border-color:transparent;background:var(--good-bg);color:var(--good);opacity:.45;transform:scale(.96)}
+.mt-card.bad{border-color:var(--bad);background:var(--bad-bg);animation:shake .35s}
+.mt-done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.mt-stats{display:flex;gap:22px;justify-content:center;margin:12px 0 4px}
+.mt-stats div{display:flex;flex-direction:column;align-items:center}
+.mt-stats b{font-size:32px;letter-spacing:-.02em}
+.mt-stats span{font-size:13px;color:var(--muted);font-weight:600}
+.mt-nb{font-weight:800;color:var(--violet-strong);margin:4px 0}
+.mt-act{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.achs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.ach{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:12px 8px;border-radius:16px;border:1px solid var(--line);background:var(--surface);opacity:.5;filter:grayscale(1)}
+.ach.on{opacity:1;filter:none;background:var(--violet-soft);border-color:transparent}
+.ach-i{font-size:28px}
+.ach b{font-size:14px}
+.ach small{font-size:12px;color:var(--muted)}
 /* zinnen */
 .act-zin{background:linear-gradient(135deg,#2dd4bf 0%,#0d9488 100%);color:#fff;box-shadow:0 18px 30px -16px rgba(20,184,166,.7)}
 .act-zin[disabled]{opacity:.7;filter:saturate(.7);cursor:default}
@@ -680,7 +702,13 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 
 const I18N = {
 nl: {
-  welcomeTitle: "Welkom bij Lesmio", wow: "Wow!", sndMute: "Geluid uit", sndUnmute: "Geluid aan", optSfx: "Geluidjes", optSfxSub: "Een toon bij goed en fout", sndVol: "Volume", pickDir: "Welke kant op?", zinLearnFirst: "Leer eerst woorden met Woorden leren", goalLeft: "Nog {n} woorden tot je dagdoel.", goalDone: "Dagdoel gehaald! Alles erbij is bonus.", goalStreak: "Je streak staat op {n} dagen. Maak hem vandaag langer.", goalOf: "{a} / {b} woorden vandaag", goalTap: "tik om je doel te wijzigen", buddyDone: "Dagdoel gehaald!", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
+  welcomeTitle: "Welkom bij Lesmio", mtTile: "Koppelen", mtTileSub: "Koppel de woorden, tegen de klok", mtQuit: "× Stoppen", mtRound: "Ronde {a} van {b}", mtDone: "Alles gekoppeld!", mtTime: "Tijd", mtMist: "Fouten", mtBest: "Beste tijd", mtNewBest: "Nieuw record!", mtAgain: "Nog een keer", mtNeed: "Je hebt minstens 3 woorden nodig.", mtLeft: "{n} te gaan",
+  achTitle: "Prestaties", achNew: "Nieuwe prestatie", achOf: "{a} van {b} behaald",
+  ach_words10: "Eerste stappen", achd_words10: "Oefen 10 woorden", ach_words100: "Woordenjager", achd_words100: "Oefen 100 woorden", ach_words500: "Woordenmeester", achd_words500: "Oefen 500 woorden", ach_words1000: "Woordenlegende", achd_words1000: "Oefen 1000 woorden",
+  ach_streak3: "Op dreef", achd_streak3: "3 dagen achter elkaar", ach_streak7: "Weekkampioen", achd_streak7: "7 dagen achter elkaar", ach_streak30: "Maandmeester", achd_streak30: "30 dagen achter elkaar",
+  ach_test1: "Eerste toets", achd_test1: "Maak een toets af", ach_grade9: "Bijna perfect", achd_grade9: "Haal een 9 of hoger", ach_grade10: "Foutloos", achd_grade10: "Haal een 10",
+  ach_match1: "Koppelaar", achd_match1: "Speel Koppelen uit", ach_flawless: "Zonder fout", achd_flawless: "Koppel alles zonder fout", ach_five: "Op een rij", achd_five: "5 goed achter elkaar",
+  ach_goal: "Dagdoel gehaald", achd_goal: "Haal je dagdoel", ach_learned25: "Zit erin", achd_learned25: "25 woorden klaar voor toets", wow: "Wow!", sndMute: "Geluid uit", sndUnmute: "Geluid aan", optSfx: "Geluidjes", optSfxSub: "Een toon bij goed en fout", sndVol: "Volume", pickDir: "Welke kant op?", zinLearnFirst: "Leer eerst woorden met Woorden leren", goalLeft: "Nog {n} woorden tot je dagdoel.", goalDone: "Dagdoel gehaald! Alles erbij is bonus.", goalStreak: "Je streak staat op {n} dagen. Maak hem vandaag langer.", goalOf: "{a} / {b} woorden vandaag", goalTap: "tik om je doel te wijzigen", buddyDone: "Dagdoel gehaald!", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
   buddyAsk: "Zin om een rondje te doen?", buddyGo: "Lekker bezig vandaag!",
   streak0: "Start je reeks", streakCap1: "dag op rij", streakCapN: "dagen op rij",
   todayCap: "woorden vandaag", hardCap: "lastige woorden", hardGo: "Oefen ze nu", hardNone: "Nog geen lastige woorden",
@@ -790,7 +818,13 @@ nl: {
   stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
 },
 es: {
-  welcomeTitle: "Te damos la bienvenida a Lesmio", wow: "¡Guau!", sndMute: "Silenciar", sndUnmute: "Activar sonido", optSfx: "Efectos de sonido", optSfxSub: "Un tono al acertar y al fallar", sndVol: "Volumen", pickDir: "¿En qué dirección?", zinLearnFirst: "Primero aprende palabras en Aprender palabras", goalLeft: "Te faltan {n} palabras para tu meta de hoy.", goalDone: "¡Meta cumplida! Todo lo extra es un bonus.", goalStreak: "Tu racha es de {n} días. Hazla más larga hoy.", goalOf: "{a} / {b} palabras hoy", goalTap: "toca para cambiar tu meta", buddyDone: "¡Meta cumplida!", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
+  welcomeTitle: "Te damos la bienvenida a Lesmio", mtTile: "Emparejar", mtTileSub: "Empareja las palabras contra el reloj", mtQuit: "× Salir", mtRound: "Ronda {a} de {b}", mtDone: "¡Todo emparejado!", mtTime: "Tiempo", mtMist: "Errores", mtBest: "Mejor tiempo", mtNewBest: "¡Nuevo récord!", mtAgain: "Otra vez", mtNeed: "Necesitas al menos 3 palabras.", mtLeft: "faltan {n}",
+  achTitle: "Logros", achNew: "Nuevo logro", achOf: "{a} de {b} conseguidos",
+  ach_words10: "Primeros pasos", achd_words10: "Practica 10 palabras", ach_words100: "Cazapalabras", achd_words100: "Practica 100 palabras", ach_words500: "Maestro de palabras", achd_words500: "Practica 500 palabras", ach_words1000: "Leyenda de palabras", achd_words1000: "Practica 1000 palabras",
+  ach_streak3: "En racha", achd_streak3: "3 días seguidos", ach_streak7: "Campeón semanal", achd_streak7: "7 días seguidos", ach_streak30: "Maestro del mes", achd_streak30: "30 días seguidos",
+  ach_test1: "Primer examen", achd_test1: "Termina un examen", ach_grade9: "Casi perfecto", achd_grade9: "Saca un 9 o más", ach_grade10: "Sin errores", achd_grade10: "Saca un 10",
+  ach_match1: "Casamentero", achd_match1: "Termina Emparejar", ach_flawless: "Sin fallos", achd_flawless: "Empareja todo sin errores", ach_five: "Seguidas", achd_five: "5 aciertos seguidos",
+  ach_goal: "Meta cumplida", achd_goal: "Cumple tu meta diaria", ach_learned25: "Ya lo sabes", achd_learned25: "25 palabras listas para el examen", wow: "¡Guau!", sndMute: "Silenciar", sndUnmute: "Activar sonido", optSfx: "Efectos de sonido", optSfxSub: "Un tono al acertar y al fallar", sndVol: "Volumen", pickDir: "¿En qué dirección?", zinLearnFirst: "Primero aprende palabras en Aprender palabras", goalLeft: "Te faltan {n} palabras para tu meta de hoy.", goalDone: "¡Meta cumplida! Todo lo extra es un bonus.", goalStreak: "Tu racha es de {n} días. Hazla más larga hoy.", goalOf: "{a} / {b} palabras hoy", goalTap: "toca para cambiar tu meta", buddyDone: "¡Meta cumplida!", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
   buddyAsk: "¿Hacemos una ronda?", buddyGo: "¡Buen trabajo hoy!",
   streak0: "Empieza tu racha", streakCap1: "día seguido", streakCapN: "días seguidos",
   todayCap: "palabras hoy", hardCap: "palabras difíciles", hardGo: "Practícalas ya", hardNone: "Aún no hay palabras difíciles",
@@ -1266,13 +1300,45 @@ function streakInfo(a) {
   });
   return { cur, best: Math.max(best, cur) };
 }
+/* ---------- prestaties ---------- */
+const ACH_KEY = "overhoor.ach";
+const ACH = [
+  ["words10", "🌱", c => c.words >= 10], ["words100", "💯", c => c.words >= 100], ["words500", "🏆", c => c.words >= 500], ["words1000", "👑", c => c.words >= 1000],
+  ["streak3", "🔥", c => c.streak >= 3], ["streak7", "📅", c => c.streak >= 7], ["streak30", "🗓️", c => c.streak >= 30],
+  ["test1", "✏️", c => c.tests >= 1], ["grade9", "🎯", c => c.best >= 9], ["grade10", "💎", c => c.best >= 10],
+  ["match1", "🔗", c => c.f.match1], ["flawless", "✨", c => c.f.flawless], ["five", "⚡", c => c.f.five], ["goal", "☀️", c => c.f.goal], ["learned25", "🧠", c => c.learned >= 25]
+];
+function achFlag(n) { const st = LS.get(ACH_KEY, {}); st.flags = st.flags || {}; if (!st.flags[n]) { st.flags[n] = 1; LS.set(ACH_KEY, st); } }
+function achEarned() {
+  const A = state.activity, st = LS.get(ACH_KEY, {}), f = st.flags || {}, res = allResults();
+  if (wordsToday() >= getGoal()) f.goal = 1;
+  const c = { words: Object.values(A).reduce((n, d) => n + (d.w || 0), 0), streak: streakInfo(A).best, tests: res.length, best: res.reduce((m, r) => Math.max(m, r.grade), 0), f,
+    learned: state.lists.filter(l => !l.example && isMine(l)).reduce((n, l) => n + lrnCounts(l, "both").ready, 0) };
+  return new Set(ACH.filter(a => a[2](c)).map(a => a[0]));
+}
+function checkAch() {
+  try {
+    const st = LS.get(ACH_KEY, {}), earned = achEarned(), seen = st.seen || {};
+    st.seen = seen; st.flags = st.flags || {};
+    if (wordsToday() >= getGoal()) st.flags.goal = 1;
+    if (!st.init) { earned.forEach(id => { seen[id] = Date.now(); }); st.init = 1; LS.set(ACH_KEY, st); return; }
+    const fresh = [...earned].filter(id => !seen[id]); if (!fresh.length) return;
+    fresh.forEach(id => { seen[id] = Date.now(); }); LS.set(ACH_KEY, st);
+    toast("🏆 " + t("achNew") + ": " + fresh.map(id => t("ach_" + id)).join(", "));
+  } catch (e) {}
+}
+function achPanel() {
+  const st = LS.get(ACH_KEY, {}), seen = st.seen || {}, earned = achEarned();
+  const items = ACH.map(a => { const on = earned.has(a[0]); return `<div class="ach${on ? " on" : ""}" title="${esc(t("achd_" + a[0]))}"><span class="ach-i">${a[1]}</span><b>${esc(t("ach_" + a[0]))}</b><small>${esc(t("achd_" + a[0]))}</small></div>`; }).join("");
+  return `<div class="panel"><h3>${esc(t("achTitle"))} <span class="muted">· ${esc(t("achOf", { a: earned.size, b: ACH.length }))}</span></h3><div class="achs">${items}</div></div>`;
+}
 /* alleen eigen lijsten tellen mee voor streak en woorden vandaag */
 const isMine = l => !l || !l.owner || !sb || !sb.uid || l.owner === sb.uid;
 function logActivity(words, secs, ok, noTest) {
   if (!words) return;
   const k = dayKey(), a = state.activity[k] || { w: 0, s: 0, t: 0, ok: 0 };
   a.w += words; a.s += secs; a.t += noTest ? 0 : 1; a.ok += ok; state.activity[k] = a;
-  LS.set(K.act, state.activity);
+  LS.set(K.act, state.activity); checkAch();
   if (sb && sb.uid) sb.client.from("activity").upsert({ user_id: sb.uid, day: k, words: a.w, secs: a.s, tests: a.t, ok: a.ok }).then(r => { if (r && r.error) state.actErr = r.error.message || "fout"; else state.actErr = ""; }, e => { state.actErr = String((e && e.message) || e); });
 }
 function saveAvatar(a) {
@@ -1346,6 +1412,7 @@ function sfx(name, preview) {
 }
 SND.streak = 0; SND.last = 0;
 function celebrate() {
+  achFlag("five"); checkAch();
   const old = document.getElementById("cfx"); if (old) old.remove();
   const el = document.createElement("div"); el.id = "cfx"; el.setAttribute("aria-hidden", "true");
   const cols = ["#8a6bff", "#ff7a66", "#ffd36e", "#2fc79a", "#5eead4", "#ff9f43"];
@@ -1454,7 +1521,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 00:31";
+const BUILD = "12-11 00:41";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -1530,6 +1597,7 @@ function viewSetup() {
     ${zinTile(l)}
     <button class="act act-test" data-act="start" data-mode="toets"><span class="act-ic">${ICO.pen}</span><span class="act-t">${esc(t("startTest"))}</span><span class="act-s">${esc(t("actTestSub"))}</span></button>
     <button class="act act-cards" data-act="start" data-mode="kaartjes"><span class="act-ic">${ICO.cards}</span><span class="act-t">${esc(t("modeCards"))}</span><span class="act-s">${esc(t("actCardsSub"))}</span></button>
+    ${l.id !== "__hard" && l.words.length >= 3 ? `<button class="act act-match" data-act="match"><span class="act-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><span class="act-t">${esc(t("mtTile"))}</span><span class="act-s">${esc(t("mtTileSub"))}</span></button>` : ""}
     ${hard.length ? `<button class="act act-hard" data-act="practice-hard"><span class="act-ic">${ICO.target}</span><span class="act-t">${esc(t("practiceHard", { n: hard.length }))}</span><span class="act-s">${esc(t("hardWords"))}</span></button>` : ""}
   </div>
   <div class="panel"><h3>${esc(t("checking"))}</h3>
@@ -1709,16 +1777,17 @@ function render() {
   syncChrome();
   if (state.needLogin) { app.innerHTML = viewLogin(); return; }
   if (window.LESMIO_SB && state.storage === "loading" && !state.me) { app.innerHTML = ""; return; }
-  app.innerHTML = v === "setup" ? viewSetup() : v === "edit" ? viewEdit() : v === "test" ? viewTest() : v === "results" ? viewResults() : v === "stats" ? viewStats() : v === "learn" ? viewLearn() : v === "zin" ? viewZin() : viewHome();
+  app.innerHTML = v === "setup" ? viewSetup() : v === "edit" ? viewEdit() : v === "test" ? viewTest() : v === "results" ? viewResults() : v === "stats" ? viewStats() : v === "learn" ? viewLearn() : v === "zin" ? viewZin() : v === "match" ? viewMatch() : viewHome();
   if (state.view === "home") app.innerHTML = `<div class="view enter">${app.innerHTML}</div>`;
   if (state.view === "edit") { updateCount(); updateImport(); }
   if (state.view === "learn") updateLearn();
   if (state.view === "zin") updateZin();
+  clearInterval(MT_TIMER); if (state.view === "match") { MT_TIMER = setInterval(matchTick, 500); matchTick(); } else if (state.match) state.match = null;
   if (state.view !== state.lastView) { window.scrollTo(0, 0); state.lastView = state.view; }
   histSync();
 }
 /* terugknop: home (0) > lijst/voortgang/bewerken (1) > toets/leren/resultaat (2) */
-const NAV_DEPTH = { home: 0, setup: 1, stats: 1, edit: 1, test: 2, learn: 2, zin: 2, results: 2 };
+const NAV_DEPTH = { home: 0, setup: 1, stats: 1, edit: 1, test: 2, learn: 2, zin: 2, match: 2, results: 2 };
 function histSync() {
   try { const D = NAV_DEPTH[state.view] || 0, cur = (history.state && history.state.d) || 0; if (D > cur) history.pushState({ d: D }, ""); else if (D < cur) history.go(D - cur); else history.replaceState({ d: D }, ""); } catch (e) {}
 }
@@ -1783,6 +1852,7 @@ function viewStats() {
   <div class="stiles">${tile("s1", "🔥 " + si.cur, t("stStreak"))}${tile("s2", si.best, t("stBest"))}${tile("s3", sum("w"), t("stWords"))}${tile("s4", sum("t"), t("stTests"))}${tile("s5", avg == null ? "–" : fmtGrade(avg), t("stAvg"))}${tile("s6", fmtDur(sum("s")), t("stTime"))}</div>
   <div class="stats-grid">
     <div class="stat-col">
+    ${achPanel()}
     <div class="panel"><h3>${esc(t("chartGrades"))}</h3>${gradeChart(res)}</div>
     <div class="panel"><h3>${esc(t("perList"))}</h3>${bars || `<p class="muted">${esc(t("noData"))}</p>`}</div>
     ${together}
@@ -2413,6 +2483,63 @@ function zinApply(s) {
   if (isMine(l)) logActivity(s.items.length, Math.round((now - s.startedAt) / 1000), s.items.filter(i => !s.err[i.wid]).length, true);
 }
 
+/* ---------- Koppelen (tegen de klok) ---------- */
+let MT_TIMER = null;
+const mtFmt = secs => Math.floor(secs / 60) + ":" + String(secs % 60).padStart(2, "0");
+function matchStart(l) {
+  const ws = shuffle(l.words.filter(w => w.q && w.a)).slice(0, 18);
+  if (ws.length < 3) return toast(t("mtNeed"));
+  const rounds = lrnChunks(ws.map(w => w.id), 6);
+  state.match = { listId: l.id, rounds, r: 0, matched: new Set(), mistakes: 0, t0: Date.now(), phase: "play", sel: null, bad: null, lock: false, total: ws.length };
+  matchRound(); state.view = "match"; render();
+}
+function matchRound() {
+  const m = state.match, l = getList(m.listId), ids = m.rounds[m.r], ws = ids.map(id => l.words.find(w => w.id === id));
+  m.matched = new Set(); m.sel = null; m.bad = null; m.lock = false;
+  m.left = shuffle(ws.map(w => ({ wid: w.id, text: w.q }))); m.right = shuffle(ws.map(w => ({ wid: w.id, text: w.a })));
+}
+function matchTick() { const m = state.match, el = $("#mtTime"); if (el && m && m.phase === "play") el.textContent = mtFmt(Math.round((Date.now() - m.t0) / 1000)); }
+function viewMatch() {
+  const m = state.match; if (!m) return "";
+  if (m.phase === "done") {
+    const best = (LS.get("overhoor.matchBest", {}))[m.listId];
+    return `<div class="view enter narrow mt"><div class="panel mt-done">${mcImg(m.mistakes <= m.total / 2 ? "celebrate" : "thumbs", "res-mc")}<h2>${esc(t("mtDone"))}</h2>
+      <div class="mt-stats"><div><b>${mtFmt(m.secs)}</b><span>${esc(t("mtTime"))}</span></div><div><b>${m.mistakes}</b><span>${esc(t("mtMist"))}</span></div><div><b>${best != null ? mtFmt(best) : "–"}</b><span>${esc(t("mtBest"))}</span></div></div>
+      ${m.newBest ? `<p class="mt-nb">🏅 ${esc(t("mtNewBest"))}</p>` : ""}
+      <div class="mt-act"><button class="btn btn-primary" data-act="match-again">${esc(t("mtAgain"))}</button><button class="btn" data-act="match-quit">${esc(t("backToLists"))}</button></div></div></div>`;
+  }
+  const card = (c, side, i) => { const on = m.matched.has(c.wid), sel = m.sel && m.sel.side === side && m.sel.i === i, bad = m.bad && ((m.bad.a.side === side && m.bad.a.i === i) || (m.bad.b.side === side && m.bad.b.i === i));
+    return `<button type="button" class="mt-card${on ? " ok" : ""}${sel ? " sel" : ""}${bad ? " bad" : ""}" data-act="mt-pick" data-side="${side}" data-i="${i}"${on ? " disabled" : ""}>${esc(c.text)}</button>`; };
+  const left = m.rounds[m.r].length - m.matched.size;
+  return `<div class="view enter narrow mt">
+  <div class="test-top"><button class="btn btn-quiet btn-sm" data-act="match-quit">${esc(t("mtQuit"))}</button><div class="count"><span id="mtTime">0:00</span></div></div>
+  <p class="mt-info">${esc(t("mtRound", { a: m.r + 1, b: m.rounds.length }))} · ${esc(t("mtLeft", { n: left }))}</p>
+  <div class="mt-grid"><div class="mt-col">${m.left.map((c, i) => card(c, "L", i)).join("")}</div><div class="mt-col">${m.right.map((c, i) => card(c, "R", i)).join("")}</div></div></div>`;
+}
+function updateMatch() { const app = $("#app"); app.innerHTML = viewMatch(); matchTick(); }
+function matchPick(side, i) {
+  const m = state.match; if (!m || m.phase !== "play" || m.lock) return;
+  const c = (side === "L" ? m.left : m.right)[i]; if (!c || m.matched.has(c.wid)) return;
+  if (!m.sel || m.sel.side === side) { m.sel = { side, i }; updateMatch(); return; }
+  const o = (m.sel.side === "L" ? m.left : m.right)[m.sel.i];
+  if (o.wid === c.wid) {
+    m.matched.add(c.wid); m.sel = null; sfx("ok", true);
+    if (state.settings.speak && CAN_SPEAK) { const es = side === "R" ? c : o; speak(es.text, "es"); }
+    updateMatch();
+    if (m.matched.size === m.rounds[m.r].length) { m.lock = true; setTimeout(() => { if (state.match !== m) return; m.r++; if (m.r >= m.rounds.length) matchFinish(); else { matchRound(); updateMatch(); } }, 500); }
+  } else {
+    m.mistakes++; sfx("bad", true); m.bad = { a: { side: m.sel.side, i: m.sel.i }, b: { side, i } }; m.sel = null; m.lock = true; updateMatch();
+    setTimeout(() => { if (state.match !== m) return; m.bad = null; m.lock = false; updateMatch(); }, 450);
+  }
+}
+function matchFinish() {
+  const m = state.match, l = getList(m.listId); m.phase = "done"; m.secs = Math.round((Date.now() - m.t0) / 1000);
+  const bests = LS.get("overhoor.matchBest", {}), prev = bests[m.listId]; m.newBest = prev != null && m.secs < prev; if (prev == null || m.secs < prev) { bests[m.listId] = m.secs; LS.set("overhoor.matchBest", bests); }
+  achFlag("match1"); if (!m.mistakes) achFlag("flawless");
+  if (l && isMine(l)) logActivity(m.total, m.secs, m.total - Math.min(m.mistakes, m.total), true); else checkAch();
+  setTimeout(() => sfxPlay(m.mistakes <= m.total / 2 ? "applause" : "soft"), 300);
+  updateMatch();
+}
 /* ---------- acties ---------- */
 function openSetup(id) {
   state.setupFor = id; state.setupDir = LS.get(K.dirs, {})[id] || defaultDir();
@@ -2520,6 +2647,10 @@ document.addEventListener("click", async ev => {
     case "lrn-discard": LS.del(K.learn); render(); break;
     case "lrn-next": lrnNext(); break;
     case "zin": await zinOpen(); break;
+    case "match": { const l = getList(state.setupFor); if (l) matchStart(l); break; }
+    case "match-again": { const l = state.match && getList(state.match.listId); if (l) matchStart(l); break; }
+    case "match-quit": { const id = state.match ? state.match.listId : state.setupFor; state.match = null; if (id && getList(id)) openSetup(id); else { state.view = "home"; render(); } break; }
+    case "mt-pick": matchPick(el.dataset.side, +el.dataset.i); break;
     case "zin-check": zinCheckInput(); break;
     case "zin-idk": zinJudge(false); break;
     case "zin-next": zinNext(); break;
@@ -2556,7 +2687,7 @@ document.addEventListener("click", async ev => {
     case "logo": {
       if (state.view === "home") { render(); break; }
       /* midden in een toets/ronde/bewerking: via de eigen stop-knop, die bewaart of vraagt eerst */
-      const q = document.querySelector('[data-act="stop"], [data-act="lrn-pause"], [data-act="zin-quit"], [data-act="cancel-edit"]');
+      const q = document.querySelector('[data-act="stop"], [data-act="lrn-pause"], [data-act="zin-quit"], [data-act="match-quit"], [data-act="cancel-edit"]');
       if (q) { q.click(); break; }
       if (state.view === "results") state.session = null;
       state.view = "home"; render(); break;

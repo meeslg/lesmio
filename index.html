@@ -1135,7 +1135,7 @@ async function sbPullExtras() {
     const rows = (pr && pr.data) || [];
     const me = rows.find(r => r.id === sb.uid), other = rows.find(r => r.id !== sb.uid);
     state.actErr = ac && ac.error ? (ac.error.message || "fout") : "";
-    const loc = LS.get(K.act, {}); Object.keys(loc).forEach(d => { if (!mine[d] || (loc[d].w || 0) > (mine[d].w || 0)) mine[d] = loc[d]; });
+    const loc = state.actErr ? LS.get(K.act, {}) : {}; Object.keys(loc).forEach(d => { if (!mine[d] || (loc[d].w || 0) > (mine[d].w || 0)) mine[d] = loc[d]; });
     state.activity = mine; state.avatar = (me && me.avatar) || "";
     state.partner = other ? { name: other.name, avatar: other.avatar || "", activity: theirs[other.id] || {} } : null;
   } catch (e) {}

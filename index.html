@@ -109,6 +109,19 @@ svg{display:block}
 .btn-bad:hover{border-color:var(--bad)}
 
 
+
+/* zinnen */
+.act-zin{background:linear-gradient(135deg,#5eead4 0%,#14b8a6 100%);color:var(--on-color);box-shadow:0 18px 30px -16px rgba(20,184,166,.7)}
+.act-zin[disabled]{opacity:.6;cursor:default}
+.zin-card{display:grid;gap:10px}
+.zin-hint{font-size:20px;line-height:1.45;font-weight:700;color:var(--ink)}
+.zin-hint mark,.zin-full mark{background:var(--coral-soft);color:var(--coral-strong);padding:0 4px;border-radius:6px}
+.zin-l2{margin-top:10px}
+.zin-gap{font-size:22px;line-height:2.2;font-weight:700;color:var(--ink)}
+.zin-in{display:inline-block;max-width:100%;border:0;border-bottom:3px solid var(--violet);background:var(--violet-soft);border-radius:8px 8px 0 0;text-align:center;font:inherit;font-weight:800;color:var(--violet-strong);padding:0 6px;outline:none}
+.zin-in:focus{background:#e6e0ff;border-bottom-color:var(--violet-strong)}
+.zin-full{font-weight:700;margin-top:6px}
+
 /* mascottes */
 .mc{display:block;width:auto;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .hero .stack{display:none}
@@ -626,7 +639,7 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 
 const I18N = {
 nl: {
-  welcomeTitle: "Welkom bij Lesmio",
+  welcomeTitle: "Welkom bij Lesmio", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
   buddyAsk: "Zin om een rondje te doen?", buddyGo: "Lekker bezig vandaag!",
   streak0: "Start je reeks", streakCap1: "dag op rij", streakCapN: "dagen op rij",
   todayCap: "woorden vandaag", hardCap: "lastige woorden", hardGo: "Oefen ze nu", hardNone: "Nog geen lastige woorden",
@@ -736,7 +749,7 @@ nl: {
   stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
 },
 es: {
-  welcomeTitle: "Te damos la bienvenida a Lesmio",
+  welcomeTitle: "Te damos la bienvenida a Lesmio", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
   buddyAsk: "¿Hacemos una ronda?", buddyGo: "¡Buen trabajo hoy!",
   streak0: "Empieza tu racha", streakCap1: "día seguido", streakCapN: "días seguidos",
   todayCap: "palabras hoy", hardCap: "palabras difíciles", hardGo: "Practícalas ya", hardNone: "Aún no hay palabras difíciles",
@@ -1093,7 +1106,7 @@ function deleteList(id) {
 let sb = null;
 function splitList(l) {
   const body = bodyOf(l); delete body.results; delete body.owner;
-  body.words = (l.words || []).map(w => ({ id: w.id, q: w.q, a: w.a }));
+  body.words = (l.words || []).map(w => ({ id: w.id, q: w.q, a: w.a, ...(w.ex ? { ex: w.ex } : {}) }));
   const prog = { results: l.results || [], misses: {}, run: {}, n: {}, L: {}, used: l.used || 0 };
   (l.words || []).forEach(w => { if (w.misses) prog.misses[w.id] = w.misses; if (w.run) prog.run[w.id] = w.run; if (w.n) prog.n[w.id] = w.n; if (w.L) prog.L[w.id] = w.L; });
   return { body, prog };
@@ -1308,6 +1321,7 @@ document.addEventListener("focusin", e => { if (e.target.matches && e.target.mat
 const ICO = {
   book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
   chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',
+  quote: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/></svg>',
   sprout: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-8"/><path d="M12 13c0-4 2.5-6.5 7-6.5 0 4-2.5 6.5-7 6.5z"/><path d="M12 15c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg>',
   leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15"/><path d="M5 19c3-5 6-8 10-10"/></svg>',
   pen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/></svg>',
@@ -1413,6 +1427,7 @@ function viewSetup() {
   <div class="title-block"><span class="eyebrow">${esc(nl)} → ${esc(es)}</span><h2>${esc(l.name)}</h2><p class="lmeta">${esc(wordsLabel(l.words.length))}</p></div>
   <div class="acts">
     ${l.id === "__hard" || !l.words.length ? "" : `<button class="act act-learn" data-act="learn"><span class="act-ic">${ICO.sprout}</span><span class="act-t">${esc(t("lrnTile"))}</span><span class="act-s">${esc((LS.get(K.learn, null) || {}).listId === l.id ? t("lrnTileResume") : t("lrnTileSub"))}</span></button>`}
+    ${zinTile(l)}
     <button class="act act-test" data-act="start" data-mode="toets"><span class="act-ic">${ICO.pen}</span><span class="act-t">${esc(t("startTest"))}</span><span class="act-s">${esc(t("actTestSub"))}</span></button>
     <button class="act act-cards" data-act="start" data-mode="kaartjes"><span class="act-ic">${ICO.cards}</span><span class="act-t">${esc(t("modeCards"))}</span><span class="act-s">${esc(t("actCardsSub"))}</span></button>
     ${hard.length ? `<button class="act act-hard" data-act="practice-hard"><span class="act-ic">${ICO.target}</span><span class="act-t">${esc(t("practiceHard", { n: hard.length }))}</span><span class="act-s">${esc(t("hardWords"))}</span></button>` : ""}
@@ -1592,15 +1607,16 @@ function render() {
   syncChrome();
   if (state.needLogin) { app.innerHTML = viewLogin(); return; }
   if (window.LESMIO_SB && state.storage === "loading" && !state.me) { app.innerHTML = ""; return; }
-  app.innerHTML = v === "setup" ? viewSetup() : v === "edit" ? viewEdit() : v === "test" ? viewTest() : v === "results" ? viewResults() : v === "stats" ? viewStats() : v === "learn" ? viewLearn() : viewHome();
+  app.innerHTML = v === "setup" ? viewSetup() : v === "edit" ? viewEdit() : v === "test" ? viewTest() : v === "results" ? viewResults() : v === "stats" ? viewStats() : v === "learn" ? viewLearn() : v === "zin" ? viewZin() : viewHome();
   if (state.view === "home") app.innerHTML = `<div class="view enter">${app.innerHTML}</div>`;
   if (state.view === "edit") { updateCount(); updateImport(); }
   if (state.view === "learn") updateLearn();
+  if (state.view === "zin") updateZin();
   if (state.view !== state.lastView) { window.scrollTo(0, 0); state.lastView = state.view; }
   histSync();
 }
 /* terugknop: home (0) > lijst/voortgang/bewerken (1) > toets/leren/resultaat (2) */
-const NAV_DEPTH = { home: 0, setup: 1, stats: 1, edit: 1, test: 2, learn: 2, results: 2 };
+const NAV_DEPTH = { home: 0, setup: 1, stats: 1, edit: 1, test: 2, learn: 2, zin: 2, results: 2 };
 function histSync() {
   try { const D = NAV_DEPTH[state.view] || 0, cur = (history.state && history.state.d) || 0; if (D > cur) history.pushState({ d: D }, ""); else if (D < cur) history.go(D - cur); else history.replaceState({ d: D }, ""); } catch (e) {}
 }
@@ -1609,7 +1625,7 @@ window.addEventListener("popstate", ev => {
   if ((NAV_DEPTH[v] || 0) <= d) { histSync(); return; }
   const lid = (state.session && state.session.listId) || (state.learn && state.learn.listId) || state.setupFor;
   if (v === "learn" && state.learn) { lrnPause(); if (d === 0) { state.view = "home"; render(); } return; }
-  clearTimeout(autoTimer); if (v === "test" || v === "results") state.session = null;
+  clearTimeout(autoTimer); if (v === "test" || v === "results") state.session = null; if (v === "zin") state.zin = null;
   if (d >= 1 && lid && getList(lid)) openSetup(lid); else { state.view = "home"; render(); }
 });
 
@@ -2152,10 +2168,130 @@ function learnModal(l) {
   });
 }
 
+
+/* ---------- zinnen met een gat ---------- */
+const exOk = w => !!(w.ex && w.ex.q && w.ex.a && (!w.ex.k || w.ex.k === w.q + "|" + w.a));
+const exSplit = sn => { const m = String(sn).match(/^([\s\S]*?)\{\{([\s\S]+?)\}\}([\s\S]*)$/); return m ? { pre: m[1], t: m[2], post: m[3] } : { pre: String(sn), t: "", post: "" }; };
+const exPlain = sn => String(sn).replace(/\{\{|\}\}/g, "");
+const zinAvail = l => l.words.filter(exOk).length;
+const GEN = { busy: {}, fail: {} };
+let zinTimer = null;
+async function ensureSentences(l, manual) {
+  if (!sb || !sb.uid || !l || l.example || l.id === "__hard" || GEN.busy[l.id]) return;
+  if (!manual && GEN.fail[l.id] && Date.now() - GEN.fail[l.id] < 10 * 60 * 1000) return;
+  const need = l.words.filter(w => !exOk(w)); if (!need.length) return;
+  GEN.busy[l.id] = true; if (state.view === "setup" && state.setupFor === l.id) render();
+  try {
+    for (let i = 0; i < need.length; i += 25) {
+      const batch = need.slice(i, i + 25);
+      const r = await sb.client.functions.invoke("sentences", { body: { ql: l.qLang || "nl", al: l.aLang || "es", words: batch.map(w => ({ id: w.id, q: w.q, a: w.a })) } });
+      if (r.error || !r.data || r.data.error) throw new Error((r.error && r.error.message) || (r.data && r.data.error) || "fout");
+      const cur = getList(l.id); if (!cur) return;
+      let n = 0;
+      batch.forEach(w => { const e = r.data.items && r.data.items[w.id], cw = cur.words.find(x => x.id === w.id); if (e && cw && cw.q === w.q && cw.a === w.a) { cw.ex = { q: e.q, a: e.a, k: w.q + "|" + w.a }; n++; } });
+      if (n) await saveList(cur);
+      if (state.view === "setup" && state.setupFor === l.id) render();
+    }
+    delete GEN.fail[l.id];
+  } catch (e) { GEN.fail[l.id] = Date.now(); if (manual) toast(t("zinFail")); }
+  finally { GEN.busy[l.id] = false; if (state.view === "setup" && state.setupFor === l.id) render(); }
+}
+function zinTile(l) {
+  if (l.id === "__hard" || !l.words.length) return "";
+  const n = zinAvail(l), live = !!(sb && sb.uid);
+  const sub = n >= 3 ? t("zinTileSub") : GEN.busy[l.id] ? t("zinBusy") : !live ? t("zinOnly") : GEN.fail[l.id] ? t("zinFail") : t("zinNone");
+  return `<button class="act act-zin" data-act="zin"${n < 3 && !live ? " disabled" : ""}><span class="act-ic">${ICO.quote}</span><span class="act-t">${esc(t("zinTile"))}</span><span class="act-s">${esc(sub)}</span></button>`;
+}
+function zinOpen() {
+  const l = getList(state.setupFor); if (!l) return;
+  if (zinAvail(l) < 3) { if (GEN.busy[l.id]) toast(t("zinWait")); else ensureSentences(l, true); return; }
+  zinStart(l, state.setupDir);
+}
+function zinStart(l, dir) {
+  const now = Date.now(), rank = { needs: 0, learning: 1, new: 2, ready: 3 };
+  const ws = l.words.filter(exOk).map(w => ({ w, r: rank[lstat(w, dir, now)] + Math.random() * 0.9 })).sort((a, b) => a.r - b.r).slice(0, 10).map(x => x.w);
+  const items = shuffle(ws.map(w => ({ wid: w.id, d: dir === "both" ? (Math.random() < 0.5 ? "qa" : "aq") : dir })));
+  state.zin = { listId: l.id, dir, items, queue: items.slice(), st: "ask", given: "", err: {}, ok: 0, total: items.length, phase: "play", startedAt: now };
+  state.view = "zin"; render();
+}
+function zinInfo(s, it) {
+  const l = getList(s.listId), w = l && l.words.find(x => x.id === it.wid); if (!w || !w.ex) return null;
+  const f = it.d === "qa";
+  return { w, f, hint: exSplit(f ? w.ex.q : w.ex.a), gap: exSplit(f ? w.ex.a : w.ex.q), hl: f ? "nl" : "es", gl: f ? "es" : "nl", full: exPlain(f ? w.ex.a : w.ex.q) };
+}
+function viewZin() {
+  return `<div class="view enter narrow learn">
+  <div class="test-top"><button class="btn btn-quiet btn-sm" data-act="zin-quit">${esc(t("zinQuit"))}</button><div class="count" id="zinCount"></div></div>
+  <div class="bar" aria-hidden="true"><i id="zinBar"></i></div>
+  <div id="zinMain"></div></div>`;
+}
+function updateZin() {
+  const s = state.zin, main = $("#zinMain"); if (!s || !main) return;
+  $("#zinBar").style.width = Math.round(s.ok / s.total * 100) + "%";
+  if (s.phase === "done") {
+    $("#zinCount").textContent = "";
+    const first = s.items.filter(i => !s.err[i.wid]).length, g = Math.round((1 + 9 * first / s.total) * 10) / 10;
+    main.innerHTML = `<div class="res-card lrn-sum"><div class="res-head">${mcImg(gradeMood(g), "res-mc")}<h2>${esc(t("zinDoneT"))}</h2><p class="lmeta">${esc(t("zinSum", { a: first, b: s.total }))}</p></div>
+    <div class="res-actions"><button class="btn btn-primary btn-lg" data-act="zin-more" id="zinPrimary">${esc(t("zinMore"))}</button><button class="btn" data-act="zin-list">${esc(t("lrnToList"))}</button></div></div>`;
+    return;
+  }
+  const it = s.queue[0], u = it && zinInfo(s, it); if (!u) { zinNext(); return; }
+  $("#zinCount").textContent = t("zinCount", { a: Math.min(s.total, s.ok + 1), b: s.total });
+  const sz = Math.max(6, u.gap.t.length + 2), att = `autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go"`;
+  const hintHtml = `${esc(u.hint.pre)}<mark>${esc(u.hint.t)}</mark>${esc(u.hint.post)}`;
+  const ro = s.st !== "ask" ? "readonly" : "";
+  const gapHtml = `${esc(u.gap.pre)}<input class="zin-in" id="zinInput" style="width:${sz}ch" value="${esc(s.given || "")}" ${att} ${ro}>${esc(u.gap.post)}`;
+  let fb = "", acts = "";
+  const nxt = `<button class="btn btn-primary btn-lg" data-act="zin-next" id="zinPrimary">${esc(t("lrnNext"))}</button>`;
+  const fullRow = `<div class="zin-full">${esc(u.gap.pre)}<mark>${esc(u.gap.t)}</mark>${esc(u.gap.post)}${spkBtn(u.full, u.gl === "es" ? "es" : u.hl)}</div>`;
+  if (s.st === "ask") acts = `<button class="btn btn-primary btn-lg" data-act="zin-check">${esc(t("lrnCheck"))}</button><button class="btn btn-lg" data-act="zin-idk">${esc(t("lrnIdk"))}</button>`;
+  else if (s.st === "wrong") { fb = `<div class="fb-box fb-bad">${mcImg("encourage", "fb-mc")}<b>${esc(t("lrnWrongIs"))}</b>${fullRow}<div class="muted">${esc(pickMsg("retry", "z" + it.wid + "|" + s.err[it.wid]))}</div></div>`; acts = nxt; }
+  else fb = `<div class="fb-box fb-good">${mcImg("happy", "fb-mc")}<b>${esc(pickMsg("right", "z" + it.wid + "|" + (s.given || "")))}</b>${s.st === "almost" ? ` <span class="muted">${esc(t("lrnAlmost"))} ${esc(u.gap.t)}</span>` : ""}${fullRow}</div>`, acts = nxt;
+  main.innerHTML = `<div class="sheet zin-card"><div class="q-row"><span class="q-lang">${esc(langName(u.hl))}</span></div><div class="zin-hint">${hintHtml}</div>
+    <div class="q-row zin-l2"><span class="q-lang">${esc(langName(u.gl))}</span></div><div class="zin-gap">${gapHtml}</div>${u.gl === "es" ? charBar("", "zinChars") : ""}</div>
+    <div class="fb" aria-live="polite">${fb}</div><div class="test-actions">${acts}</div>`;
+  const inp = $("#zinInput");
+  if (inp && s.st === "ask") { inp.focus(); try { inp.setSelectionRange(inp.value.length, inp.value.length); } catch (e) {} }
+  else { const pb = $("#zinPrimary"); if (pb) pb.focus({ preventScroll: true }); }
+}
+function zinCheckInput() {
+  const s = state.zin, inp = $("#zinInput"); if (!s || s.st !== "ask" || !inp) return;
+  const it = s.queue[0], u = zinInfo(s, it); if (!u) return;
+  const r = check(inp.value, u.gap.t, state.settings, u.gl);
+  if (r.r === "empty") { inp.focus(); return; }
+  s.given = inp.value; zinJudge(r.r === "correct" || r.r === "almost", r.r === "almost");
+}
+function zinJudge(ok, almost) {
+  const s = state.zin; if (!s || s.st !== "ask") return;
+  const it = s.queue[0], u = zinInfo(s, it); if (!u) return;
+  if (ok) { s.st = almost ? "almost" : "right"; s.ok++; }
+  else { s.st = "wrong"; s.err[it.wid] = (s.err[it.wid] || 0) + 1; if (s.err[it.wid] <= 1) s.queue.push(it); else s.ok++; }
+  if (state.settings.speak && u.gl === "es" && CAN_SPEAK) speak(u.full, "es");
+  updateZin();
+}
+function zinNext() {
+  const s = state.zin; if (!s || s.st === "ask") return;
+  s.queue.shift(); s.st = "ask"; s.given = "";
+  if (!s.queue.length) { s.phase = "done"; zinApply(s); }
+  updateZin();
+}
+function zinApply(s) {
+  const l = getList(s.listId); if (!l) return;
+  const now = Date.now(); let ch = false;
+  s.items.forEach(it => {
+    const w = l.words.find(x => x.id === it.wid), u = w && w.L && w.L[it.d]; if (!u) return;
+    if (!s.err[it.wid]) { if (u.b < 1 || u.d <= now) { u.b = Math.min(5, u.b + 1); u.d = now + BOX_DAYS[u.b] * DAY; ch = true; } }
+    else if (u.b >= 1) { u.b = 1; u.d = now; ch = true; }
+  });
+  l.used = now; if (!l.example) saveList(l, { progressOnly: true }).catch(saveErr);
+  if (isMine(l)) logActivity(s.items.length, Math.round((now - s.startedAt) / 1000), s.items.filter(i => !s.err[i.wid]).length, true);
+}
+
 /* ---------- acties ---------- */
 function openSetup(id) {
   state.setupFor = id; state.setupDir = LS.get(K.dirs, {})[id] || defaultDir();
   state.view = "setup"; render();
+  ensureSentences(getList(id));
 }
 function openEditor(list) {
   state.imp = { mode: "one", text: "", a: "", b: "", swap: false, touched: false };
@@ -2168,7 +2304,7 @@ function openEditor(list) {
 async function saveEdit() {
   const e = state.editing;
   const incomplete = e.words.filter(w => (w.q.trim() && !w.a.trim()) || (!w.q.trim() && w.a.trim())).length;
-  const words = e.words.filter(w => w.q.trim() && w.a.trim()).map(w => ({ id: w.id || uid(), q: w.q.trim(), a: w.a.trim(), misses: w.misses || 0, ...(w.L ? { L: w.L } : {}) }));
+  const words = e.words.filter(w => w.q.trim() && w.a.trim()).map(w => ({ id: w.id || uid(), q: w.q.trim(), a: w.a.trim(), misses: w.misses || 0, ...(w.L ? { L: w.L } : {}), ...(w.ex && (!w.ex.k || w.ex.k === w.q.trim() + "|" + w.a.trim()) ? { ex: Object.assign({}, w.ex, { k: w.q.trim() + "|" + w.a.trim() }) } : {}) }));
   if (!words.length) return toast(t("needWord"));
   const list = { id: e.id, name: e.name.trim() || t("unnamed"), qLang: "nl", aLang: "es", words, results: e.results || [], createdAt: e.createdAt || Date.now() };
   const p = saveList(list);
@@ -2257,6 +2393,13 @@ document.addEventListener("click", async ev => {
     case "lrn-resume": lrnResume(); break;
     case "lrn-discard": LS.del(K.learn); render(); break;
     case "lrn-next": lrnNext(); break;
+    case "zin": zinOpen(); break;
+    case "zin-check": zinCheckInput(); break;
+    case "zin-idk": zinJudge(false); break;
+    case "zin-next": zinNext(); break;
+    case "zin-quit": { clearTimeout(zinTimer); const id = state.zin && state.zin.listId; state.zin = null; if (id && getList(id)) openSetup(id); else { state.view = "home"; render(); } break; }
+    case "zin-more": { const id = state.zin && state.zin.listId; const l = getList(id); if (l) zinStart(l, state.zin.dir); break; }
+    case "zin-list": { const id = state.zin && state.zin.listId; state.zin = null; if (id && getList(id)) openSetup(id); else { state.view = "home"; render(); } break; }
     case "lrn-opt": { const ls = state.learn; if (ls && ls.st === "ask") { const u = lrnInfo(ls, ls.cur), i = +el.dataset.i; ls.pickd = i; lrnJudge(u && ls.opts[i] === u.a, false); } break; }
     case "lrn-check": lrnCheckInput(); break;
     case "lrn-idk": lrnJudge(false); break;
@@ -2436,6 +2579,13 @@ document.addEventListener("submit", async ev => {
 document.addEventListener("keydown", ev => {
   const el = ev.target, s = state.session;
   if (document.querySelector(".overlay")) return;
+  if (state.view === "zin" && state.zin) {
+    if (ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    const zs = state.zin;
+    if (zs.phase === "done") return;
+    if (ev.key === "Enter" || (zs.st !== "ask" && ev.key === " ")) { ev.preventDefault(); if (zs.st === "ask") zinCheckInput(); else zinNext(); }
+    return;
+  }
   if (state.view === "learn" && state.learn) {
     const ls = state.learn, mod = ev.ctrlKey || ev.metaKey || ev.altKey;
     if (mod) return;

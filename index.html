@@ -371,6 +371,52 @@ details.panel[open] > summary{margin-bottom:12px}
 .perfect{text-align:center;color:var(--good);font-weight:800;margin:18px 0}
 .res-actions{display:grid;gap:12px;margin-top:26px}
 
+
+/* woorden leren */
+.act-learn{background:linear-gradient(135deg,#ffd36e 0%,#ff9f43 100%);color:var(--on-color);box-shadow:0 18px 30px -16px rgba(255,150,40,.75)}
+.lbar{display:flex;height:14px;border-radius:99px;overflow:hidden;background:var(--soft);margin:6px 0 10px}
+.lbar i{display:block;height:100%}
+.ls-ready{background:#2cc095}.ls-learning{background:#ffb84d}.ls-needs{background:#ff6a53}.ls-new{background:var(--line-strong)}
+.llegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13.5px;color:var(--muted);font-weight:600}
+.llegend span{display:inline-flex;align-items:center;gap:6px}
+.llegend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.llegend b{color:var(--ink)}
+.modal-learn{max-width:480px;max-height:calc(100vh - 32px);overflow:auto}
+.lm-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.lopt{border:1px solid var(--line-strong);border-radius:18px;padding:16px;margin-top:12px;background:var(--surface)}
+.lopt-main{border-color:#7f5fff;box-shadow:0 0 0 3px rgba(127,95,255,.14)}
+.lopt-h{display:flex;align-items:center;gap:10px;font-size:18px}
+.lopt p{margin:6px 0 12px;font-size:14.5px}
+.tagrec{font-size:12px;font-weight:800;padding:3px 10px;border-radius:99px;background:var(--mint-soft);color:var(--mint-strong)}
+.segn{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.segl{font-size:13.5px;font-weight:700;color:var(--muted);flex-basis:100%}
+.segn .btn{min-height:40px;min-width:48px;padding:6px 14px}
+.segn .btn[aria-pressed="true"]{background:var(--g-violet);color:#fff;border-color:transparent}
+.lprev{font-size:14.5px;margin:0 0 12px;color:var(--ink)}
+.lresume{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--soft)}
+.lsteps{display:flex;gap:8px;margin:4px 0 14px;font-size:12.5px;font-weight:800}
+.lsteps span{flex:1;text-align:center;padding:5px 6px;border-radius:99px;background:var(--soft);color:var(--muted)}
+.lsteps span.c{background:var(--g-violet);color:#fff}
+.lsteps span.d{background:var(--mint-soft);color:var(--mint-strong)}
+.lrn-card{text-align:center}
+.lrn-card .q{display:flex;justify-content:center;align-items:center;gap:10px}
+.lrn-a{color:#5a38ee}
+:root[data-theme="dark"] .lrn-a{color:#b9a6ff}
+.lrn-arrow{font-size:26px;color:var(--muted);margin:6px 0}
+.lrn-hint{text-align:center;margin:12px 0}
+.opts{display:grid;gap:10px;margin-top:6px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;border:2px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:16px;padding:13px 16px;min-height:54px;font-size:17px;font-weight:700;cursor:pointer;transition:transform .15s,border-color .15s,background-color .15s}
+.opt:hover:not(:disabled){border-color:#7f5fff;transform:translateY(-1px)}
+.opt kbd{font:inherit;font-size:12.5px;font-weight:800;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--soft);color:var(--muted);flex:none}
+.opt.good{border-color:#2cc095;background:var(--good-bg);color:var(--good)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+.opt.dim{opacity:.55}
+.opt:disabled{cursor:default}
+.fb-bad{background:var(--bad-bg);border-color:transparent}
+.fb-bad b{color:var(--bad)}
+.lrn-emoji{font-size:54px;line-height:1;margin-bottom:6px}
+@media (max-width:480px){.lsteps span{font-size:11.5px}}
+
 /* overlay + toast */
 .overlay{position:fixed;inset:0;background:rgba(14,17,38,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:16px;z-index:20;animation:fade .15s}
 .modal{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:24px;padding:24px;max-width:400px;width:100%;box-shadow:0 30px 70px -20px rgba(0,0,0,.5);animation:pop .3s cubic-bezier(.3,1.6,.5,1)}
@@ -547,7 +593,7 @@ const LS = {
   del(k) { try { localStorage.removeItem(k); } catch (e) {} }
 };
 // let op: de oude prefix "overhoor." blijft bewust staan, zodat bestaande lijsten en voortgang behouden blijven
-const K = { lists: "overhoor.lists", settings: "overhoor.settings", session: "overhoor.session", dirs: "overhoor.dirs", ui: "overhoor.ui", act: "overhoor.activity", avatar: "overhoor.avatar" };
+const K = { lists: "overhoor.lists", settings: "overhoor.settings", session: "overhoor.session", dirs: "overhoor.dirs", ui: "overhoor.ui", act: "overhoor.activity", avatar: "overhoor.avatar", learn: "overhoor.learn", learnN: "overhoor.learnN" };
 
 /* ---------- taal van het programma (NL / ES) ---------- */
 let LANG = LS.get(K.ui, null);
@@ -565,6 +611,21 @@ nl: {
   wrongToList: "Maak een nieuwe lijst van de foute woorden", wrongListMade: "Nieuwe lijst gemaakt met {n} woorden",
   profile: "Profiel", chooseAvatar: "Kies je avatar", noAvatar: "Letter", close: "Sluiten",
   sound: "Geluid", optSpeak: "Uitspraak automatisch afspelen", optSpeakSub: "Je hoort het woord en daarna het goede antwoord",
+  lrnTile: "Woorden leren", lrnTileSub: "Slim of alles, in korte rondes", lrnTileResume: "Verder waar je was",
+  lrnTitle: "Woorden leren", lrnSlim: "Slim leren", lrnRec: "Aanbevolen", lrnSlimSub: "We kiezen zelf de woorden die je nu het hardst nodig hebt: nieuwe, lastige en woorden die je weer moet herhalen.",
+  lrnPer: "Woorden per sessie", lrnAll: "Alle woorden leren", lrnAllSub: "De hele lijst van begin tot eind, ook woorden die je al kent.", lrnAllGo: "Start ({n})",
+  lrnGo: "Start", lrnPlan: "Volgende groep: {parts}", lpNew: "{n} nieuw", lpRev: "{n} herhalen", lpPrac: "{n} oefenen",
+  lrnAllDone: "Alles geleerd! 🎉", lrnNextRev: "Volgende herhaling: {when}", lrnReviewGo: "Slim herhalen", lrnReviewSub: "Frisse herhaling van de woorden die het eerst aan de beurt zijn.",
+  lrnToday: "vandaag", lrnTomorrow: "morgen", lrnInDays: "over {n} dagen",
+  lsNew: "Nieuw", lsLearning: "Aan het leren", lsReady: "Klaar voor toets", lsNeeds: "Herhalen",
+  lrnProgress: "Voortgang woorden leren", lrnResumeRow: "Je hebt nog een sessie open", lrnResumeBtn: "Verder", lrnBanner: "Woorden leren bezig",
+  lrnRound: "Ronde {a}/{b}", lrnPh1: "Kennismaken", lrnPh2: "Herkennen", lrnPh3: "Uit je hoofd", lrnStep: "Stap {n}/3",
+  lrnPause: "Pauzeren", lrnPaused: "Gepauzeerd. Je kunt later verder waar je was.", lrnNext: "Volgende", lrnIdk: "Weet ik niet", lrnCheck: "Controleer",
+  lrnIntroHint: "Kijk goed en probeer het te onthouden.", lrnPick: "Kies de juiste vertaling", lrnType: "Typ de vertaling zonder hulp",
+  lrnRight: "Goed!", lrnWrongIs: "Het juiste antwoord is:", lrnAlmost: "Bijna! Zo schrijf je het:", lrnAgainLater: "Dit woord komt straks nog een keer terug.",
+  lrnRoundDone: "Ronde klaar", lrnRoundSum: "{a} van {b} zonder hulp onthouden", lrnNextRound: "Volgende ronde", lrnFinish: "Afronden",
+  lrnDoneTitle: "Sessie klaar!", lrnDoneSum: "{a} van {b} zonder hulp onthouden in {w}", lrnStillHard: "Nog lastig", lrnMore: "Nog een groep", lrnToList: "Naar de lijst", lrnStatusNow: "Zo staat je lijst er nu voor",
+  lrnNoUnits: "Geen woorden om te oefenen.",
   listen: "Beluister", noVoice: "Dit apparaat heeft geen stem voor {lang}",
   stStreak: "Huidige reeks", stBest: "Beste reeks", stWords: "Woorden geoefend", stTests: "Toetsen", stAvg: "Gemiddeld cijfer", stTime: "Oefentijd",
   chartGrades: "Je cijfers", chartCal: "Oefenkalender (woorden per dag)", perList: "Per lijst", known: "Gekend", hardS: "Lastig", newS: "Nieuw",
@@ -659,6 +720,21 @@ es: {
   wrongToList: "Crear una lista nueva con las palabras falladas", wrongListMade: "Lista nueva creada con {n} palabras",
   profile: "Perfil", chooseAvatar: "Elige tu avatar", noAvatar: "Letra", close: "Cerrar",
   sound: "Sonido", optSpeak: "Reproducir la pronunciación automáticamente", optSpeakSub: "Oyes la palabra y luego la respuesta correcta",
+  lrnTile: "Aprender palabras", lrnTileSub: "Inteligente o todo, en rondas cortas", lrnTileResume: "Continuar donde lo dejaste",
+  lrnTitle: "Aprender palabras", lrnSlim: "Aprendizaje inteligente", lrnRec: "Recomendado", lrnSlimSub: "Elegimos las palabras que más necesitas ahora: nuevas, difíciles y las que toca repasar.",
+  lrnPer: "Palabras por sesión", lrnAll: "Aprender todas las palabras", lrnAllSub: "Toda la lista de principio a fin, también las que ya sabes.", lrnAllGo: "Empezar ({n})",
+  lrnGo: "Empezar", lrnPlan: "Siguiente grupo: {parts}", lpNew: "{n} nuevas", lpRev: "{n} a repasar", lpPrac: "{n} a practicar",
+  lrnAllDone: "¡Todo aprendido! 🎉", lrnNextRev: "Próximo repaso: {when}", lrnReviewGo: "Repaso inteligente", lrnReviewSub: "Un repaso fresco de las palabras que primero tocan.",
+  lrnToday: "hoy", lrnTomorrow: "mañana", lrnInDays: "en {n} días",
+  lsNew: "Nueva", lsLearning: "Aprendiendo", lsReady: "Lista para examen", lsNeeds: "Repasar",
+  lrnProgress: "Progreso de aprendizaje", lrnResumeRow: "Tienes una sesión abierta", lrnResumeBtn: "Continuar", lrnBanner: "Aprendizaje en curso",
+  lrnRound: "Ronda {a}/{b}", lrnPh1: "Conocer", lrnPh2: "Reconocer", lrnPh3: "De memoria", lrnStep: "Paso {n}/3",
+  lrnPause: "Pausar", lrnPaused: "En pausa. Puedes continuar más tarde.", lrnNext: "Siguiente", lrnIdk: "No lo sé", lrnCheck: "Comprobar",
+  lrnIntroHint: "Mira bien e intenta recordarlo.", lrnPick: "Elige la traducción correcta", lrnType: "Escribe la traducción sin ayuda",
+  lrnRight: "¡Bien!", lrnWrongIs: "La respuesta correcta es:", lrnAlmost: "¡Casi! Se escribe así:", lrnAgainLater: "Esta palabra volverá a aparecer enseguida.",
+  lrnRoundDone: "Ronda terminada", lrnRoundSum: "{a} de {b} recordadas sin ayuda", lrnNextRound: "Siguiente ronda", lrnFinish: "Terminar",
+  lrnDoneTitle: "¡Sesión terminada!", lrnDoneSum: "{a} de {b} recordadas sin ayuda en {w}", lrnStillHard: "Aún difíciles", lrnMore: "Otro grupo", lrnToList: "A la lista", lrnStatusNow: "Así está tu lista ahora",
+  lrnNoUnits: "No hay palabras para practicar.",
   listen: "Escuchar", noVoice: "Este dispositivo no tiene voz para {lang}",
   stStreak: "Racha actual", stBest: "Mejor racha", stWords: "Palabras practicadas", stTests: "Tests", stAvg: "Nota media", stTime: "Tiempo de práctica",
   chartGrades: "Tus notas", chartCal: "Calendario de práctica (palabras por día)", perList: "Por lista", known: "Sabidas", hardS: "Difíciles", newS: "Nuevas",
@@ -986,8 +1062,8 @@ let sb = null;
 function splitList(l) {
   const body = bodyOf(l); delete body.results;
   body.words = (l.words || []).map(w => ({ id: w.id, q: w.q, a: w.a }));
-  const prog = { results: l.results || [], misses: {}, run: {}, n: {}, used: l.used || 0 };
-  (l.words || []).forEach(w => { if (w.misses) prog.misses[w.id] = w.misses; if (w.run) prog.run[w.id] = w.run; if (w.n) prog.n[w.id] = w.n; });
+  const prog = { results: l.results || [], misses: {}, run: {}, n: {}, L: {}, used: l.used || 0 };
+  (l.words || []).forEach(w => { if (w.misses) prog.misses[w.id] = w.misses; if (w.run) prog.run[w.id] = w.run; if (w.n) prog.n[w.id] = w.n; if (w.L) prog.L[w.id] = w.L; });
   return { body, prog };
 }
 function joinList(row, prog) {
@@ -995,7 +1071,7 @@ function joinList(row, prog) {
   const p = (prog && prog[row.id]) || {};
   l.results = p.results || [];
   l.used = p.used || 0;
-  (l.words || []).forEach(w => { w.misses = (p.misses && p.misses[w.id]) || 0; w.run = (p.run && p.run[w.id]) || 0; w.n = (p.n && p.n[w.id]) || 0; });
+  (l.words || []).forEach(w => { w.misses = (p.misses && p.misses[w.id]) || 0; w.run = (p.run && p.run[w.id]) || 0; w.n = (p.n && p.n[w.id]) || 0; if (p.L && p.L[w.id]) w.L = p.L[w.id]; else delete w.L; });
   return l;
 }
 async function sbPull() {
@@ -1125,17 +1201,46 @@ function allResults() {
 }
 
 /* ---------- uitspraak (stem van je apparaat) ---------- */
-const CAN_SPEAK = typeof window.speechSynthesis !== "undefined" && typeof window.SpeechSynthesisUtterance !== "undefined";
+const HAS_TTS = typeof window.speechSynthesis !== "undefined" && typeof window.SpeechSynthesisUtterance !== "undefined";
+const CAN_SPEAK = HAS_TTS || typeof window.Audio !== "undefined";
 const SPEAK_LANG = { nl: "nl-NL", es: "es-ES" };
+const VOICE_NAME = { nl: /dutch|nederlands|flemish|vlaams|belgi/i, es: /spanish|espa[nñ]ol/i };
+let VOICES = [];
+function loadVoices() { try { VOICES = speechSynthesis.getVoices() || []; } catch (e) { VOICES = []; } }
+if (HAS_TTS) {
+  loadVoices();
+  try { speechSynthesis.addEventListener("voiceschanged", loadVoices); } catch (e) { try { speechSynthesis.onvoiceschanged = loadVoices; } catch (e2) {} }
+}
+function pickVoice(lang) {
+  const code = (SPEAK_LANG[lang] || lang).toLowerCase(), l3 = lang === "nl" ? "nld" : lang === "es" ? "spa" : lang;
+  const nm = x => String(x.lang || "").replace(/_/g, "-").toLowerCase();
+  const by = f => VOICES.find(f);
+  return by(x => nm(x) === code) || by(x => nm(x) === lang || nm(x).startsWith(lang + "-")) || by(x => nm(x).startsWith(l3)) || by(x => VOICE_NAME[lang] && VOICE_NAME[lang].test(x.name || "")) || null;
+}
+let speakAudio = null;
+function speakAudioFallback(text, lang) {   // reservestem via het web, als het apparaat zelf geen Nederlandse stem heeft
+  try {
+    if (speakAudio) { speakAudio.pause(); speakAudio = null; }
+    const a = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + encodeURIComponent(lang) + "&q=" + encodeURIComponent(text));
+    a.referrerPolicy = "no-referrer"; speakAudio = a;
+    a.addEventListener("error", () => toast(t("noVoice", { lang: langName(lang) })));
+    const pr = a.play(); if (pr && pr.catch) pr.catch(() => toast(t("noVoice", { lang: langName(lang) })));
+  } catch (e) { toast(t("noVoice", { lang: langName(lang) })); }
+}
 function speak(text, lang) {
   if (!CAN_SPEAK) return;
   const clean = String(text || "").replace(/[()]/g, "").split(/\s*[\/;,]\s*/)[0].trim(); if (!clean) return;
-  const code = SPEAK_LANG[lang] || lang;
+  if (!HAS_TTS) return speakAudioFallback(clean, lang);
+  if (!VOICES.length) loadVoices();
+  const code = SPEAK_LANG[lang] || lang, v = pickVoice(lang);
   const u = new SpeechSynthesisUtterance(clean); u.lang = code; u.rate = 0.9;
-  const vs = speechSynthesis.getVoices();
-  const v = vs.find(x => x.lang.replace("_", "-") === code) || vs.find(x => x.lang.toLowerCase().startsWith(lang));
-  if (v) u.voice = v; else if (vs.length) { toast(t("noVoice", { lang: langName(lang) })); return; }
-  try { speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
+  if (v) { u.voice = v; u.lang = v.lang; }
+  let started = false, fell = false;
+  const fallback = () => { if (fell) return; fell = true; try { speechSynthesis.cancel(); } catch (e) {} speakAudioFallback(clean, lang); };
+  u.onstart = () => { started = true; };
+  u.onerror = e => { if (e && (e.error === "interrupted" || e.error === "canceled")) return; fallback(); };
+  try { speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) { return fallback(); }
+  if (!v) setTimeout(() => { if (!started) fallback(); }, 1500);   // geen herkende stem: even proberen, anders reservestem
 }
 const spkBtn = (text, lang) => CAN_SPEAK ? `<button type="button" class="spk" data-act="speak" data-text="${esc(text)}" data-lang="${lang}" aria-label="${esc(t("listen"))}">${ICO.speaker}</button>` : "";
 const spkQ = () => CAN_SPEAK ? `<button type="button" class="spk spk-q" data-act="speak-q" aria-label="${esc(t("listen"))}">${ICO.speaker}</button>` : "";
@@ -1168,6 +1273,7 @@ document.addEventListener("focusin", e => { if (e.target.matches && e.target.mat
 const ICO = {
   book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
   chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',
+  sprout: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-8"/><path d="M12 13c0-4 2.5-6.5 7-6.5 0 4-2.5 6.5-7 6.5z"/><path d="M12 15c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg>',
   leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15"/><path d="M5 19c3-5 6-8 10-10"/></svg>',
   pen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/></svg>',
   cards: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="3"/><path d="M7 3h11a3 3 0 0 1 3 3v11"/></svg>',
@@ -1193,6 +1299,8 @@ function viewHome() {
     const d = saved.items.filter(i => i.done).length;
     h += `<div class="banner"><div><b>${esc(t("inProgress"))}</b> ${esc(saved.listName)}<div class="muted">${esc(saved.mode === "kaartjes" ? t("modeCards") : t("modeTest"))} · ${esc(t("progressKnown", { d, n: saved.items.length }))}</div></div><div class="banner-act"><button class="btn btn-primary btn-sm" data-act="resume">${esc(t("resume"))}</button><button class="btn btn-quiet btn-sm" data-act="discard">${esc(t("discard"))}</button></div></div>`;
   }
+  const lsv = LS.get(K.learn, null);
+  if (lsv && lsv.rounds && getList(lsv.listId)) h += `<div class="banner"><div><b>${esc(t("lrnBanner"))}</b> ${esc(lsv.listName)}<div class="muted">${esc(t("lrnRound", { a: lsv.ri + 1, b: lsv.rounds.length }))}</div></div><div class="banner-act"><button class="btn btn-primary btn-sm" data-act="lrn-resume">${esc(t("resume"))}</button><button class="btn btn-quiet btn-sm" data-act="lrn-discard">${esc(t("discard"))}</button></div></div>`;
   h += `<section><div class="sec-head"><h2>${esc(t("myLists"))}</h2></div><div class="lists">`;
   if (loading) h += `<div class="lrow static"><span class="lmeta">${esc(t("loadingLists"))}</span></div>`;
   (showExample ? [EXAMPLE] : lists).forEach(l => { h += listRow(l); });
@@ -1241,6 +1349,7 @@ function viewSetup() {
   <div class="setup-main">
   <div class="title-block"><span class="eyebrow">${esc(nl)} → ${esc(es)}</span><h2>${esc(l.name)}</h2><p class="lmeta">${esc(wordsLabel(l.words.length))}</p></div>
   <div class="acts">
+    ${l.id === "__hard" || !l.words.length ? "" : `<button class="act act-learn" data-act="learn"><span class="act-ic">${ICO.sprout}</span><span class="act-t">${esc(t("lrnTile"))}</span><span class="act-s">${esc((LS.get(K.learn, null) || {}).listId === l.id ? t("lrnTileResume") : t("lrnTileSub"))}</span></button>`}
     <button class="act act-test" data-act="start" data-mode="toets"><span class="act-ic">${ICO.pen}</span><span class="act-t">${esc(t("startTest"))}</span><span class="act-s">${esc(t("actTestSub"))}</span></button>
     <button class="act act-cards" data-act="start" data-mode="kaartjes"><span class="act-ic">${ICO.cards}</span><span class="act-t">${esc(t("modeCards"))}</span><span class="act-s">${esc(t("actCardsSub"))}</span></button>
     ${hard.length ? `<button class="act act-hard" data-act="practice-hard"><span class="act-ic">${ICO.target}</span><span class="act-t">${esc(t("practiceHard", { n: hard.length }))}</span><span class="act-s">${esc(t("hardWords"))}</span></button>` : ""}
@@ -1254,6 +1363,7 @@ function viewSetup() {
   ${CAN_SPEAK ? `<div class="panel"><h3>${esc(t("sound"))}</h3>${sw("optSpeak", "speak", t("optSpeak"), t("optSpeakSub"))}</div>` : ""}
   </div>
   <div class="setup-side">
+  ${l.id === "__hard" ? "" : lrnPanel(l)}
   ${res.length ? `<div class="panel"><h3>${esc(t("lastGrades"))}</h3><div class="marks">${res.map(r => `<span class="mark ${gradeClass(r.grade)}" title="${esc(new Date(r.at).toLocaleDateString(dateLoc()))}">${fmtGrade(r.grade)}</span>`).join("")}</div></div>` : ""}
   ${hard.length ? `<div class="panel"><h3>${esc(t("hardWords"))}</h3><ul class="hard">${hard.map(w => `<li><span class="hq">${esc(w.q)}</span><span class="ha">${esc(w.a)}</span><span class="hx">${esc(t("failN", { n: w.misses }))}</span></li>`).join("")}</ul></div>` : ""}
   <details class="panel"><summary>${esc(t("allWords", { n: l.words.length }))}</summary><ul class="wlist">${l.words.map(w => `<li><span>${esc(w.q)}${spkBtn(w.q, "nl")}</span><span>${esc(w.a)}${spkBtn(w.a, "es")}</span></li>`).join("")}</ul></details>
@@ -1418,9 +1528,10 @@ function render() {
   syncChrome();
   if (state.needLogin) { app.innerHTML = viewLogin(); return; }
   if (window.LESMIO_SB && state.storage === "loading" && !state.me) { app.innerHTML = ""; return; }
-  app.innerHTML = v === "setup" ? viewSetup() : v === "edit" ? viewEdit() : v === "test" ? viewTest() : v === "results" ? viewResults() : v === "stats" ? viewStats() : viewHome();
+  app.innerHTML = v === "setup" ? viewSetup() : v === "edit" ? viewEdit() : v === "test" ? viewTest() : v === "results" ? viewResults() : v === "stats" ? viewStats() : v === "learn" ? viewLearn() : viewHome();
   if (state.view === "home") app.innerHTML = `<div class="view enter">${app.innerHTML}</div>`;
   if (state.view === "edit") { updateCount(); updateImport(); }
+  if (state.view === "learn") updateLearn();
   if (state.view !== state.lastView) { window.scrollTo(0, 0); state.lastView = state.view; }
 }
 
@@ -1693,6 +1804,274 @@ function finish() {
   state.view = "results"; render();
 }
 
+
+/* ---------- Woorden leren: slim of alles, in rondes van intro → herkennen → uit je hoofd ---------- */
+const DAY = 864e5, BOX_DAYS = [0, 1, 3, 7, 16, 35];
+const dirList = d => (d === "both" ? ["qa", "aq"] : [d]);
+const lunit = (w, d) => (w.L && w.L[d]) || null;
+function ustat(w, d, now) {
+  const u = lunit(w, d);
+  if (!u) return "new";
+  if (u.b < 1) return "learning";
+  return u.d <= (now || Date.now()) ? "needs" : "ready";
+}
+function lstat(w, dir, now) {
+  const ss = dirList(dir).map(d => ustat(w, d, now));
+  if (ss.every(x => x === "new")) return "new";
+  if (ss.includes("needs")) return "needs";
+  if (ss.includes("learning") || ss.includes("new")) return "learning";
+  return "ready";
+}
+function lrnCounts(l, dir) { const c = { new: 0, learning: 0, needs: 0, ready: 0 }, now = Date.now(); l.words.forEach(w => { c[lstat(w, dir, now)]++; }); return c; }
+const minDue = (w, ds) => Math.min(...ds.map(d => { const u = lunit(w, d); return u ? u.d : Infinity; }));
+function lrnPlan(l, dir, n) {
+  const now = Date.now(), ds = dirList(dir), due = [], fresh = [], prac = [];
+  l.words.forEach(w => {
+    const st = lstat(w, dir, now);
+    if (st === "needs") due.push(w); else if (st === "new") fresh.push(w); else if (st === "learning") prac.push(w);
+  });
+  due.sort((a, b) => minDue(a, ds) - minDue(b, ds));
+  const reserve = Math.min(fresh.length, Math.ceil(n / 3)), pick = [];
+  const take = (arr, max) => { for (const w of arr) { if (pick.length >= max) break; if (!pick.includes(w)) pick.push(w); } };
+  take(due, n - reserve); take(prac, n - reserve); take(fresh, n); take(prac, n); take(due, n);
+  const cnt = { nNew: pick.filter(w => fresh.includes(w)).length, nRev: pick.filter(w => due.includes(w)).length, nPrac: pick.filter(w => prac.includes(w)).length };
+  return Object.assign({ words: pick, done: !pick.length }, cnt);
+}
+function lrnReviewPick(l, dir, n) { const ds = dirList(dir); return l.words.slice().sort((a, b) => minDue(a, ds) - minDue(b, ds)).slice(0, n); }
+function lrnNextDue(l, dir) { const ds = dirList(dir); let m = Infinity; l.words.forEach(w => { m = Math.min(m, minDue(w, ds)); }); return m; }
+function lrnWhen(ts) {
+  const d0 = new Date(); d0.setHours(0, 0, 0, 0); const d1 = new Date(ts); d1.setHours(0, 0, 0, 0);
+  const n = Math.round((d1 - d0) / DAY);
+  return n <= 0 ? t("lrnToday") : n === 1 ? t("lrnTomorrow") : t("lrnInDays", { n });
+}
+function lrnChunks(ids, max) {
+  if (!ids.length) return [];
+  const r = Math.ceil(ids.length / max), base = Math.floor(ids.length / r), extra = ids.length % r, out = []; let i = 0;
+  for (let k = 0; k < r; k++) { const sz = base + (k < extra ? 1 : 0); out.push(ids.slice(i, i + sz)); i += sz; }
+  return out;
+}
+const LSTAT = { new: "lsNew", learning: "lsLearning", ready: "lsReady", needs: "lsNeeds" };
+function lrnBar(c, n) {
+  const seg = k => c[k] ? `<i class="ls-${k}" style="width:${(c[k] / n * 100).toFixed(2)}%" title="${esc(t(LSTAT[k]))}: ${c[k]}"></i>` : "";
+  return `<div class="lbar" role="img" aria-label="${esc(Object.keys(LSTAT).map(k => t(LSTAT[k]) + " " + c[k]).join(", "))}">${seg("ready")}${seg("learning")}${seg("needs")}${seg("new")}</div>
+  <div class="llegend">${["ready", "learning", "needs", "new"].map(k => `<span><i class="ls-${k}"></i>${esc(t(LSTAT[k]))} <b>${c[k]}</b></span>`).join("")}</div>`;
+}
+function lrnPanel(l) {
+  if (!l.words.length) return "";
+  return `<div class="panel"><h3>${esc(t("lrnProgress"))}</h3>${lrnBar(lrnCounts(l, state.setupDir), l.words.length)}</div>`;
+}
+
+let lrnTimer = 0;
+const saveLearn = () => { if (state.learn) LS.set(K.learn, state.learn); };
+function lrnInfo(s, k) {
+  const [wid, d] = k.split("|"), l = getList(s.listId), w = l && l.words.find(x => x.id === wid);
+  if (!w) return null;
+  const f = d === "qa";
+  return { k, wid, d, w, q: f ? w.q : w.a, a: f ? w.a : w.q, ql: f ? "nl" : "es", al: f ? "es" : "nl" };
+}
+const lrnWords = s => s.rounds[s.ri] || [];
+const lrnKeys = s => lrnWords(s).flatMap(wid => (s.wd[wid] || []).map(d => wid + "|" + d)).filter(k => lrnInfo(s, k));
+function lrnStart(l, dir, mode, n) {
+  let words;
+  if (mode === "all") words = l.words.slice();
+  else if (mode === "review") words = lrnReviewPick(l, dir, n);
+  else words = lrnPlan(l, dir, n).words;
+  if (!words.length) return toast(t("lrnNoUnits"));
+  const now = Date.now(), wd = {};
+  words.forEach(w => { wd[w.id] = dirList(dir).filter(d => mode !== "slim" || ustat(w, d, now) !== "ready"); if (!wd[w.id].length) wd[w.id] = dirList(dir); });
+  const s = { v: 1, listId: l.id, listName: l.name, dir, mode, n, wd, rounds: lrnChunks(words.map(w => w.id), 10), ri: 0, startedAt: now, sum: { words: 0, rec: 0, total: 0, hard: [] } };
+  state.learn = s; lrnStartRound(s); state.view = "learn"; render(); updateLearn(); lrnSpeakIntro();
+}
+function lrnStartRound(s) {
+  s.phase = "intro"; s.i = 0; s.err = {}; s.queue = []; s.cur = null; s.st = "ask"; s.ok = 0; s.rstart = Date.now(); s.qtot = 0;
+  const keys = lrnKeys(s);
+  s.iw = lrnWords(s).filter(wid => keys.some(k => k.startsWith(wid + "|")));
+  saveLearn();
+}
+function lrnOptions(s, u) {
+  const l = getList(s.listId), seen = new Set([u.a.toLowerCase()]), pool = [];
+  shuffle(l.words.slice()).forEach(w => { const a = u.d === "qa" ? w.a : w.q; if (w.id !== u.wid && a && !seen.has(a.toLowerCase())) { seen.add(a.toLowerCase()); pool.push(a); } });
+  return shuffle([u.a].concat(pool.slice(0, 3)));
+}
+function lrnPop(s) {
+  while (s.queue.length) {
+    s.cur = s.queue.shift();
+    const u = lrnInfo(s, s.cur); if (!u) { s.cur = null; continue; }
+    s.st = "ask"; s.given = "";
+    if (s.phase === "mc") { s.opts = lrnOptions(s, u); s.pickd = -1; }
+    return true;
+  }
+  s.cur = null; return false;
+}
+function lrnBegin(s, ph) {
+  s.phase = ph; s.queue = shuffle(lrnKeys(s)); s.qtot = s.queue.length; s.ok = 0; s.st = "ask";
+  if (ph === "mc" && s.queue.length) { const u = lrnInfo(s, s.queue[0]); if (u && lrnOptions(s, u).length < 2) return lrnBegin(s, "type"); }
+  if (!lrnPop(s)) lrnAfterPhase(s);
+}
+function lrnAfterPhase(s) { if (s.phase === "intro") lrnBegin(s, "mc"); else if (s.phase === "mc") lrnBegin(s, "type"); else lrnEndRound(); }
+function lrnNext() {
+  const s = state.learn; if (!s) return; clearTimeout(lrnTimer);
+  if (s.phase === "intro") { s.i++; if (s.i >= s.iw.length) lrnBegin(s, "mc"); else { saveLearn(); updateLearn(); lrnSpeakIntro(); return; } }
+  else if (s.phase === "mc" || s.phase === "type") { if (!lrnPop(s)) lrnAfterPhase(s); }
+  else if (s.phase === "rdone") { s.ri++; lrnStartRound(s); }
+  if (state.learn && state.learn.phase !== "done") saveLearn();
+  updateLearn();
+  if (s.phase === "intro") lrnSpeakIntro(); else if (s.phase === "type" && s.cur && state.settings.speak) { const u = lrnInfo(s, s.cur); if (u) speak(u.q, u.ql); }
+}
+function lrnSpeakIntro() {
+  const s = state.learn; if (!s || s.phase !== "intro" || !state.settings.speak) return;
+  const u = lrnInfo(s, s.iw[s.i] + "|" + (s.wd[s.iw[s.i]] || ["qa"])[0]); if (u) speak(u.q, u.ql);
+}
+function lrnJudge(ok, almost) {
+  const s = state.learn; if (!s || s.st !== "ask" || !s.cur) return;
+  const e = s.err[s.cur] || (s.err[s.cur] = { m: 0, t: 0 });
+  if (ok) { s.ok++; s.st = almost ? "almost" : "right"; }
+  else { e[s.phase === "mc" ? "m" : "t"]++; s.st = "wrong"; s.queue.splice(Math.min(s.queue.length, 2 + Math.floor(Math.random() * 2)), 0, s.cur); }
+  saveLearn(); updateLearn();
+  if (s.st === "right") lrnTimer = setTimeout(lrnNext, 950);
+}
+function lrnEndRound() {
+  const s = state.learn, l = getList(s.listId), now = Date.now(), keys = lrnKeys(s);
+  let rec = 0;
+  keys.forEach(k => {
+    const u0 = lrnInfo(s, k), e = s.err[k] || { m: 0, t: 0 }, w = u0.w;
+    w.L = w.L || {};
+    const u = w.L[u0.d] || (w.L[u0.d] = { b: 0, d: now, l: 0, t: 0 }); u.t++;
+    if (e.t === 0) { rec++; if (u.b < 1 || u.d <= now) { u.b = Math.min(5, u.b + 1); u.d = now + BOX_DAYS[u.b] * DAY; } }
+    else { u.l++; if (u.b >= 1) u.b = 1; u.d = now; if (!s.sum.hard.includes(u0.wid)) s.sum.hard.push(u0.wid); }
+  });
+  if (l) { l.used = now; if (!l.example) saveList(l, { progressOnly: true }).catch(saveErr); }
+  const rw = lrnWords(s).length;
+  s.sum.words += rw; s.sum.rec += rec; s.sum.total += keys.length; s.last = { rec, total: keys.length };
+  logActivity(rw, Math.round((now - s.rstart) / 1000), rec, true);
+  s.phase = s.ri + 1 < s.rounds.length ? "rdone" : "done"; s.cur = null;
+  if (s.phase === "done") LS.del(K.learn); else saveLearn();
+}
+function lrnPause() {
+  const s = state.learn; clearTimeout(lrnTimer);
+  if (s && s.phase !== "done") { saveLearn(); toast(t("lrnPaused")); }
+  const id = s && s.listId; state.learn = null;
+  if (id && getList(id)) openSetup(id); else { state.view = "home"; render(); }
+}
+function lrnResume() {
+  const sv = LS.get(K.learn, null);
+  if (!sv || !getList(sv.listId)) { LS.del(K.learn); render(); return; }
+  state.learn = sv; state.view = "learn"; render(); updateLearn();
+}
+function lrnCheckInput() {
+  const s = state.learn, inp = $("#lrnInput"); if (!s || s.phase !== "type" || s.st !== "ask" || !inp) return;
+  const u = lrnInfo(s, s.cur); if (!u) return;
+  const r = check(inp.value, u.a, state.settings);
+  if (r.r === "empty") { inp.focus(); return; }
+  s.given = inp.value;
+  if (r.r === "correct") lrnJudge(true, false); else if (r.r === "almost") lrnJudge(true, true); else lrnJudge(false);
+}
+
+function viewLearn() {
+  return `<div class="view enter narrow learn">
+  <div class="test-top"><button class="btn btn-quiet btn-sm" data-act="lrn-pause">${esc(t("lrnPause"))}</button><div class="count" id="lrnCount"></div></div>
+  <div class="bar" aria-hidden="true"><i id="lrnBar"></i></div>
+  <div id="lrnMain"></div></div>`;
+}
+const PH_IDX = { intro: 0, mc: 1, type: 2 };
+function updateLearn() {
+  const s = state.learn, main = $("#lrnMain"); if (!s || !main) return;
+  const nR = s.rounds.length, ph = PH_IDX[s.phase];
+  let frac = 0;
+  if (s.phase === "intro") frac = s.iw.length ? s.i / s.iw.length / 3 : 0;
+  else if (s.phase === "mc" || s.phase === "type") frac = ph / 3 + (s.qtot ? Math.min(1, s.ok / s.qtot) / 3 : 0);
+  else frac = 1;
+  const pct = s.phase === "done" ? 100 : Math.min(100, Math.round((s.ri + (s.phase === "rdone" ? 1 : frac)) / nR * 100));
+  $("#lrnBar").style.width = pct + "%";
+  const names = [t("lrnPh1"), t("lrnPh2"), t("lrnPh3")];
+  $("#lrnCount").innerHTML = s.phase === "done" ? "" : `${esc(t("lrnRound", { a: s.ri + 1, b: nR }))}${ph != null ? ` · <b>${esc(names[ph])}</b>` : ""}`;
+  const steps = ph == null ? "" : `<div class="lsteps" aria-label="${esc(t("lrnStep", { n: ph + 1 }))}">${[0, 1, 2].map(i => `<span class="${i < ph ? "d" : i === ph ? "c" : ""}">${esc(names[i])}</span>`).join("")}</div>`;
+  const nb = (act, label, cls) => `<button class="btn ${cls || "btn-primary"} btn-lg" data-act="${act}" id="lrnPrimary">${esc(label)}</button>`;
+  let h = "";
+  if (s.phase === "intro") {
+    const wid = s.iw[s.i], ds = s.wd[wid] || ["qa"], u = lrnInfo(s, wid + "|" + ds[0]); if (!u) { lrnNext(); return; }
+    const top = s.dir === "aq" ? { x: u.w.a, l: "es" } : { x: u.w.q, l: "nl" }, bot = s.dir === "aq" ? { x: u.w.q, l: "nl" } : { x: u.w.a, l: "es" };
+    h = `${steps}<div class="sheet lrn-card"><div class="q-lang">${esc(langName(top.l))}</div><div class="q">${esc(top.x)}${spkBtn(top.x, top.l)}</div>
+    <div class="lrn-arrow" aria-hidden="true">↓</div><div class="q-lang">${esc(langName(bot.l))}</div><div class="q lrn-a">${esc(bot.x)}${spkBtn(bot.x, bot.l)}</div></div>
+    <p class="muted lrn-hint">${esc(t("lrnIntroHint"))} · ${s.i + 1}/${s.iw.length}</p>
+    <div class="test-actions">${nb("lrn-next", t("lrnNext"))}</div>`;
+  } else if (s.phase === "mc" || s.phase === "type") {
+    const u = lrnInfo(s, s.cur); if (!u) { lrnNext(); return; }
+    const e = s.err[s.cur];
+    let body = "", fb = "", acts = "";
+    if (s.phase === "mc") {
+      body = `<div class="opts">${s.opts.map((o, i) => {
+        const isA = o === u.a, chosen = s.pickd === i;
+        const cls = s.st === "ask" ? "" : isA ? " good" : chosen ? " bad" : " dim";
+        return `<button class="opt${cls}" data-act="lrn-opt" data-i="${i}" ${s.st !== "ask" ? "disabled" : ""}><kbd>${i + 1}</kbd><span>${esc(o)}</span></button>`;
+      }).join("")}</div>`;
+      if (s.st === "wrong") { fb = `<div class="fb-box fb-bad"><b>${esc(t("lrnWrongIs"))}</b> ${esc(u.a)}<div class="muted">${esc(t("lrnAgainLater"))}</div></div>`; acts = nb("lrn-next", t("lrnNext")); }
+      else if (s.st === "right") fb = `<div class="fb-box fb-good"><b>${esc(t("lrnRight"))}</b></div>`;
+    } else {
+      const att = `autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go"`;
+      body = `<label class="a-lang" for="lrnInput">${esc(langName(u.al))}</label><input class="answer" id="lrnInput" value="${esc(s.given || "")}" ${att} ${s.st !== "ask" ? "readonly" : ""}>${u.al === "es" ? charBar("", "lrnChars") : ""}`;
+      if (s.st === "ask") acts = `${nb("lrn-check", t("lrnCheck"))}<button class="btn btn-lg" data-act="lrn-idk">${esc(t("lrnIdk"))}</button>`;
+      else if (s.st === "wrong") { fb = `<div class="fb-box fb-bad"><b>${esc(t("lrnWrongIs"))}</b> ${esc(u.a)}<div class="muted">${esc(t("lrnAgainLater"))}</div></div>`; acts = nb("lrn-next", t("lrnNext")); }
+      else if (s.st === "almost") { fb = `<div class="fb-box fb-good"><b>${esc(t("lrnAlmost"))}</b> ${esc(u.a)}</div>`; acts = nb("lrn-next", t("lrnNext")); }
+      else fb = `<div class="fb-box fb-good"><b>${esc(t("lrnRight"))}</b></div>`;
+    }
+    h = `${steps}<div class="sheet"><div class="q-row"><span class="q-lang">${esc(langName(u.ql))}</span>${spkBtn(u.q, u.ql)}</div><div class="q">${esc(u.q)}</div>
+    <div class="phase"><span class="${e && (e.m || e.t) ? "retry" : "confirm"}">${esc(s.phase === "mc" ? t("lrnPick") : t("lrnType"))}</span></div>${body}</div>
+    <div class="fb" aria-live="polite">${fb}</div><div class="test-actions">${acts}</div>`;
+  } else if (s.phase === "rdone") {
+    const l = s.last;
+    h = `<div class="res-card lrn-sum"><div class="res-head"><div class="lrn-emoji">🌱</div><h2>${esc(t("lrnRoundDone"))}</h2><p class="lmeta">${esc(t("lrnRoundSum", { a: l.rec, b: l.total }))}</p></div>
+    <div class="res-actions">${nb("lrn-next", t("lrnNextRound"))}<button class="btn" data-act="lrn-pause">${esc(t("lrnPause"))}</button></div></div>`;
+  } else if (s.phase === "done") {
+    const l = getList(s.listId), hard = s.sum.hard.map(id => l && l.words.find(w => w.id === id)).filter(Boolean);
+    const plan = l ? lrnPlan(l, s.dir, s.n || 10) : null;
+    h = `<div class="res-card lrn-sum"><div class="res-head"><div class="lrn-emoji">🎉</div><h2>${esc(t("lrnDoneTitle"))}</h2><p class="lmeta">${esc(t("lrnDoneSum", { a: s.sum.rec, b: s.sum.total, w: wordsLabel(s.sum.words) }))}</p></div>
+    ${hard.length ? `<div class="group"><h3>${esc(t("lrnStillHard"))}</h3><ul class="hard">${hard.slice(0, 12).map(w => `<li><span class="hq">${esc(w.q)}</span><span class="ha">${esc(w.a)}</span></li>`).join("")}</ul></div>` : ""}
+    ${l ? `<div class="group"><h3>${esc(t("lrnStatusNow"))}</h3>${lrnBar(lrnCounts(l, s.dir), l.words.length)}</div>` : ""}
+    <div class="res-actions">${s.mode === "all" ? "" : nb("lrn-more", plan && plan.done ? t("lrnReviewGo") : t("lrnMore"))}<button class="btn${s.mode === "all" ? " btn-primary" : ""}" data-act="lrn-list">${esc(t("lrnToList"))}</button></div></div>`;
+  }
+  main.innerHTML = h;
+  const inp = $("#lrnInput");
+  if (inp && s.st === "ask" && !inp.readOnly) { inp.focus(); try { inp.setSelectionRange(inp.value.length, inp.value.length); } catch (e) {} }
+  else if (s.phase === "mc" && s.st === "ask") { /* toetsen 1-4 */ }
+  else { const pb = $("#lrnPrimary"); if (pb) pb.focus({ preventScroll: true }); }
+  if (s.phase === "intro" || (s.phase === "type" && s.st === "ask" && s.cur)) {} 
+}
+
+function learnModal(l) {
+  return new Promise(res => {
+    const dir = state.setupDir, saved = LS.get(K.learn, null), mine = saved && saved.listId === l.id && saved.phase !== "done";
+    let n = LS.get(K.learnN, 10); if (![5, 10, 20].includes(n)) n = 10;
+    const ov = document.createElement("div"); ov.className = "overlay";
+    const dn = dir === "both" ? t("both") : dir === "qa" ? `${langName("nl")} → ${langName("es")}` : `${langName("es")} → ${langName("nl")}`;
+    const render1 = () => {
+      const pl = lrnPlan(l, dir, n), parts = [pl.nNew ? t("lpNew", { n: pl.nNew }) : "", pl.nRev ? t("lpRev", { n: pl.nRev }) : "", pl.nPrac ? t("lpPrac", { n: pl.nPrac }) : ""].filter(Boolean).join(" · ");
+      const prev = pl.done ? `<b>${esc(t("lrnAllDone"))}</b> ${esc(t("lrnNextRev", { when: lrnWhen(lrnNextDue(l, dir)) }))}` : esc(t("lrnPlan", { parts: `${wordsLabel(pl.words.length)} (${parts})` }));
+      $("#lmBody", ov).innerHTML = `
+      ${mine ? `<div class="lopt lresume"><div><b>${esc(t("lrnResumeRow"))}</b><div class="muted">${esc(t("lrnRound", { a: saved.ri + 1, b: saved.rounds.length }))}</div></div><button class="btn btn-primary btn-sm" data-go="resume">${esc(t("lrnResumeBtn"))}</button></div>` : ""}
+      <div class="lopt lopt-main"><div class="lopt-h"><b>${esc(t("lrnSlim"))}</b><span class="tagrec">${esc(t("lrnRec"))}</span></div>
+        <p class="muted">${esc(t("lrnSlimSub"))}</p>
+        <div class="segn" role="group" aria-label="${esc(t("lrnPer"))}"><span class="segl">${esc(t("lrnPer"))}</span>${[5, 10, 20].map(x => `<button type="button" class="btn btn-sm" data-n="${x}" aria-pressed="${x === n}">${x}</button>`).join("")}</div>
+        <div class="lprev">${prev}</div>
+        <button class="btn btn-primary" data-go="${pl.done ? "review" : "slim"}" id="lmSlim">${esc(pl.done ? t("lrnReviewGo") : t("lrnGo"))}</button></div>
+      <div class="lopt"><div class="lopt-h"><b>${esc(t("lrnAll"))}</b></div><p class="muted">${esc(t("lrnAllSub"))}</p>
+        <button class="btn" data-go="all">${esc(t("lrnAllGo", { n: l.words.length }))}</button></div>`;
+    };
+    ov.innerHTML = `<div class="modal modal-learn" role="dialog" aria-modal="true" aria-labelledby="lmTitle"><div class="lm-head"><div><h3 id="lmTitle">${esc(t("lrnTitle"))}</h3><p>${esc(l.name)} · ${esc(dn)}</p></div><button type="button" class="btn btn-quiet btn-sm" data-go="x" aria-label="${esc(t("cancel"))}">✕</button></div><div id="lmBody"></div></div>`;
+    const close = v => { ov.remove(); document.removeEventListener("keydown", kd, true); res(v); };
+    const kd = e => { if (e.key === "Escape") { e.stopPropagation(); close(null); } };
+    ov.addEventListener("click", e => {
+      const nb = e.target.closest("[data-n]");
+      if (nb) { n = +nb.dataset.n; LS.set(K.learnN, n); render1(); return; }
+      const g = e.target.closest("[data-go]");
+      if (g) { const m = g.dataset.go; close(m === "x" ? null : m === "resume" ? { resume: true } : { mode: m, n }); }
+      else if (e.target === ov) close(null);
+    });
+    document.addEventListener("keydown", kd, true);
+    render1(); document.body.appendChild(ov); const b = $("#lmSlim", ov); if (b) b.focus();
+  });
+}
+
 /* ---------- acties ---------- */
 function openSetup(id) {
   state.setupFor = id; state.setupDir = LS.get(K.dirs, {})[id] || defaultDir();
@@ -1709,7 +2088,7 @@ function openEditor(list) {
 async function saveEdit() {
   const e = state.editing;
   const incomplete = e.words.filter(w => (w.q.trim() && !w.a.trim()) || (!w.q.trim() && w.a.trim())).length;
-  const words = e.words.filter(w => w.q.trim() && w.a.trim()).map(w => ({ id: w.id || uid(), q: w.q.trim(), a: w.a.trim(), misses: w.misses || 0 }));
+  const words = e.words.filter(w => w.q.trim() && w.a.trim()).map(w => ({ id: w.id || uid(), q: w.q.trim(), a: w.a.trim(), misses: w.misses || 0, ...(w.L ? { L: w.L } : {}) }));
   if (!words.length) return toast(t("needWord"));
   const list = { id: e.id, name: e.name.trim() || t("unnamed"), qLang: "nl", aLang: "es", words, results: e.results || [], createdAt: e.createdAt || Date.now() };
   const p = saveList(list);
@@ -1794,6 +2173,16 @@ document.addEventListener("click", async ev => {
   const el = ev.target.closest("[data-act]"); if (!el) return;
   const act = el.dataset.act, s = state.session;
   switch (act) {
+    case "learn": { const l = getList(state.setupFor); if (!l) break; const r = await learnModal(l); if (!r) break; if (r.resume) lrnResume(); else lrnStart(l, state.setupDir, r.mode, r.n); break; }
+    case "lrn-resume": lrnResume(); break;
+    case "lrn-discard": LS.del(K.learn); render(); break;
+    case "lrn-next": lrnNext(); break;
+    case "lrn-opt": { const ls = state.learn; if (ls && ls.st === "ask") { const u = lrnInfo(ls, ls.cur), i = +el.dataset.i; ls.pickd = i; lrnJudge(u && ls.opts[i] === u.a, false); } break; }
+    case "lrn-check": lrnCheckInput(); break;
+    case "lrn-idk": lrnJudge(false); break;
+    case "lrn-pause": lrnPause(); break;
+    case "lrn-list": { const id = state.learn && state.learn.listId; state.learn = null; if (id && getList(id)) openSetup(id); else { state.view = "home"; render(); } break; }
+    case "lrn-more": { const ls = state.learn, l = ls && getList(ls.listId); if (!l) break; const pl = lrnPlan(l, ls.dir, ls.n || 10); lrnStart(l, ls.dir, pl.done ? "review" : "slim", ls.n || 10); break; }
     case "logout": sbLogout(); break;
     case "profile": profileBox(); break;
     case "stats": state.view = "stats"; render(); break;
@@ -1967,6 +2356,20 @@ document.addEventListener("submit", async ev => {
 document.addEventListener("keydown", ev => {
   const el = ev.target, s = state.session;
   if (document.querySelector(".overlay")) return;
+  if (state.view === "learn" && state.learn) {
+    const ls = state.learn, mod = ev.ctrlKey || ev.metaKey || ev.altKey;
+    if (mod) return;
+    if (ls.phase === "intro" || ls.phase === "rdone" || ls.phase === "done") {
+      if ((ev.key === "Enter" || ev.key === " " || ev.key === "ArrowRight") && ls.phase !== "done") { ev.preventDefault(); lrnNext(); }
+    } else if (ls.phase === "mc") {
+      if (ls.st === "ask" && /^[1-4]$/.test(ev.key) && ls.opts[+ev.key - 1] !== undefined) { ev.preventDefault(); const u = lrnInfo(ls, ls.cur); ls.pickd = +ev.key - 1; lrnJudge(u && ls.opts[ls.pickd] === u.a, false); }
+      else if (ls.st !== "ask" && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); lrnNext(); }
+    } else if (ls.phase === "type") {
+      if (ev.key === "Enter") { ev.preventDefault(); if (ls.st === "ask") lrnCheckInput(); else lrnNext(); }
+      else if (ls.st === "right" && ev.key.length === 1) { /* korte pauze loopt door */ }
+    }
+    return;
+  }
   if (state.view === "test" && s) {
     if (el.id === "tInput") {
       if (ev.key === "Enter") { ev.preventDefault(); doCheck(); return; }

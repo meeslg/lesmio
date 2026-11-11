@@ -1238,8 +1238,8 @@ function speak(text, lang) {
   if (!HAS_TTS) return speakAudioFallback(clean, lang);
   if (!VOICES.length) loadVoices();
   const code = SPEAK_LANG[lang] || lang, v = pickVoice(lang);
-  if (!v) return speakAudioFallback(clean, lang);   // geen stem in de juiste taal: nooit een verkeerde stem laten voorlezen
-  const u = new SpeechSynthesisUtterance(clean); u.lang = v.lang || code; u.voice = v; u.rate = 0.9;
+  if (!v && VOICES.length) return speakAudioFallback(clean, lang);   // stemmenlijst is er maar zonder juiste taal   // geen stem in de juiste taal: nooit een verkeerde stem laten voorlezen
+  const u = new SpeechSynthesisUtterance(clean); u.lang = (v && v.lang) || code; if (v) u.voice = v; u.rate = 0.9;
   let fell = false;
   const fallback = () => { if (fell) return; fell = true; try { speechSynthesis.cancel(); } catch (e) {} speakAudioFallback(clean, lang); };
   u.onerror = e => { if (e && (e.error === "interrupted" || e.error === "canceled")) return; fallback(); };

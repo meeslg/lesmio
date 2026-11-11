@@ -531,7 +531,7 @@ details.panel[open] > summary{margin-bottom:12px}
 .login-err{color:var(--bad);background:var(--bad-bg);border-radius:12px;padding:8px 14px;font-weight:600;font-size:14px;margin:0 0 10px}
 .by{color:var(--cst);font-weight:700}
 @media (max-width:560px){.userchip .lo{display:none}.userchip{padding-right:6px}.nav{gap:8px}.nav-r{gap:8px;min-width:0}}
-@media (max-width:480px){.userchip .un{display:none}.userchip{padding:4px}.wordmark{font-size:23px}.logo svg{width:34px;height:34px}.langsel{padding-left:12px;padding-right:30px}}
+@media (max-width:480px){.nav{gap:8px}.nav-r{gap:6px}.sndbtn{width:36px;height:36px}.sndbtn svg{width:18px;height:18px}.langsel{font-size:13px;min-height:36px;padding:6px 24px 6px 11px;background-position:right 9px center}.logo{padding-right:2px}.wordmark{display:none}.userchip .un{display:none}.userchip{padding:4px}.wordmark{font-size:23px}.logo svg{width:34px;height:34px}.langsel{padding-left:12px;padding-right:30px}}
 
 /* v4: vandaag, samen, geluid, voortgang, avatars */
 .av{width:30px;height:30px;border-radius:50%;display:inline-grid;place-items:center;background:var(--g-violet);color:#fff;font-weight:800;font-size:14px;flex:none}
@@ -703,7 +703,7 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 
 const I18N = {
 nl: {
-  welcomeTitle: "Welkom bij Lesmio", bellOn: "Herinnering aan (8:00)", bellOff: "Herinnering uit", pushOnMsg: "Herinnering aan: elke ochtend om 8:00.", pushOffMsg: "Herinnering uit.", pushDenied: "Meldingen zijn geblokkeerd. Zet ze aan in de instellingen van je telefoon of browser.", pushIos: "Zet Lesmio eerst op je beginscherm (Deel → Zet op beginscherm) en open hem daar.", pushNo: "Dit apparaat ondersteunt geen meldingen.", pushLogin: "Log eerst in.", pushFail: "Aanzetten is niet gelukt. Probeer het later nog eens.", mtTile: "Koppelen", mtTileSub: "Koppel de woorden, tegen de klok", mtQuit: "× Stoppen", mtRound: "Ronde {a} van {b}", mtDone: "Alles gekoppeld!", mtTime: "Tijd", mtMist: "Fouten", mtBest: "Beste tijd", mtNewBest: "Nieuw record!", mtAgain: "Nog een keer", mtNeed: "Je hebt minstens 3 woorden nodig.", mtLeft: "{n} te gaan",
+  welcomeTitle: "Welkom bij Lesmio", bellOn: "Herinnering aan (20:00)", bellOff: "Herinnering uit", pushOnMsg: "Herinnering aan: elke avond om 20:00 als je nog niets hebt gedaan.", pushOffMsg: "Herinnering uit.", pushDenied: "Meldingen zijn geblokkeerd. Zet ze aan in de instellingen van je telefoon of browser.", pushIos: "Zet Lesmio eerst op je beginscherm (Deel → Zet op beginscherm) en open hem daar.", pushNo: "Dit apparaat ondersteunt geen meldingen.", pushLogin: "Log eerst in.", pushFail: "Aanzetten is niet gelukt. Probeer het later nog eens.", mtTile: "Koppelen", mtTileSub: "Koppel de woorden, tegen de klok", mtQuit: "× Stoppen", mtRound: "Ronde {a} van {b}", mtDone: "Alles gekoppeld!", mtTime: "Tijd", mtMist: "Fouten", mtBest: "Beste tijd", mtNewBest: "Nieuw record!", mtAgain: "Nog een keer", mtNeed: "Je hebt minstens 3 woorden nodig.", mtLeft: "{n} te gaan",
   achTitle: "Prestaties", achNew: "Nieuwe prestatie", achOf: "{a} van {b} behaald",
   ach_words10: "Eerste stappen", achd_words10: "Oefen 10 woorden", ach_words100: "Woordenjager", achd_words100: "Oefen 100 woorden", ach_words500: "Woordenmeester", achd_words500: "Oefen 500 woorden", ach_words1000: "Woordenlegende", achd_words1000: "Oefen 1000 woorden",
   ach_streak3: "Op dreef", achd_streak3: "3 dagen achter elkaar", ach_streak7: "Weekkampioen", achd_streak7: "7 dagen achter elkaar", ach_streak30: "Maandmeester", achd_streak30: "30 dagen achter elkaar",
@@ -819,7 +819,7 @@ nl: {
   stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
 },
 es: {
-  welcomeTitle: "Te damos la bienvenida a Lesmio", bellOn: "Recordatorio activado (8:00)", bellOff: "Recordatorio desactivado", pushOnMsg: "Recordatorio activado: cada mañana a las 8:00.", pushOffMsg: "Recordatorio desactivado.", pushDenied: "Las notificaciones están bloqueadas. Actívalas en los ajustes del teléfono o del navegador.", pushIos: "Primero añade Lesmio a la pantalla de inicio (Compartir → Añadir a pantalla de inicio) y ábrelo desde allí.", pushNo: "Este dispositivo no admite notificaciones.", pushLogin: "Primero inicia sesión.", pushFail: "No se pudo activar. Inténtalo más tarde.", mtTile: "Emparejar", mtTileSub: "Empareja las palabras contra el reloj", mtQuit: "× Salir", mtRound: "Ronda {a} de {b}", mtDone: "¡Todo emparejado!", mtTime: "Tiempo", mtMist: "Errores", mtBest: "Mejor tiempo", mtNewBest: "¡Nuevo récord!", mtAgain: "Otra vez", mtNeed: "Necesitas al menos 3 palabras.", mtLeft: "faltan {n}",
+  welcomeTitle: "Te damos la bienvenida a Lesmio", bellOn: "Recordatorio activado (20:00)", bellOff: "Recordatorio desactivado", pushOnMsg: "Recordatorio activado: cada noche a las 20:00 si aún no has practicado.", pushOffMsg: "Recordatorio desactivado.", pushDenied: "Las notificaciones están bloqueadas. Actívalas en los ajustes del teléfono o del navegador.", pushIos: "Primero añade Lesmio a la pantalla de inicio (Compartir → Añadir a pantalla de inicio) y ábrelo desde allí.", pushNo: "Este dispositivo no admite notificaciones.", pushLogin: "Primero inicia sesión.", pushFail: "No se pudo activar. Inténtalo más tarde.", mtTile: "Emparejar", mtTileSub: "Empareja las palabras contra el reloj", mtQuit: "× Salir", mtRound: "Ronda {a} de {b}", mtDone: "¡Todo emparejado!", mtTime: "Tiempo", mtMist: "Errores", mtBest: "Mejor tiempo", mtNewBest: "¡Nuevo récord!", mtAgain: "Otra vez", mtNeed: "Necesitas al menos 3 palabras.", mtLeft: "faltan {n}",
   achTitle: "Logros", achNew: "Nuevo logro", achOf: "{a} de {b} conseguidos",
   ach_words10: "Primeros pasos", achd_words10: "Practica 10 palabras", ach_words100: "Cazapalabras", achd_words100: "Practica 100 palabras", ach_words500: "Maestro de palabras", achd_words500: "Practica 500 palabras", ach_words1000: "Leyenda de palabras", achd_words1000: "Practica 1000 palabras",
   ach_streak3: "En racha", achd_streak3: "3 días seguidos", ach_streak7: "Campeón semanal", achd_streak7: "7 días seguidos", ach_streak30: "Maestro del mes", achd_streak30: "30 días seguidos",
@@ -1385,7 +1385,7 @@ function speakAudioFallback(text, lang) {   // reservestem via het web, als het 
     const pr = a.play(); if (pr && pr.catch) pr.catch(() => toast(t("noVoice", { lang: langName(lang) })));
   } catch (e) { toast(t("noVoice", { lang: langName(lang) })); }
 }
-/* ---------- dagelijkse herinnering (webpush, 8:00 lokale tijd) ---------- */
+/* ---------- dagelijkse herinnering (webpush, 20:00 lokale tijd) ---------- */
 const VAPID_PUB = "BH5Tw2GttPMB5HphtjY2OWS6_dgD__GAy2Qr6Do7eEX4tSV_daFt9YftQYeSBFqgUrmStR_H265DuZfGWh33OEM";
 const PUSH_OK = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
 const ICO_BELL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.700 21a2 2 0 0 1-3.400 0"/></svg>';
@@ -1560,7 +1560,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 00:45";
+const BUILD = "12-11 00:50";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }

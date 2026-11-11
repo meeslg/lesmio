@@ -87,6 +87,14 @@ svg{display:block}
 .wm-i{position:relative;display:inline-block}
 .wm-i::after{content:"";position:absolute;left:50%;top:.075em;width:.2em;height:.2em;border-radius:50%;background:var(--coral);transform:translateX(-50%)}
 .langsel{appearance:none;-webkit-appearance:none;background-color:var(--surface);border:1px solid var(--line-strong);border-radius:99px;padding:8px 34px 8px 16px;min-height:40px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:var(--sh-sm);transition:border-color .15s,box-shadow .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+#cfx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:60}
+#cfx i{position:absolute;top:-20px;border-radius:2px;opacity:0;animation:cfall linear forwards}
+@keyframes cfall{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:1;transform:translate(var(--dx),108vh) rotate(calc(var(--r) + 540deg))}}
+.cf-who{position:absolute;left:50%;bottom:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;animation:cfpop 2.8s cubic-bezier(.3,1.4,.5,1) forwards}
+.cf-who .bub{position:relative;background:var(--surface);color:var(--ink);font-weight:800;font-size:22px;padding:8px 18px;border-radius:18px;box-shadow:var(--sh);margin-bottom:6px}
+.cf-mc{height:140px;width:auto;display:block}
+@media(min-width:700px){.cf-mc{height:190px}}
+@keyframes cfpop{0%{transform:translate(-50%,110%)}16%{transform:translate(-50%,0)}80%{transform:translate(-50%,0)}100%{transform:translate(-50%,115%)}}
 .sndbtn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:var(--sh-sm);transition:border-color .15s,transform .15s}
 .sndbtn:hover{border-color:var(--violet)}
 .sndbtn:active{transform:scale(.92)}
@@ -667,7 +675,7 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 
 const I18N = {
 nl: {
-  welcomeTitle: "Welkom bij Lesmio", sndMute: "Geluid uit", sndUnmute: "Geluid aan", optSfx: "Geluidjes", optSfxSub: "Een toon bij goed en fout", sndVol: "Volume", pickDir: "Welke kant op?", zinLearnFirst: "Leer eerst woorden met Woorden leren", goalLeft: "Nog {n} woorden tot je dagdoel.", goalDone: "Dagdoel gehaald! Alles erbij is bonus.", goalStreak: "Je streak staat op {n} dagen. Maak hem vandaag langer.", goalOf: "{a} / {b} woorden vandaag", goalTap: "tik om je doel te wijzigen", buddyDone: "Dagdoel gehaald!", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
+  welcomeTitle: "Welkom bij Lesmio", wow: "Wow!", sndMute: "Geluid uit", sndUnmute: "Geluid aan", optSfx: "Geluidjes", optSfxSub: "Een toon bij goed en fout", sndVol: "Volume", pickDir: "Welke kant op?", zinLearnFirst: "Leer eerst woorden met Woorden leren", goalLeft: "Nog {n} woorden tot je dagdoel.", goalDone: "Dagdoel gehaald! Alles erbij is bonus.", goalStreak: "Je streak staat op {n} dagen. Maak hem vandaag langer.", goalOf: "{a} / {b} woorden vandaag", goalTap: "tik om je doel te wijzigen", buddyDone: "Dagdoel gehaald!", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
   buddyAsk: "Zin om een rondje te doen?", buddyGo: "Lekker bezig vandaag!",
   streak0: "Start je reeks", streakCap1: "dag op rij", streakCapN: "dagen op rij",
   todayCap: "woorden vandaag", hardCap: "lastige woorden", hardGo: "Oefen ze nu", hardNone: "Nog geen lastige woorden",
@@ -777,7 +785,7 @@ nl: {
   stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
 },
 es: {
-  welcomeTitle: "Te damos la bienvenida a Lesmio", sndMute: "Silenciar", sndUnmute: "Activar sonido", optSfx: "Efectos de sonido", optSfxSub: "Un tono al acertar y al fallar", sndVol: "Volumen", pickDir: "¿En qué dirección?", zinLearnFirst: "Primero aprende palabras en Aprender palabras", goalLeft: "Te faltan {n} palabras para tu meta de hoy.", goalDone: "¡Meta cumplida! Todo lo extra es un bonus.", goalStreak: "Tu racha es de {n} días. Hazla más larga hoy.", goalOf: "{a} / {b} palabras hoy", goalTap: "toca para cambiar tu meta", buddyDone: "¡Meta cumplida!", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
+  welcomeTitle: "Te damos la bienvenida a Lesmio", wow: "¡Guau!", sndMute: "Silenciar", sndUnmute: "Activar sonido", optSfx: "Efectos de sonido", optSfxSub: "Un tono al acertar y al fallar", sndVol: "Volumen", pickDir: "¿En qué dirección?", zinLearnFirst: "Primero aprende palabras en Aprender palabras", goalLeft: "Te faltan {n} palabras para tu meta de hoy.", goalDone: "¡Meta cumplida! Todo lo extra es un bonus.", goalStreak: "Tu racha es de {n} días. Hazla más larga hoy.", goalOf: "{a} / {b} palabras hoy", goalTap: "toca para cambiar tu meta", buddyDone: "¡Meta cumplida!", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
   buddyAsk: "¿Hacemos una ronda?", buddyGo: "¡Buen trabajo hoy!",
   streak0: "Empieza tu racha", streakCap1: "día seguido", streakCapN: "días seguidos",
   todayCap: "palabras hoy", hardCap: "palabras difíciles", hardGo: "Practícalas ya", hardNone: "Aún no hay palabras difíciles",
@@ -1315,12 +1323,35 @@ function sndUi() {
   b.innerHTML = on ? ICO.speaker : ICO_MUTE; b.classList.toggle("off", !on);
   b.setAttribute("aria-label", t(on ? "sndMute" : "sndUnmute")); b.title = t(on ? "sndMute" : "sndUnmute");
 }
-function sfx(name) {
+function sfxPlay(name) {
   if (!SND.cfg.on || SND.cfg.vol <= 0) return;
   try {
     const a = SND.el[name] || (SND.el[name] = new Audio("s/" + name + ".mp3"));
     a.volume = Math.min(1, SND.cfg.vol); a.currentTime = 0; const pr = a.play(); if (pr && pr.catch) pr.catch(() => {});
   } catch (e) {}
+}
+/* "ok"/"bad" tellen mee voor de reeks: elke 3 goed achter elkaar = wow + confetti */
+function sfx(name, preview) {
+  if (!preview && (name === "ok" || name === "bad")) {
+    SND.last = Date.now();
+    if (name === "bad") SND.streak = 0;
+    else if (++SND.streak % 3 === 0) { sfxPlay("wow"); celebrate(); return; }
+  }
+  sfxPlay(name);
+}
+SND.streak = 0; SND.last = 0;
+function celebrate() {
+  const old = document.getElementById("cfx"); if (old) old.remove();
+  const el = document.createElement("div"); el.id = "cfx"; el.setAttribute("aria-hidden", "true");
+  const cols = ["#8a6bff", "#ff7a66", "#ffd36e", "#2fc79a", "#5eead4", "#ff9f43"];
+  let h = "";
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) for (let i = 0; i < 46; i++) {
+    const l = Math.random() * 100, d = 1.6 + Math.random() * 1.2, dl = Math.random() * 0.35, w = 7 + Math.random() * 7, r = Math.random() * 360, dx = (Math.random() - 0.5) * 160;
+    h += `<i style="left:${l}%;width:${w}px;height:${w * 1.6}px;background:${cols[i % cols.length]};animation-duration:${d}s;animation-delay:${dl}s;--dx:${dx}px;--r:${r}deg"></i>`;
+  }
+  el.innerHTML = h + `<div class="cf-who"><div class="bub">${esc(t("wow"))}</div>${mcImg("celebrate", "cf-mc")}</div>`;
+  document.body.appendChild(el);
+  clearTimeout(celebrate.t); celebrate.t = setTimeout(() => el.remove(), 3000);
 }
 function speak(text, lang) {
   if (!CAN_SPEAK) return;
@@ -1418,7 +1449,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "11-11 23:51";
+const BUILD = "11-11 23:56";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -2500,7 +2531,7 @@ document.addEventListener("click", async ev => {
     case "stats": state.view = "stats"; render(); break;
     case "practice-all": practiceAllHard(); break;
     case "speak": speak(el.dataset.text, el.dataset.lang); break;
-    case "snd-toggle": { const on = SND.cfg.on && SND.cfg.vol > 0; SND.cfg.on = !on; if (SND.cfg.on && SND.cfg.vol <= 0) SND.cfg.vol = 0.7; sndSave(); sndUi(); const c = $("#optSfx"); if (c) c.checked = SND.cfg.on; const v = $("#sndVol"); if (v) v.value = Math.round(SND.cfg.vol * 100); sfx("ok"); break; }
+    case "snd-toggle": { const on = SND.cfg.on && SND.cfg.vol > 0; SND.cfg.on = !on; if (SND.cfg.on && SND.cfg.vol <= 0) SND.cfg.vol = 0.7; sndSave(); sndUi(); const c = $("#optSfx"); if (c) c.checked = SND.cfg.on; const v = $("#sndVol"); if (v) v.value = Math.round(SND.cfg.vol * 100); sfx("ok", true); break; }
     case "speak-q": { const c = cur(); if (c) speak(c.q, c.ql); break; }
     case "wrong-list": {
       if (!s || !s.result) break;
@@ -2616,7 +2647,7 @@ document.addEventListener("change", ev => {
   if (el.id === "impPhoto") { readImage(el.files && el.files[0]); el.value = ""; return; }
   if (el.id === "impFile") { readFile(el.files && el.files[0]); el.value = ""; return; }
   if (el.id === "impSwap") { state.imp.swap = el.checked; state.imp.touched = true; updateImport(); return; }
-  if (el.id === "optSfx") { SND.cfg.on = el.checked; sndSave(); sndUi(); if (el.checked) sfx("ok"); return; }
+  if (el.id === "optSfx") { SND.cfg.on = el.checked; sndSave(); sndUi(); if (el.checked) sfx("ok", true); return; }
   if (el.dataset && el.dataset.set) { state.settings[el.dataset.set] = el.checked; LS.set(K.settings, state.settings); }
 });
 
@@ -2729,7 +2760,11 @@ if (hot && hot.ready) hot.ready(boot); else boot((hot && hot.data) || {});
 /* testhaakje voor de motor (geen invloed op de app) */
 window.__lesmio = { check, makeSession, state, apply: ok => apply(ok), I18N, parseImport, parseColumns, detectSwap, render: () => render() };
 document.addEventListener("input", e => { const el = e.target; if (el && el.id === "sndVol") { SND.cfg.vol = el.value / 100; if (SND.cfg.vol > 0) SND.cfg.on = true; sndSave(); sndUi(); const c = $("#optSfx"); if (c) c.checked = SND.cfg.on; } });
-document.addEventListener("change", e => { const el = e.target; if (el && el.id === "sndVol") sfx("ok"); });
+document.addEventListener("change", e => { const el = e.target; if (el && el.id === "sndVol") sfx("ok", true); });
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest("button, .act, .lrow, [data-act]"); if (!b || b.disabled || b.id === "sndBtn") return;
+  setTimeout(() => { if (Date.now() - SND.last > 250) sfxPlay("click"); }, 30);
+}, true);
 sndUi();
 })();
 </script>

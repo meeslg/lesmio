@@ -1454,7 +1454,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 00:20";
+const BUILD = "12-11 00:30";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -2026,7 +2026,7 @@ function lrnCounts(l, dir) { const c = { new: 0, learning: 0, needs: 0, ready: 0
 const minDue = (w, ds) => Math.min(...ds.map(d => { const u = lunit(w, d); return u ? u.d : Infinity; }));
 function lrnPlan(l, dir, n) {
   const now = Date.now(), ds = dirList(dir), due = [], fresh = [], prac = [];
-  l.words.forEach(w => {
+  shuffle(l.words.slice()).forEach(w => {
     const st = lstat(w, dir, now);
     if (st === "needs") due.push(w); else if (st === "new") fresh.push(w); else if (st === "learning") prac.push(w);
   });
@@ -2085,7 +2085,7 @@ function lrnStart(l, dir, mode, n) {
 function lrnStartRound(s) {
   s.phase = "intro"; s.i = 0; s.err = {}; s.queue = []; s.cur = null; s.st = "ask"; s.ok = 0; s.rstart = Date.now(); s.qtot = 0;
   const keys = lrnKeys(s);
-  s.iw = lrnWords(s).filter(wid => keys.some(k => k.startsWith(wid + "|")));
+  s.iw = shuffle(lrnWords(s).filter(wid => keys.some(k => k.startsWith(wid + "|"))));
   saveLearn();
 }
 function lrnOptions(s, u) {

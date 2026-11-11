@@ -80,10 +80,10 @@ svg{display:block}
 
 /* navigatie */
 .nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 0 20px}
-.logo{display:inline-flex;align-items:center;gap:10px;background:none;border:0;padding:2px 8px 2px 0;margin:0;cursor:pointer;color:var(--ink);border-radius:12px}
+.logo{flex:none;display:inline-flex;align-items:center;gap:10px;background:none;border:0;padding:2px 8px 2px 0;margin:0;cursor:pointer;color:var(--ink);border-radius:12px}
 .logo svg{width:38px;height:38px;flex:none;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
 .logo:hover svg{transform:rotate(-8deg) scale(1.06)}
-.wordmark{font-weight:800;font-size:25px;letter-spacing:-.04em;line-height:1}
+.wordmark{white-space:nowrap;font-weight:800;font-size:25px;letter-spacing:-.04em;line-height:1}
 .wm-i{position:relative;display:inline-block}
 .wm-i::after{content:"";position:absolute;left:50%;top:.075em;width:.2em;height:.2em;border-radius:50%;background:var(--coral);transform:translateX(-50%)}
 .langsel{appearance:none;-webkit-appearance:none;background-color:var(--surface);border:1px solid var(--line-strong);border-radius:99px;padding:8px 34px 8px 16px;min-height:40px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:var(--sh-sm);transition:border-color .15s,box-shadow .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
@@ -395,7 +395,95 @@ details.panel[open] > summary{margin-bottom:12px}
 .login-card .btn{width:100%;margin-top:6px}
 .login-err{color:var(--bad);background:var(--bad-bg);border-radius:12px;padding:8px 14px;font-weight:600;font-size:14px;margin:0 0 10px}
 .by{color:var(--cst);font-weight:700}
-@media (max-width:560px){.userchip .lo{display:none}.userchip{padding-right:6px}}
+@media (max-width:560px){.userchip .lo{display:none}.userchip{padding-right:6px}.nav{gap:8px}.nav-r{gap:8px;min-width:0}}
+@media (max-width:480px){.userchip .un{display:none}.userchip{padding:4px}.wordmark{font-size:23px}.logo svg{width:34px;height:34px}.langsel{padding-left:12px;padding-right:30px}}
+
+/* v4: vandaag, samen, geluid, voortgang, avatars */
+.av{width:30px;height:30px;border-radius:50%;display:inline-grid;place-items:center;background:var(--g-violet);color:#fff;font-weight:800;font-size:14px;flex:none}
+.av.emo{background:var(--violet-soft);font-size:18px;line-height:1}
+.userchip .av{width:30px;height:30px}
+.today{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:-6px 0 18px}
+.tile{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:1px solid var(--line);border-radius:22px;padding:16px 18px 16px;background:var(--surface);box-shadow:var(--sh);color:var(--ink);overflow:hidden;font:inherit}
+.tile b{font-size:34px;line-height:1.05;letter-spacing:-.03em;font-weight:800;font-variant-numeric:tabular-nums}
+.tile b.t-title{font-size:21px;letter-spacing:-.02em;margin-top:2px}
+.tile > span:not(.t-ic){color:var(--muted);font-size:14px;font-weight:600}
+.tile em{font-style:normal;font-weight:800;font-size:14px;margin-top:auto;padding-top:8px;display:inline-flex;align-items:center;gap:6px}
+.tile em svg{width:16px;height:16px;transition:transform .2s}
+.t-ic{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;margin-bottom:8px;font-size:19px}
+.t-ic svg{width:20px;height:20px}
+.t-streak{background:linear-gradient(160deg,var(--coral-soft),var(--surface) 80%)}
+.t-streak .t-ic{background:var(--surface);box-shadow:var(--sh-sm)}
+.t-today{background:linear-gradient(160deg,var(--mint-soft),var(--surface) 80%)}
+.t-today .t-ic{background:var(--surface);color:var(--mint-strong);box-shadow:var(--sh-sm)}
+button.tile{cursor:pointer;transition:transform .25s cubic-bezier(.3,1.4,.5,1),box-shadow .25s,border-color .2s}
+button.tile:hover:not(:disabled){transform:translateY(-4px) rotate(-.4deg);box-shadow:var(--sh-hover);border-color:var(--violet)}
+button.tile:hover:not(:disabled) em svg{transform:translateX(4px)}
+button.tile:disabled{cursor:default;opacity:.8}
+.t-hard{background:var(--g-violet);border-color:transparent;color:#fff;box-shadow:0 18px 30px -16px rgba(98,60,240,.8)}
+.t-hard > span:not(.t-ic){color:rgba(255,255,255,.85)}
+.t-hard .t-ic{background:rgba(255,255,255,.22);color:#fff}
+.t-hard:disabled{background:var(--surface);color:var(--ink);border-color:var(--line);box-shadow:var(--sh)}
+.t-hard:disabled > span:not(.t-ic){color:var(--muted)}
+.t-hard:disabled .t-ic{background:var(--soft);color:var(--muted)}
+.t-prog .t-ic{background:var(--violet-soft);color:var(--violet-strong)}
+.together{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 26px;padding:10px 16px;border:1px solid var(--line);border-radius:22px;background:var(--surface);box-shadow:var(--sh-sm);font-size:14.5px}
+.together .tg-l{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--violet-strong);margin-right:4px}
+.together .tg-d{color:var(--muted);font-weight:600}
+.together .av{width:28px;height:28px}
+.spk{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;border:0;background:var(--violet-soft);color:var(--violet-strong);cursor:pointer;vertical-align:middle;margin-left:8px;flex:none;transition:transform .15s cubic-bezier(.3,1.6,.5,1),background-color .15s}
+.spk svg{width:18px;height:18px}
+.spk:hover{transform:scale(1.12);background:var(--coral-soft);color:var(--coral-strong)}
+.spk:active{transform:scale(.94)}
+.wlist .spk{width:26px;height:26px;margin-left:6px}
+.wlist .spk svg{width:14px;height:14px}
+.q-row{display:flex;align-items:center;gap:8px}
+.q-row .spk{margin-left:0;background:var(--surface);box-shadow:var(--sh-sm)}
+.back-ans .spk,.fb-bad .right .spk{width:38px;height:38px}
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-top:18px}
+.modal-act.one{grid-template-columns:1fr;margin-top:12px}
+.avgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:8px;margin-top:16px}
+.avbtn{aspect-ratio:1;border:2px solid var(--line);border-radius:16px;background:var(--surface);font-size:28px;line-height:1;display:grid;place-items:center;cursor:pointer;transition:transform .2s cubic-bezier(.3,1.6,.5,1),border-color .15s,background-color .15s}
+.avbtn:hover{transform:translateY(-3px) rotate(-4deg);border-color:var(--coral)}
+.avbtn[aria-pressed="true"]{border-color:var(--violet);background:var(--violet-soft);box-shadow:0 0 0 3px var(--violet-soft)}
+.avbtn .av{width:34px;height:34px}
+.modal.profile{max-width:440px}
+.stiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0 22px}
+.stile{border:1px solid var(--line);border-radius:20px;padding:14px 16px;background:var(--surface);box-shadow:var(--sh)}
+.stile b{display:block;font-size:28px;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.stile span{color:var(--muted);font-size:13.5px;font-weight:600}
+.stile.s1{background:linear-gradient(160deg,var(--coral-soft),var(--surface) 80%)}
+.stile.s3{background:linear-gradient(160deg,var(--mint-soft),var(--surface) 80%)}
+.stile.s5{background:linear-gradient(160deg,var(--violet-soft),var(--surface) 80%)}
+.stat-col{display:grid;gap:20px;min-width:0;align-content:start}
+.stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+.chart{width:100%;height:auto;overflow:visible}
+.chart .gl{stroke:var(--line);stroke-width:1}
+.chart .gp{stroke:var(--coral);stroke-width:1.5;stroke-dasharray:5 5;opacity:.8}
+.chart .gt{fill:var(--muted);font-size:11px;font-family:var(--f)}
+.chart .ga{fill:var(--violet-soft);opacity:.75}
+.chart .gline{fill:none;stroke:var(--violet);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.chart .gd{fill:var(--surface);stroke:var(--violet);stroke-width:3}
+.chart .gd.low{stroke:var(--coral)}
+.cal{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-template-columns:repeat(12,1fr);gap:4px}
+.cc{aspect-ratio:1;border-radius:6px;background:var(--soft);display:block}
+.cc.l1{background:var(--violet-soft)}
+.cc.l2{background:#c4b6ff}
+.cc.l3{background:var(--violet)}
+.cc.l4{background:var(--violet-strong)}
+.cc.fut{visibility:hidden}
+.lb{margin-bottom:14px}
+.lb:last-child{margin-bottom:0}
+.lb-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font-size:14px;margin-bottom:6px}
+.lb-h span{color:var(--muted)}
+.lb-bar{display:flex;height:12px;border-radius:99px;background:var(--soft);overflow:hidden}
+.lb-bar i{display:block;height:100%}
+.lb-bar .k{background:var(--g-mint)}
+.lb-bar .h{background:var(--g-coral)}
+.tg-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.tg-row:last-child{border-bottom:0}
+.tg-row span:not(.av){color:var(--muted)}
+@media (max-width:900px){.today{grid-template-columns:repeat(2,minmax(0,1fr))}.stats-grid{grid-template-columns:1fr}}
+@media (max-width:420px){.tile b{font-size:30px}.tile{padding:14px}}
 @media (max-width:900px){
   .hero{grid-template-columns:1fr;padding:30px 24px 10px;gap:8px}
   .stack{height:250px;max-width:420px;width:100%;margin:0 auto}
@@ -416,6 +504,12 @@ details.panel[open] > summary{margin-bottom:12px}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#6d4aff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lesmio">
 <script>window.LESMIO_SB={url:"https://wzhobkwbgxaqbhzkghpt.supabase.co",key:"sb_publishable__p1cgOnEZf5MUY1EbFYPsA_9iSy6fGO"};</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -453,7 +547,7 @@ const LS = {
   del(k) { try { localStorage.removeItem(k); } catch (e) {} }
 };
 // let op: de oude prefix "overhoor." blijft bewust staan, zodat bestaande lijsten en voortgang behouden blijven
-const K = { lists: "overhoor.lists", settings: "overhoor.settings", session: "overhoor.session", dirs: "overhoor.dirs", ui: "overhoor.ui" };
+const K = { lists: "overhoor.lists", settings: "overhoor.settings", session: "overhoor.session", dirs: "overhoor.dirs", ui: "overhoor.ui", act: "overhoor.activity", avatar: "overhoor.avatar" };
 
 /* ---------- taal van het programma (NL / ES) ---------- */
 let LANG = LS.get(K.ui, null);
@@ -462,6 +556,21 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 const I18N = {
 nl: {
   welcomeTitle: "Welkom bij Lesmio",
+  streak0: "Start je reeks", streakCap1: "dag op rij", streakCapN: "dagen op rij",
+  todayCap: "woorden vandaag", hardCap: "lastige woorden", hardGo: "Oefen ze nu", hardNone: "Nog geen lastige woorden",
+  progress: "Voortgang", progressSub: "Grafieken en statistieken", together: "Samen", partnerToday: "{n} woorden vandaag",
+  practiceAllHard: "Oefen mijn lastigste woorden", noHard: "Je hebt nog geen lastige woorden. Die komen vanzelf als je een toets doet.",
+  pickCount: "Hoeveel woorden?", pickText: "Je lastigste woorden uit al je lijsten, de moeilijkste eerst.", allN: "Alle {n}",
+  hardListName: "Mijn lastigste woorden", wrongListName: "{name} · foute woorden",
+  wrongToList: "Maak een nieuwe lijst van de foute woorden", wrongListMade: "Nieuwe lijst gemaakt met {n} woorden",
+  profile: "Profiel", chooseAvatar: "Kies je avatar", noAvatar: "Letter", close: "Sluiten",
+  sound: "Geluid", optSpeak: "Uitspraak automatisch afspelen", optSpeakSub: "Je hoort het woord en daarna het goede antwoord",
+  listen: "Beluister", noVoice: "Dit apparaat heeft geen stem voor {lang}",
+  stStreak: "Huidige reeks", stBest: "Beste reeks", stWords: "Woorden geoefend", stTests: "Toetsen", stAvg: "Gemiddeld cijfer", stTime: "Oefentijd",
+  chartGrades: "Je cijfers", chartCal: "Oefenkalender (woorden per dag)", perList: "Per lijst", known: "Gekend", hardS: "Lastig", newS: "Nieuw",
+  topHard: "Lastigste woorden", noData: "Nog niet genoeg gegevens. Doe een toets, dan verschijnt je voortgang hier.", sinceNote: "Reeks, woorden en tijd tellen mee vanaf het moment dat je deze versie gebruikt.",
+  failTimes: "{n}× fout", minN: "{n} min", hmN: "{h} u {m} min", weekWords: "woorden deze week", daysN: "{n} dagen",
+
   loginTitle: "Inloggen",
   loginSub: "Log in om je woordenlijsten te zien. Lijsten zijn gedeeld, je cijfers blijven van jou.",
   loginEmail: "E-mailadres",
@@ -541,6 +650,21 @@ nl: {
 },
 es: {
   welcomeTitle: "Te damos la bienvenida a Lesmio",
+  streak0: "Empieza tu racha", streakCap1: "día seguido", streakCapN: "días seguidos",
+  todayCap: "palabras hoy", hardCap: "palabras difíciles", hardGo: "Practícalas ya", hardNone: "Aún no hay palabras difíciles",
+  progress: "Progreso", progressSub: "Gráficos y estadísticas", together: "Juntos", partnerToday: "{n} palabras hoy",
+  practiceAllHard: "Practica mis palabras más difíciles", noHard: "Aún no tienes palabras difíciles. Aparecerán cuando hagas un test.",
+  pickCount: "¿Cuántas palabras?", pickText: "Tus palabras más difíciles de todas tus listas, las peores primero.", allN: "Todas ({n})",
+  hardListName: "Mis palabras más difíciles", wrongListName: "{name} · palabras falladas",
+  wrongToList: "Crear una lista nueva con las palabras falladas", wrongListMade: "Lista nueva creada con {n} palabras",
+  profile: "Perfil", chooseAvatar: "Elige tu avatar", noAvatar: "Letra", close: "Cerrar",
+  sound: "Sonido", optSpeak: "Reproducir la pronunciación automáticamente", optSpeakSub: "Oyes la palabra y luego la respuesta correcta",
+  listen: "Escuchar", noVoice: "Este dispositivo no tiene voz para {lang}",
+  stStreak: "Racha actual", stBest: "Mejor racha", stWords: "Palabras practicadas", stTests: "Tests", stAvg: "Nota media", stTime: "Tiempo de práctica",
+  chartGrades: "Tus notas", chartCal: "Calendario de práctica (palabras por día)", perList: "Por lista", known: "Sabidas", hardS: "Difíciles", newS: "Nuevas",
+  topHard: "Palabras más difíciles", noData: "Aún no hay suficientes datos. Haz un test y aquí verás tu progreso.", sinceNote: "La racha, las palabras y el tiempo cuentan desde que usas esta versión.",
+  failTimes: "{n}× fallada", minN: "{n} min", hmN: "{h} h {m} min", weekWords: "palabras esta semana", daysN: "{n} días",
+
   loginTitle: "Iniciar sesión",
   loginSub: "Inicia sesión para ver tus listas. Las listas se comparten, tus notas son solo tuyas.",
   loginEmail: "Correo electrónico",
@@ -770,12 +894,12 @@ function detectSwap(rows) {   // staat het Spaans links? (artikelen en accenten 
 
 /* ---------- state ---------- */
 const state = {
-  view: "home", lastView: null, lists: [], storage: "loading", loadNote: "", needLogin: false, me: null,
+  view: "home", lastView: null, lists: [], storage: "loading", loadNote: "", needLogin: false, me: null, activity: LS.get(K.act, {}), partner: null, avatar: LS.get(K.avatar, ""), hardList: null,
   setupFor: null, setupDir: "qa", editing: null, session: null, caps: false,
   imp: { mode: "one", text: "", a: "", b: "", swap: false, touched: false },
-  settings: Object.assign({ ignoreCase: true, ignoreAccents: false, retype: false }, LS.get(K.settings, {}))
+  settings: Object.assign({ ignoreCase: true, ignoreAccents: false, retype: false, speak: false }, LS.get(K.settings, {}))
 };
-const getList = id => (id === EXAMPLE.id ? EXAMPLE : state.lists.find(l => l.id === id));
+const getList = id => (id === "__hard" ? state.hardList : id === EXAMPLE.id ? EXAMPLE : state.lists.find(l => l.id === id));
 
 /* ---------- opslag: per gebruiker in de artifact-database, anders in deze browser ---------- */
 let cloud = null;
@@ -839,12 +963,12 @@ async function migrateLocal() {
   }
   LS.del(K.lists);
 }
-function saveList(list) {
-  list.updatedAt = Date.now();
+function saveList(list, o) {
+  if (!(o && o.progressOnly)) list.updatedAt = Date.now();
   const i = state.lists.findIndex(l => l.id === list.id);
   if (i >= 0) state.lists[i] = list; else state.lists.push(list);
   if (state.me && !list.by) list.by = state.me.name;
-  if (sb && sb.uid) return sbSave(list);
+  if (sb && sb.uid) return sbSave(list, o && o.progressOnly);
   if (cloud) return serial(list.id, () => cloud.col.doc(list.id).set(bodyOf(list)));
   LS.set(K.lists, state.lists);
   return Promise.resolve();
@@ -862,15 +986,16 @@ let sb = null;
 function splitList(l) {
   const body = bodyOf(l); delete body.results;
   body.words = (l.words || []).map(w => ({ id: w.id, q: w.q, a: w.a }));
-  const prog = { results: l.results || [], misses: {} };
-  (l.words || []).forEach(w => { if (w.misses) prog.misses[w.id] = w.misses; });
+  const prog = { results: l.results || [], misses: {}, run: {}, n: {}, used: l.used || 0 };
+  (l.words || []).forEach(w => { if (w.misses) prog.misses[w.id] = w.misses; if (w.run) prog.run[w.id] = w.run; if (w.n) prog.n[w.id] = w.n; });
   return { body, prog };
 }
 function joinList(row, prog) {
   const l = Object.assign({}, row.data, { id: row.id });
   const p = (prog && prog[row.id]) || {};
   l.results = p.results || [];
-  (l.words || []).forEach(w => { w.misses = (p.misses && p.misses[w.id]) || 0; });
+  l.used = p.used || 0;
+  (l.words || []).forEach(w => { w.misses = (p.misses && p.misses[w.id]) || 0; w.run = (p.run && p.run[w.id]) || 0; w.n = (p.n && p.n[w.id]) || 0; });
   return l;
 }
 async function sbPull() {
@@ -879,14 +1004,30 @@ async function sbPull() {
   const prog = {}; ((b && b.data) || []).forEach(r => { prog[r.list_id] = r.data; });
   return a.data.map(r => joinList(r, prog));
 }
-function sbSave(list) {
+function sbSave(list, progressOnly) {
   const { body, prog } = splitList(list);
   return serial(list.id, async () => {
-    const r1 = await sb.client.from("lists").upsert({ id: list.id, data: body, updated_at: new Date().toISOString() });
-    if (r1.error) throw r1.error;
+    if (!progressOnly) {
+      const r1 = await sb.client.from("lists").upsert({ id: list.id, data: body, updated_at: new Date().toISOString() });
+      if (r1.error) throw r1.error;
+    }
     const r2 = await sb.client.from("progress").upsert({ user_id: sb.uid, list_id: list.id, data: prog });
     if (r2.error) throw r2.error;
   });
+}
+async function sbPullExtras() {
+  try {
+    const since = dayKey(new Date(Date.now() - 140 * 864e5));
+    let pr = await sb.client.from("profiles").select("id,name,avatar");
+    if (pr.error) pr = await sb.client.from("profiles").select("id,name");
+    const ac = await sb.client.from("activity").select("user_id,day,words,secs,tests,ok").gte("day", since);
+    const mine = {}, theirs = {};
+    ((ac && ac.data) || []).forEach(r => { const o = { w: r.words, s: r.secs, t: r.tests, ok: r.ok }; (r.user_id === sb.uid ? mine : (theirs[r.user_id] || (theirs[r.user_id] = {})))[r.day] = o; });
+    const rows = (pr && pr.data) || [];
+    const me = rows.find(r => r.id === sb.uid), other = rows.find(r => r.id !== sb.uid);
+    state.activity = mine; state.avatar = (me && me.avatar) || "";
+    state.partner = other ? { name: other.name, avatar: other.avatar || "", activity: theirs[other.id] || {} } : null;
+  } catch (e) {}
 }
 async function sbStart(session) {
   sb.uid = session.user.id;
@@ -894,7 +1035,7 @@ async function sbStart(session) {
   try { const pr = await sb.client.from("profiles").select("name").eq("id", sb.uid).maybeSingle(); if (pr.data && pr.data.name) name = pr.data.name; } catch (e) {}
   state.me = { name }; state.needLogin = false; state.storage = "cloud-loading"; render();
   try {
-    state.lists = await sbPull(); state.storage = "cloud"; state.loadNote = "";
+    state.activity = {}; state.lists = await sbPull(); state.storage = "cloud"; state.loadNote = ""; await sbPullExtras();
     const local = LS.get(K.lists, []);
     if (local.length) {
       let ok = true;
@@ -905,8 +1046,12 @@ async function sbStart(session) {
   render();
   clearInterval(sb.timer);
   const refresh = async () => {
-    if (!sb || document.hidden || (state.view !== "home" && state.view !== "setup")) return;
-    try { const l = await sbPull(); if (JSON.stringify(l) !== JSON.stringify(state.lists)) { state.lists = l; if (state.view === "home" || state.view === "setup") render(); } } catch (e) {}
+    if (!sb || document.hidden || (state.view !== "home" && state.view !== "setup" && state.view !== "stats")) return;
+    try {
+      const before = JSON.stringify([state.lists, state.activity, state.partner, state.avatar]);
+      const l = await sbPull(); state.lists = l; await sbPullExtras();
+      if (JSON.stringify([state.lists, state.activity, state.partner, state.avatar]) !== before && ["home", "setup", "stats"].includes(state.view)) render();
+    } catch (e) {}
   };
   sb.timer = setInterval(refresh, 45000);
   document.addEventListener("visibilitychange", refresh);
@@ -926,7 +1071,7 @@ async function sbLogin(email, pw) {
 async function sbLogout() {
   if (sb) { try { await sb.client.auth.signOut(); } catch (e) {} clearInterval(sb.timer); }
   LS.del(K.session);
-  state.lists = []; state.me = null; state.session = null; state.view = "home";
+  state.lists = []; state.me = null; state.session = null; state.view = "home"; state.activity = {}; state.partner = null; state.avatar = "";
   if (!sb) { location.reload(); return; }
   state.needLogin = true; state.storage = "loading";
   render();
@@ -940,6 +1085,60 @@ function viewLogin() {
     <button class="btn btn-primary btn-lg" type="submit" id="lgBtn">${esc(t("loginBtn"))}</button>
   </form></div></div>`;
 }
+
+/* ---------- dagen, reeksen, activiteit ---------- */
+const AVATARS = ["🦦", "🥔", "🧀", "🦖", "🐙", "🥑", "🦔", "🐌", "🦩", "🐸", "🦥", "🦆"];
+const dayKey = (d = new Date()) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+function streakInfo(a) {
+  const has = k => a[k] && a[k].w > 0;
+  let cur = 0; const d = new Date(); d.setHours(12, 0, 0, 0);
+  if (!has(dayKey(d))) d.setDate(d.getDate() - 1);
+  while (has(dayKey(d))) { cur++; d.setDate(d.getDate() - 1); }
+  let best = 0, run = 0, prev = null;
+  Object.keys(a).filter(has).sort().forEach(k => {
+    const dt = new Date(k + "T12:00:00");
+    run = prev && Math.round((dt - prev) / 864e5) === 1 ? run + 1 : 1; prev = dt; if (run > best) best = run;
+  });
+  return { cur, best: Math.max(best, cur) };
+}
+function logActivity(words, secs, ok, noTest) {
+  if (!words) return;
+  const k = dayKey(), a = state.activity[k] || { w: 0, s: 0, t: 0, ok: 0 };
+  a.w += words; a.s += secs; a.t += noTest ? 0 : 1; a.ok += ok; state.activity[k] = a;
+  if (sb && sb.uid) sb.client.from("activity").upsert({ user_id: sb.uid, day: k, words: a.w, secs: a.s, tests: a.t, ok: a.ok }).then(() => {}, () => {});
+  else LS.set(K.act, state.activity);
+}
+function saveAvatar(a) {
+  state.avatar = a; LS.set(K.avatar, a);
+  if (sb && sb.uid) sb.client.from("profiles").update({ avatar: a || null }).eq("id", sb.uid).then(() => {}, () => {});
+}
+function hardWordsAll() {
+  const out = [];
+  state.lists.forEach(l => l.words.forEach(w => { if (w.misses > 0) out.push({ l, w }); }));
+  return out.sort((a, b) => b.w.misses - a.w.misses || (a.w.run || 0) - (b.w.run || 0));
+}
+const wstate = (l, w) => (w.misses > 0 ? "hard" : ((w.n || 0) > 0 || (l.results || []).some(r => !r.partial) ? "known" : "new"));
+function allResults() {
+  const r = [];
+  state.lists.forEach(l => (l.results || []).filter(x => !x.partial).forEach(x => r.push(Object.assign({ list: l.name }, x))));
+  return r.sort((a, b) => a.at - b.at);
+}
+
+/* ---------- uitspraak (stem van je apparaat) ---------- */
+const CAN_SPEAK = typeof window.speechSynthesis !== "undefined" && typeof window.SpeechSynthesisUtterance !== "undefined";
+const SPEAK_LANG = { nl: "nl-NL", es: "es-ES" };
+function speak(text, lang) {
+  if (!CAN_SPEAK) return;
+  const clean = String(text || "").replace(/[()]/g, "").split(/\s*[\/;,]\s*/)[0].trim(); if (!clean) return;
+  const code = SPEAK_LANG[lang] || lang;
+  const u = new SpeechSynthesisUtterance(clean); u.lang = code; u.rate = 0.9;
+  const vs = speechSynthesis.getVoices();
+  const v = vs.find(x => x.lang.replace("_", "-") === code) || vs.find(x => x.lang.toLowerCase().startsWith(lang));
+  if (v) u.voice = v; else if (vs.length) { toast(t("noVoice", { lang: langName(lang) })); return; }
+  try { speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
+}
+const spkBtn = (text, lang) => CAN_SPEAK ? `<button type="button" class="spk" data-act="speak" data-text="${esc(text)}" data-lang="${lang}" aria-label="${esc(t("listen"))}">${ICO.speaker}</button>` : "";
+const spkQ = () => CAN_SPEAK ? `<button type="button" class="spk spk-q" data-act="speak-q" aria-label="${esc(t("listen"))}">${ICO.speaker}</button>` : "";
 const saveErr = e => toast(e && e.code === "quota_exceeded" ? t("saveFull") : t("saveFail"));
 
 /* ---------- Spaanse tekens ---------- */
@@ -973,6 +1172,8 @@ const ICO = {
   pen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/></svg>',
   cards: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="3"/><path d="M7 3h11a3 3 0 0 1 3 3v11"/></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg>',
+  speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.500v-13L7.500 9.500z"/><path d="M15.500 9a4 4 0 0 1 0 6M18 6.500a8 8 0 0 1 0 11"/></svg>',
+  chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
   photo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.5l1.5-2h6l1.500 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.500"/></svg>',
   arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
   plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'
@@ -982,11 +1183,12 @@ const listIcon = l => ICO[LICONS[[...(l.name || "x")].reduce((a, c) => a + c.cha
 
 /* ---------- views ---------- */
 function viewHome() {
-  const lists = [...state.lists].sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  const lists = [...state.lists].sort((a, b) => (b.used || b.updatedAt || 0) - (a.used || a.updatedAt || 0));
   const loading = state.storage === "loading" || (state.storage === "cloud-loading" && !lists.length);
   const showExample = !loading && !lists.length;
   const saved = LS.get(K.session, null);
   let h = `<header class="hero"><div class="hero-copy"><span class="eyebrow">Learn your way</span><h1>${esc(t("welcomeTitle")).replace("Lesmio", '<span class="hl">Lesmio</span>')}</h1><p class="tag">${esc(t("tag"))}</p><div class="hero-cta"><button class="btn btn-primary btn-lg" data-act="new">${ICO.plus}${esc(t("newListBtn").replace(/^\+\s*/, ""))}</button></div><div class="duo"><span class="pill">${esc(langName("nl"))}</span><span class="arr" aria-hidden="true">⇄</span><span class="pill">${esc(langName("es"))}</span></div></div><div class="stack" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><div class="vc v1"><span class="vc-l">${esc(langName("nl"))}</span><b>huis</b><i>casa</i></div><div class="vc v2"><span class="vc-l">${esc(langName("es"))}</span><b>gracias</b><i>dank je</i></div><div class="vc v3"><span class="vc-l">${esc(langName("nl"))}</span><b>kaas</b><i>queso</i></div></div></header>`;
+  if (!loading) h += homeTiles();
   if (saved && saved.items && saved.items.length) {
     const d = saved.items.filter(i => i.done).length;
     h += `<div class="banner"><div><b>${esc(t("inProgress"))}</b> ${esc(saved.listName)}<div class="muted">${esc(saved.mode === "kaartjes" ? t("modeCards") : t("modeTest"))} · ${esc(t("progressKnown", { d, n: saved.items.length }))}</div></div><div class="banner-act"><button class="btn btn-primary btn-sm" data-act="resume">${esc(t("resume"))}</button><button class="btn btn-quiet btn-sm" data-act="discard">${esc(t("discard"))}</button></div></div>`;
@@ -999,6 +1201,22 @@ function viewHome() {
   if (state.storage === "local") h += `<p class="note">${esc(t("noteLocal"))}</p>`;
   if (state.loadNote) h += `<p class="note warn">${esc(t(state.loadNote))}</p>`;
   return h + `</section>`;
+}
+function homeTiles() {
+  const si = streakInfo(state.activity), today = (state.activity[dayKey()] || {}).w || 0;
+  const hardN = hardWordsAll().length;
+  const cap = si.cur === 0 ? t("streak0") : si.cur === 1 ? t("streakCap1") : t("streakCapN");
+  let h = `<section class="today" aria-label="${esc(t("progress"))}">
+    <div class="tile t-streak"><span class="t-ic" aria-hidden="true">🔥</span><b>${si.cur}</b><span>${esc(cap)}</span></div>
+    <div class="tile t-today"><span class="t-ic" aria-hidden="true">${ICO.pen}</span><b>${today}</b><span>${esc(t("todayCap"))}</span></div>
+    <button type="button" class="tile t-hard" data-act="practice-all"${hardN ? "" : " disabled"}><span class="t-ic" aria-hidden="true">${ICO.target}</span><b>${hardN}</b><span>${esc(t("hardCap"))}</span><em>${esc(hardN ? t("hardGo") : t("hardNone"))}${hardN ? ICO.arrow : ""}</em></button>
+    <button type="button" class="tile t-prog" data-act="stats"><span class="t-ic" aria-hidden="true">${ICO.chart}</span><b class="t-title">${esc(t("progress"))}</b><span>${esc(t("progressSub"))}</span><em>${ICO.arrow}</em></button>
+  </section>`;
+  if (state.partner) {
+    const p = state.partner, ps = streakInfo(p.activity), pw = (p.activity[dayKey()] || {}).w || 0;
+    h += `<div class="together"><span class="tg-l">${esc(t("together"))}</span><span class="av${p.avatar ? " emo" : ""}" aria-hidden="true">${esc(p.avatar || p.name.charAt(0).toUpperCase())}</span><b>${esc(p.name)}</b><span class="tg-d">🔥 ${ps.cur}</span><span class="tg-d">${esc(t("partnerToday", { n: pw }))}</span></div>`;
+  }
+  return h;
 }
 function listRow(l) {
   const full = (l.results || []).filter(r => !r.partial);
@@ -1033,11 +1251,12 @@ function viewSetup() {
     ${sw("optAcc", "ignoreAccents", t("optAcc"), t("optAccSub"))}
     ${sw("optRetype", "retype", t("optRetype"), t("optRetypeSub"))}
   </div>
+  ${CAN_SPEAK ? `<div class="panel"><h3>${esc(t("sound"))}</h3>${sw("optSpeak", "speak", t("optSpeak"), t("optSpeakSub"))}</div>` : ""}
   </div>
   <div class="setup-side">
   ${res.length ? `<div class="panel"><h3>${esc(t("lastGrades"))}</h3><div class="marks">${res.map(r => `<span class="mark ${gradeClass(r.grade)}" title="${esc(new Date(r.at).toLocaleDateString(dateLoc()))}">${fmtGrade(r.grade)}</span>`).join("")}</div></div>` : ""}
   ${hard.length ? `<div class="panel"><h3>${esc(t("hardWords"))}</h3><ul class="hard">${hard.map(w => `<li><span class="hq">${esc(w.q)}</span><span class="ha">${esc(w.a)}</span><span class="hx">${esc(t("failN", { n: w.misses }))}</span></li>`).join("")}</ul></div>` : ""}
-  <details class="panel"><summary>${esc(t("allWords", { n: l.words.length }))}</summary><ul class="wlist">${l.words.map(w => `<li><span>${esc(w.q)}</span><span>${esc(w.a)}</span></li>`).join("")}</ul></details>
+  <details class="panel"><summary>${esc(t("allWords", { n: l.words.length }))}</summary><ul class="wlist">${l.words.map(w => `<li><span>${esc(w.q)}${spkBtn(w.q, "nl")}</span><span>${esc(w.a)}${spkBtn(w.a, "es")}</span></li>`).join("")}</ul></details>
   <div class="row-btns"><button class="btn" data-act="edit">${esc(l.example ? t("makeOwn") : t("editList"))}</button>${l.example ? "" : `<button class="btn btn-danger" data-act="delete">${esc(t("del"))}</button>`}</div>
   </div>
   </div>
@@ -1146,7 +1365,7 @@ function viewTest() {
   <div class="test-top"><button class="btn btn-quiet btn-sm" data-act="stop">${esc(t("stop"))}</button><div class="count">${t("countLine", { d: '<b id="tDone">0</b>', n: '<span id="tTotal">0</span>' })}</div></div>
   <div class="bar" aria-hidden="true"><i id="tBar"></i></div>
   <div class="sheet${cards ? " card" : ""}" id="tSheet"${cards ? ` data-act="flip" role="button" tabindex="0" aria-label="${esc(t("flipAria"))}"` : ""}>
-    <span class="q-lang" id="tQLang"></span>
+    <div class="q-row"><span class="q-lang" id="tQLang"></span>${spkQ()}</div>
     <div class="q" id="tQ" aria-live="polite"></div>
     <div class="phase" id="tPhase"></div>
     ${cards
@@ -1179,6 +1398,7 @@ function viewResults() {
     : `<p class="perfect">${esc(t("perfect"))}</p>`}
   <div class="res-actions">
     ${hard.length ? `<button class="btn btn-primary" data-act="redo-wrong">${esc(wids.length === 1 ? t("redoWrong1") : t("redoWrongN", { n: wids.length }))}</button>` : ""}
+    ${hard.length ? `<button class="btn" data-act="wrong-list">${esc(t("wrongToList"))}</button>` : ""}
     <button class="btn${hard.length ? "" : " btn-primary"}" data-act="redo-all">${esc(t("redoAll"))}</button>
     <button class="btn btn-quiet" data-act="home">${esc(t("toLists"))}</button>
   </div>
@@ -1190,7 +1410,7 @@ function syncChrome() {
   const sel = $("#uiLang"); if (sel) sel.value = LANG;
   const lb = $("#uiLangLabel"); if (lb) lb.textContent = t("uiLang");
   const nu = $("#navUser");
-  if (nu) nu.innerHTML = state.me ? `<button type="button" class="userchip" data-act="logout" aria-label="${esc(t("logout"))}" title="${esc(t("logout"))}"><span class="av">${esc(state.me.name.charAt(0).toUpperCase())}</span><span class="un">${esc(state.me.name)}</span><span class="lo">${esc(t("logout"))}</span></button>` : "";
+  if (nu) nu.innerHTML = state.me ? `<button type="button" class="userchip" data-act="profile" aria-label="${esc(t("profile"))}" title="${esc(t("profile"))}"><span class="av${state.avatar ? " emo" : ""}">${esc(state.avatar || state.me.name.charAt(0).toUpperCase())}</span><span class="un">${esc(state.me.name)}</span></button>` : "";
 }
 function render() {
   const app = $("#app");
@@ -1198,10 +1418,115 @@ function render() {
   syncChrome();
   if (state.needLogin) { app.innerHTML = viewLogin(); return; }
   if (window.LESMIO_SB && state.storage === "loading" && !state.me) { app.innerHTML = ""; return; }
-  app.innerHTML = v === "setup" ? viewSetup() : v === "edit" ? viewEdit() : v === "test" ? viewTest() : v === "results" ? viewResults() : viewHome();
+  app.innerHTML = v === "setup" ? viewSetup() : v === "edit" ? viewEdit() : v === "test" ? viewTest() : v === "results" ? viewResults() : v === "stats" ? viewStats() : viewHome();
   if (state.view === "home") app.innerHTML = `<div class="view enter">${app.innerHTML}</div>`;
   if (state.view === "edit") { updateCount(); updateImport(); }
   if (state.view !== state.lastView) { window.scrollTo(0, 0); state.lastView = state.view; }
+}
+
+/* ---------- voortgang ---------- */
+const fmtDur = sec => { const m = Math.round(sec / 60); return m < 60 ? t("minN", { n: m }) : t("hmN", { h: Math.floor(m / 60), m: m % 60 }); };
+function gradeChart(res) {
+  const pts = res.slice(-20);
+  if (!pts.length) return `<p class="muted">${esc(t("noData"))}</p>`;
+  const W = 600, H = 210, L = 34, R = 14, T = 14, B = 30;
+  const x = i => pts.length === 1 ? (L + W - R) / 2 : L + i * (W - L - R) / (pts.length - 1);
+  const y = g => T + (10 - g) * (H - T - B) / 9;
+  const grid = [2, 4, 6, 8, 10].map(g => `<line x1="${L}" x2="${W - R}" y1="${y(g).toFixed(1)}" y2="${y(g).toFixed(1)}" class="gl"/><text x="${L - 8}" y="${(y(g) + 4).toFixed(1)}" class="gt" text-anchor="end">${g}</text>`).join("");
+  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.grade).toFixed(1)}`).join(" ");
+  const area = `${line} L${x(pts.length - 1).toFixed(1)} ${y(1).toFixed(1)} L${x(0).toFixed(1)} ${y(1).toFixed(1)} Z`;
+  const dots = pts.map((p, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(p.grade).toFixed(1)}" r="5" class="gd${p.grade < 5.5 ? " low" : ""}"><title>${esc(new Date(p.at).toLocaleDateString(dateLoc()))} · ${esc(p.list)} · ${fmtGrade(p.grade)}</title></circle>`).join("");
+  const d0 = new Date(pts[0].at).toLocaleDateString(dateLoc(), { day: "numeric", month: "short" }), d1 = new Date(pts[pts.length - 1].at).toLocaleDateString(dateLoc(), { day: "numeric", month: "short" });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t("chartGrades"))}: ${pts.map(p => fmtGrade(p.grade)).join(", ")}">${grid}<line x1="${L}" x2="${W - R}" y1="${y(5.5).toFixed(1)}" y2="${y(5.5).toFixed(1)}" class="gp"/><path d="${area}" class="ga"/><path d="${line}" class="gline"/>${dots}<text x="${L}" y="${H - 8}" class="gt">${esc(d0)}</text><text x="${W - R}" y="${H - 8}" class="gt" text-anchor="end">${pts.length > 1 ? esc(d1) : ""}</text></svg>`;
+}
+function calendar(A) {
+  const today = new Date(); today.setHours(12, 0, 0, 0);
+  const start = new Date(today); start.setDate(start.getDate() - ((today.getDay() + 6) % 7) - 7 * 11);
+  let cells = "";
+  for (let i = 0; i < 84; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    const w = (A[dayKey(d)] || {}).w || 0, lv = w === 0 ? 0 : w <= 10 ? 1 : w <= 25 ? 2 : w <= 50 ? 3 : 4;
+    cells += `<i class="cc l${lv}${d > today ? " fut" : ""}" title="${esc(d.toLocaleDateString(dateLoc(), { day: "numeric", month: "short" }))}: ${esc(wordsLabel(w))}"></i>`;
+  }
+  return `<div class="cal" role="img" aria-label="${esc(t("chartCal"))}">${cells}</div>`;
+}
+function viewStats() {
+  const A = state.activity, si = streakInfo(A), days = Object.values(A);
+  const sum = k => days.reduce((n, d) => n + (d[k] || 0), 0);
+  const res = allResults(), last10 = res.slice(-10);
+  const avg = last10.length ? last10.reduce((n, r) => n + r.grade, 0) / last10.length : null;
+  const tile = (cls, big, cap) => `<div class="stile ${cls}"><b>${big}</b><span>${esc(cap)}</span></div>`;
+  const lists = state.lists.filter(l => !l.example && l.words.length);
+  const bars = lists.map(l => {
+    const c = { known: 0, hard: 0, new: 0 }; l.words.forEach(w => { c[wstate(l, w)]++; });
+    const n = l.words.length, pc = k => (c[k] / n * 100).toFixed(1);
+    return `<div class="lb"><div class="lb-h"><b>${esc(l.name)}</b><span>${esc(t("known"))} ${c.known} · ${esc(t("hardS"))} ${c.hard} · ${esc(t("newS"))} ${c.new}</span></div><div class="lb-bar" role="img" aria-label="${esc(l.name)}: ${esc(t("known"))} ${c.known}, ${esc(t("hardS"))} ${c.hard}, ${esc(t("newS"))} ${c.new}"><i class="k" style="width:${pc("known")}%"></i><i class="h" style="width:${pc("hard")}%"></i></div></div>`;
+  }).join("");
+  const hard = hardWordsAll().slice(0, 8);
+  const weekW = a => { let n = 0; const d = new Date(); for (let i = 0; i < 7; i++) { n += (a[dayKey(d)] || {}).w || 0; d.setDate(d.getDate() - 1); } return n; };
+  let together = "";
+  if (state.partner) {
+    const p = state.partner, ps = streakInfo(p.activity);
+    const row = (av, emo, name, st, w) => `<div class="tg-row"><span class="av${emo ? " emo" : ""}">${esc(av)}</span><b>${esc(name)}</b><span>🔥 ${st.cur} · ${esc(t("stBest"))} ${st.best}</span><span>${w} ${esc(t("weekWords"))}</span></div>`;
+    together = `<div class="panel"><h3>${esc(t("together"))}</h3>${row(state.avatar || (state.me ? state.me.name.charAt(0).toUpperCase() : "·"), !!state.avatar, state.me ? state.me.name : "", si, weekW(A))}${row(p.avatar || p.name.charAt(0).toUpperCase(), !!p.avatar, p.name, ps, weekW(p.activity))}</div>`;
+  }
+  return `<div class="view enter">
+  <button class="btn btn-quiet btn-sm back" data-act="home">${esc(t("backToLists"))}</button>
+  <div class="title-block"><span class="eyebrow">Learn your way</span><h2>${esc(t("progress"))}</h2></div>
+  <div class="stiles">${tile("s1", "🔥 " + si.cur, t("stStreak"))}${tile("s2", si.best, t("stBest"))}${tile("s3", sum("w"), t("stWords"))}${tile("s4", sum("t"), t("stTests"))}${tile("s5", avg == null ? "–" : fmtGrade(avg), t("stAvg"))}${tile("s6", fmtDur(sum("s")), t("stTime"))}</div>
+  <div class="stats-grid">
+    <div class="stat-col">
+    <div class="panel"><h3>${esc(t("chartGrades"))}</h3>${gradeChart(res)}</div>
+    <div class="panel"><h3>${esc(t("perList"))}</h3>${bars || `<p class="muted">${esc(t("noData"))}</p>`}</div>
+    ${together}
+    </div>
+    <div class="stat-col">
+    <div class="panel"><h3>${esc(t("chartCal"))}</h3>${calendar(A)}<p class="note" style="margin-top:12px">${esc(t("sinceNote"))}</p></div>
+    <div class="panel"><h3>${esc(t("topHard"))}</h3>${hard.length ? `<ul class="hard">${hard.map(({ l, w }) => `<li><span class="hq">${esc(w.q)}</span><span class="ha">${esc(w.a)}</span><span class="hx">${esc(t("failTimes", { n: w.misses }))}</span></li>`).join("")}</ul><button class="btn btn-primary btn-sm" data-act="practice-all" style="margin-top:12px">${esc(t("practiceAllHard"))}</button>` : `<p class="muted">${esc(t("noHard"))}</p>`}</div>
+    </div>
+  </div></div>`;
+}
+
+function pickBox({ title, text, options }) {
+  return new Promise(res => {
+    const ov = document.createElement("div"); ov.className = "overlay";
+    ov.innerHTML = `<div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle"><h3 id="mTitle">${esc(title)}</h3><p>${esc(text)}</p><div class="pick">${options.map(o => `<button type="button" class="btn btn-lg" data-v="${o.v}">${esc(o.label)}</button>`).join("")}</div><div class="modal-act one"><button type="button" class="btn btn-quiet" data-v="">${esc(t("cancel"))}</button></div></div>`;
+    const close = v => { ov.remove(); document.removeEventListener("keydown", kd, true); res(v); };
+    const kd = e => { if (e.key === "Escape") { e.stopPropagation(); close(null); } };
+    ov.addEventListener("click", e => { const b = e.target.closest("[data-v]"); if (b) close(b.dataset.v === "" ? null : +b.dataset.v); else if (e.target === ov) close(null); });
+    document.addEventListener("keydown", kd, true);
+    document.body.appendChild(ov); const f = $(".pick .btn", ov); if (f) f.focus();
+  });
+}
+async function practiceAllHard() {
+  let all = hardWordsAll(); if (!all.length) return toast(t("noHard"));
+  all = all.slice(0, 50);
+  let n = all.length;
+  if (all.length > 10) {
+    const opts = [10, 20, 30].filter(x => x < all.length).map(x => ({ v: x, label: String(x) }));
+    opts.push({ v: all.length, label: t("allN", { n: all.length }) });
+    n = await pickBox({ title: t("pickCount"), text: t("pickText"), options: opts });
+    if (!n) return;
+  }
+  state.hardList = { id: "__hard", name: t("hardListName"), qLang: "nl", aLang: "es", results: [], words: all.slice(0, n).map(({ w }) => ({ id: w.id, q: w.q, a: w.a, misses: w.misses })) };
+  startSession(state.hardList, "toets", defaultDir(), null);
+}
+function profileBox() {
+  if (!state.me) return;
+  const ov = document.createElement("div"); ov.className = "overlay";
+  const draw = () => {
+    ov.innerHTML = `<div class="modal profile" role="dialog" aria-modal="true" aria-labelledby="mTitle"><h3 id="mTitle">${esc(t("profile"))}</h3><p>${esc(state.me.name)}</p><div class="avgrid" role="group" aria-label="${esc(t("chooseAvatar"))}"><button type="button" class="avbtn" data-av="" aria-pressed="${!state.avatar}" aria-label="${esc(t("noAvatar"))}"><span class="av">${esc(state.me.name.charAt(0).toUpperCase())}</span></button>${AVATARS.map(a => `<button type="button" class="avbtn" data-av="${a}" aria-pressed="${state.avatar === a}">${a}</button>`).join("")}</div><div class="modal-act"><button type="button" class="btn btn-danger" data-m="out">${esc(t("logout"))}</button><button type="button" class="btn btn-primary" data-m="close">${esc(t("close"))}</button></div></div>`;
+  };
+  const close = () => { ov.remove(); document.removeEventListener("keydown", kd, true); };
+  const kd = e => { if (e.key === "Escape") { e.stopPropagation(); close(); } };
+  ov.addEventListener("click", e => {
+    const av = e.target.closest("[data-av]");
+    if (av) { saveAvatar(av.dataset.av); syncChrome(); if (state.view === "home" || state.view === "stats") render(); draw(); return; }
+    const m = e.target.closest("[data-m]");
+    if (m) { close(); if (m.dataset.m === "out") sbLogout(); } else if (e.target === ov) close();
+  });
+  document.addEventListener("keydown", kd, true);
+  draw(); document.body.appendChild(ov);
 }
 
 /* ---------- toets-motor (WRTS-stijl) ---------- */
@@ -1238,6 +1563,7 @@ function nextItem() {
   s.st = s.mode === "kaartjes" ? "front" : "ask";
   s.given = ""; s.why = ""; s.idk = false; s.override = false;
   saveSession(); updateTest(true);
+  if (state.settings.speak) speak(cur().q, cur().ql);
 }
 function apply(ok) {
   const s = state.session, it = cur();
@@ -1275,16 +1601,16 @@ function doCheck() {
   const r = check(inp.value, it.a, state.settings);
   if (r.r === "empty") { shake(inp); inp.placeholder = t("typeAnsEmpty"); return; }
   s.given = inp.value;
-  if (r.r === "correct") { s.st = "correct"; autoTimer = setTimeout(advance, 950); }
+  if (r.r === "correct") { s.st = "correct"; autoTimer = setTimeout(advance, state.settings.speak && CAN_SPEAK ? 1800 : 950); if (state.settings.speak) speak(it.a, it.al); }
   else if (r.r === "almost" && s.st === "ask") { s.st = "almost"; s.why = r.why; }
-  else s.st = "wrong";
+  else { s.st = "wrong"; if (state.settings.speak) speak(it.a, it.al); }
   saveSession(); updateTest(false);
 }
 function idk() {
   const s = state.session; if (!s || (s.st !== "ask" && s.st !== "almost")) return;
   s.given = ""; s.idk = true; s.st = "wrong"; saveSession(); updateTest(false);
 }
-function flip() { const s = state.session; if (s && s.st === "front") { s.st = "back"; saveSession(); updateTest(false); } }
+function flip() { const s = state.session; if (s && s.st === "front") { s.st = "back"; saveSession(); updateTest(false); if (state.settings.speak) { const c = cur(); if (c) speak(c.a, c.al); } } }
 function know(ok) { const s = state.session; if (!s || s.st !== "back") return; apply(ok); s.st = "busy"; nextItem(); }
 
 const B = (act, label, cls = "") => `<button class="btn ${cls}" data-act="${act}">${esc(label)}</button>`;
@@ -1303,7 +1629,7 @@ function updateTest(fresh) {
 
   if (s.mode === "kaartjes") {
     const back = s.st === "back";
-    $("#tBack").hidden = !back; $("#tBack").textContent = it.a;
+    $("#tBack").hidden = !back; $("#tBack").innerHTML = esc(it.a) + spkBtn(it.a, it.al);
     $("#tALang").hidden = !back; $("#tHint").hidden = back;
     fb.innerHTML = "";
     act.innerHTML = back ? B("dontknow", t("dontknow"), "btn-bad") + B("know", t("knew"), "btn-good") : B("flip", t("flip"), "btn-primary span2");
@@ -1329,7 +1655,7 @@ function updateTest(fresh) {
   } else if (s.st === "wrong") {
     inp.value = "";
     inp.placeholder = state.settings.retype ? t("retypePh") : t("enterNext");
-    fb.innerHTML = `<div class="fb-box fb-bad"><div class="fb-title">${esc(s.idk ? t("answerIs") : t("wrongT"))}</div>${s.idk ? "" : `<div class="you">${esc(t("you"))} <s>${esc(s.given)}</s></div>`}<div class="right">${esc(it.a)}</div>${state.settings.retype ? `<p class="hint">${esc(t("retypeHint"))}</p>` : ""}</div>`;
+    fb.innerHTML = `<div class="fb-box fb-bad"><div class="fb-title">${esc(s.idk ? t("answerIs") : t("wrongT"))}</div>${s.idk ? "" : `<div class="you">${esc(t("you"))} <s>${esc(s.given)}</s></div>`}<div class="right">${esc(it.a)}${spkBtn(it.a, it.al)}</div>${state.settings.retype ? `<p class="hint">${esc(t("retypeHint"))}</p>` : ""}</div>`;
     act.innerHTML = B("next", t("next"), "btn-primary" + (s.idk ? " span2" : "")) + (s.idk ? "" : B("override", t("override")));
   }
   try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); }
@@ -1340,19 +1666,29 @@ function finish() {
   const total = s.items.length, first = s.items.filter(i => i.first === true).length;
   const grade = Math.round((1 + 9 * first / total) * 10) / 10;
   s.result = { at: Date.now(), grade, total, first, mode: s.mode, dir: s.dir, secs: Math.round((Date.now() - s.startedAt) / 1000) };
-  if (s.onlyIds) s.result.partial = true;
-  const list = getList(s.listId);
-  if (list) {
-    const errs = {};
-    s.items.forEach(i => { if (i.errors) errs[i.wid] = (errs[i.wid] || 0) + i.errors; });
-    if (list.example) { list.results.push(s.result); list.words.forEach(w => { if (errs[w.id]) w.misses += errs[w.id]; }); }
-    else {
-      const copy = clone(list);
-      copy.results = (copy.results || []).concat([s.result]).slice(-30);
-      copy.words.forEach(w => { if (errs[w.id]) w.misses = (w.misses || 0) + errs[w.id]; });
-      saveList(copy).catch(saveErr);
-    }
-  }
+  const hardMode = s.listId === "__hard";
+  if (s.onlyIds || hardMode) s.result.partial = true;
+  const per = {};
+  s.items.forEach(i => { const o = per[i.wid] || (per[i.wid] = { errors: 0, all: true }); o.errors += i.errors; if (i.first !== true) o.all = false; });
+  const update = (l, inPlace) => {
+    const c = inPlace ? l : clone(l); let hit = false;
+    c.words.forEach(w => {
+      const o = per[w.id]; if (!o) return; hit = true;
+      w.n = (w.n || 0) + 1;
+      if (o.errors) w.misses = (w.misses || 0) + o.errors;
+      if (o.all) { w.run = (w.run || 0) + 1; if (w.run >= 3) w.misses = 0; } else w.run = 0;
+    });
+    return hit ? c : null;
+  };
+  const targets = hardMode ? state.lists.slice() : [getList(s.listId)].filter(Boolean);
+  targets.forEach(l => {
+    if (l.example) { l.results.push(s.result); update(l, true); return; }
+    const c = update(l, false); if (!c) return;
+    c.used = Date.now();
+    if (!hardMode) c.results = (c.results || []).concat([s.result]).slice(-30);
+    saveList(c, { progressOnly: true }).catch(saveErr);
+  });
+  logActivity(Object.keys(per).length, s.result.secs, Object.values(per).filter(o => o.all).length);
   LS.del(K.session);
   state.view = "results"; render();
 }
@@ -1459,7 +1795,25 @@ document.addEventListener("click", async ev => {
   const act = el.dataset.act, s = state.session;
   switch (act) {
     case "logout": sbLogout(); break;
-    case "logo": if (state.view === "setup" || state.view === "results" || state.view === "home") { if (state.view === "results") state.session = null; state.view = "home"; render(); } break;
+    case "profile": profileBox(); break;
+    case "stats": state.view = "stats"; render(); break;
+    case "practice-all": practiceAllHard(); break;
+    case "speak": speak(el.dataset.text, el.dataset.lang); break;
+    case "speak-q": { const c = cur(); if (c) speak(c.q, c.ql); break; }
+    case "wrong-list": {
+      if (!s || !s.result) break;
+      const wids = new Set(s.items.filter(i => i.errors > 0).map(i => i.wid));
+      const src = s.listId === "__hard" ? state.lists : [getList(s.listId)];
+      const words = [];
+      src.forEach(l => l && l.words.forEach(w => { if (wids.has(w.id)) words.push({ id: uid(), q: w.q, a: w.a, misses: 0 }); }));
+      if (!words.length) break;
+      const base = s.listId === "__hard" ? t("hardListName") : s.listName;
+      const nl2 = { id: uid(), name: t("wrongListName", { name: base }), qLang: "nl", aLang: "es", words, results: [], createdAt: Date.now() };
+      saveList(nl2).catch(saveErr);
+      state.session = null; openSetup(nl2.id); toast(t("wrongListMade", { n: words.length }));
+      break;
+    }
+    case "logo": if (state.view === "setup" || state.view === "results" || state.view === "home" || state.view === "stats") { if (state.view === "results") state.session = null; state.view = "home"; render(); } break;
     case "home": state.session = state.view === "results" ? null : state.session; state.view = "home"; render(); break;
     case "new": openEditor(null); break;
     case "open": openSetup(el.dataset.id); break;
@@ -1530,6 +1884,7 @@ document.addEventListener("click", async ev => {
     case "stop": {
       if (await confirmBox({ title: t("stopTitle"), text: t("stopText"), ok: t("stopOk"), cancel: t("keepGoing"), danger: true })) {
         clearTimeout(autoTimer); LS.del(K.session);
+        if (s && s.items) { const dw = new Set(s.items.filter(i => i.done).map(i => i.wid)); logActivity(dw.size, Math.round((Date.now() - s.startedAt) / 1000), s.items.filter(i => i.done && i.first === true).length, true); }
         const id = s && s.listId; state.session = null;
         if (id && getList(id)) openSetup(id); else { state.view = "home"; render(); }
       } else if ($("#tInput")) $("#tInput").focus();

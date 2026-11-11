@@ -1558,7 +1558,21 @@ function render() {
   if (state.view === "edit") { updateCount(); updateImport(); }
   if (state.view === "learn") updateLearn();
   if (state.view !== state.lastView) { window.scrollTo(0, 0); state.lastView = state.view; }
+  histSync();
 }
+/* terugknop: home (0) > lijst/voortgang/bewerken (1) > toets/leren/resultaat (2) */
+const NAV_DEPTH = { home: 0, setup: 1, stats: 1, edit: 1, test: 2, learn: 2, results: 2 };
+function histSync() {
+  try { const D = NAV_DEPTH[state.view] || 0, cur = (history.state && history.state.d) || 0; if (D > cur) history.pushState({ d: D }, ""); else if (D < cur) history.go(D - cur); else history.replaceState({ d: D }, ""); } catch (e) {}
+}
+window.addEventListener("popstate", ev => {
+  const d = (ev.state && ev.state.d) || 0, v = state.view;
+  if ((NAV_DEPTH[v] || 0) <= d) { histSync(); return; }
+  const lid = (state.session && state.session.listId) || (state.learn && state.learn.listId) || state.setupFor;
+  if (v === "learn" && state.learn) { lrnPause(); if (d === 0) { state.view = "home"; render(); } return; }
+  clearTimeout(autoTimer); if (v === "test" || v === "results") state.session = null;
+  if (d >= 1 && lid && getList(lid)) openSetup(lid); else { state.view = "home"; render(); }
+});
 
 /* ---------- voortgang ---------- */
 const fmtDur = sec => { const m = Math.round(sec / 60); return m < 60 ? t("minN", { n: m }) : t("hmN", { h: Math.floor(m / 60), m: m % 60 }); };

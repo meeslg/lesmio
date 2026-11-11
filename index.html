@@ -120,6 +120,13 @@ svg{display:block}
 .goal-t em{font-style:normal;font-size:12.5px;opacity:.8}
 .goal:hover .goal-t em{opacity:1;text-decoration:underline}
 
+.dirpick{display:flex;flex-direction:column;gap:10px}
+.dp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.dp-h h3{margin:0}
+.dp-o{display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;text-align:left;font:inherit;font-size:17px;padding:16px 18px;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+.dp-o:hover{border-color:var(--violet);transform:translateY(-1px)}
+.dp-o[aria-pressed="true"]{border-color:var(--violet);background:var(--violet-soft);color:var(--violet-strong)}
+.dp-o small{color:var(--muted);font-size:13px}
 /* zinnen */
 .act-zin{background:linear-gradient(135deg,#5eead4 0%,#14b8a6 100%);color:var(--on-color);box-shadow:0 18px 30px -16px rgba(20,184,166,.7)}
 .act-zin[disabled]{opacity:.6;cursor:default}
@@ -649,7 +656,7 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 
 const I18N = {
 nl: {
-  welcomeTitle: "Welkom bij Lesmio", zinLearnFirst: "Leer eerst woorden met Woorden leren", goalLeft: "Nog {n} woorden tot je dagdoel.", goalDone: "Dagdoel gehaald! Alles erbij is bonus.", goalStreak: "Je streak staat op {n} dagen. Maak hem vandaag langer.", goalOf: "{a} / {b} woorden vandaag", goalTap: "tik om je doel te wijzigen", buddyDone: "Dagdoel gehaald!", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
+  welcomeTitle: "Welkom bij Lesmio", pickDir: "Welke kant op?", zinLearnFirst: "Leer eerst woorden met Woorden leren", goalLeft: "Nog {n} woorden tot je dagdoel.", goalDone: "Dagdoel gehaald! Alles erbij is bonus.", goalStreak: "Je streak staat op {n} dagen. Maak hem vandaag langer.", goalOf: "{a} / {b} woorden vandaag", goalTap: "tik om je doel te wijzigen", buddyDone: "Dagdoel gehaald!", zinTile: "Zinnen", zinTileSub: "Vul het ontbrekende woord in", zinBusy: "Zinnen worden gemaakt…", zinNone: "Nog geen zinnen", zinFail: "Zinnen maken lukt nu niet. Probeer het later nog eens.", zinWait: "De zinnen worden nog gemaakt. Probeer het zo nog eens.", zinQuit: "Stoppen", zinCount: "{a} van {b}", zinDoneT: "Zinnen af!", zinSum: "{a} van {b} meteen goed", zinMore: "Nog een ronde", zinOnly: "Alleen met een account",
   buddyAsk: "Zin om een rondje te doen?", buddyGo: "Lekker bezig vandaag!",
   streak0: "Start je reeks", streakCap1: "dag op rij", streakCapN: "dagen op rij",
   todayCap: "woorden vandaag", hardCap: "lastige woorden", hardGo: "Oefen ze nu", hardNone: "Nog geen lastige woorden",
@@ -759,7 +766,7 @@ nl: {
   stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
 },
 es: {
-  welcomeTitle: "Te damos la bienvenida a Lesmio", zinLearnFirst: "Primero aprende palabras en Aprender palabras", goalLeft: "Te faltan {n} palabras para tu meta de hoy.", goalDone: "¡Meta cumplida! Todo lo extra es un bonus.", goalStreak: "Tu racha es de {n} días. Hazla más larga hoy.", goalOf: "{a} / {b} palabras hoy", goalTap: "toca para cambiar tu meta", buddyDone: "¡Meta cumplida!", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
+  welcomeTitle: "Te damos la bienvenida a Lesmio", pickDir: "¿En qué dirección?", zinLearnFirst: "Primero aprende palabras en Aprender palabras", goalLeft: "Te faltan {n} palabras para tu meta de hoy.", goalDone: "¡Meta cumplida! Todo lo extra es un bonus.", goalStreak: "Tu racha es de {n} días. Hazla más larga hoy.", goalOf: "{a} / {b} palabras hoy", goalTap: "toca para cambiar tu meta", buddyDone: "¡Meta cumplida!", zinTile: "Frases", zinTileSub: "Completa la palabra que falta", zinBusy: "Creando frases…", zinNone: "Aún sin frases", zinFail: "Ahora no se pueden crear frases. Inténtalo más tarde.", zinWait: "Todavía se están creando las frases. Inténtalo en un momento.", zinQuit: "Salir", zinCount: "{a} de {b}", zinDoneT: "¡Frases completadas!", zinSum: "{a} de {b} a la primera", zinMore: "Otra ronda", zinOnly: "Solo con cuenta",
   buddyAsk: "¿Hacemos una ronda?", buddyGo: "¡Buen trabajo hoy!",
   streak0: "Empieza tu racha", streakCap1: "día seguido", streakCapN: "días seguidos",
   todayCap: "palabras hoy", hardCap: "palabras difíciles", hardGo: "Practícalas ya", hardNone: "Aún no hay palabras difíciles",
@@ -1383,7 +1390,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "11-11 22:28";
+const BUILD = "11-11 22:50";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -1461,7 +1468,6 @@ function viewSetup() {
     <button class="act act-cards" data-act="start" data-mode="kaartjes"><span class="act-ic">${ICO.cards}</span><span class="act-t">${esc(t("modeCards"))}</span><span class="act-s">${esc(t("actCardsSub"))}</span></button>
     ${hard.length ? `<button class="act act-hard" data-act="practice-hard"><span class="act-ic">${ICO.target}</span><span class="act-t">${esc(t("practiceHard", { n: hard.length }))}</span><span class="act-s">${esc(t("hardWords"))}</span></button>` : ""}
   </div>
-  <div class="panel"><h3>${esc(t("direction"))}</h3><div class="seg" role="group" aria-label="${esc(t("direction"))}">${dirs.map(([v, tx, s]) => `<button class="btn" id="dir-${v}" data-act="dir" data-dir="${v}" aria-pressed="${state.setupDir === v}">${esc(tx)}${s ? `<small>${esc(s)}</small>` : ""}</button>`).join("")}</div></div>
   <div class="panel"><h3>${esc(t("checking"))}</h3>
     ${sw("optCase", "ignoreCase", t("optCase"), t("optCaseSub"))}
     ${sw("optAcc", "ignoreAccents", t("optAcc"), t("optAccSub"))}
@@ -2163,6 +2169,19 @@ function updateLearn() {
   if (s.phase === "intro" || (s.phase === "type" && s.st === "ask" && s.cur)) {} 
 }
 
+function pickDir(l) {
+  return new Promise(res => {
+    const nl = langName("nl"), es = langName("es");
+    const opts = [["qa", `${nl} → ${es}`, ""], ["aq", `${es} → ${nl}`, ""], ["both", t("both"), t("bothSub")]];
+    const ov = document.createElement("div"); ov.className = "overlay";
+    ov.innerHTML = `<div class="modal dirpick" role="dialog" aria-modal="true" aria-labelledby="dpT"><div class="dp-h"><h3 id="dpT">${esc(t("pickDir"))}</h3><button type="button" class="btn btn-quiet btn-sm" data-d="x" aria-label="${esc(t("cancel"))}">✕</button></div>${opts.map(([v, tx, sub]) => `<button type="button" class="dp-o" data-d="${v}" aria-pressed="${state.setupDir === v}"><b>${esc(tx)}</b>${sub ? `<small>${esc(sub)}</small>` : ""}</button>`).join("")}</div>`;
+    const close = v => { ov.remove(); document.removeEventListener("keydown", kd, true); if (v) { state.setupDir = v; const m = LS.get(K.dirs, {}); m[l.id] = v; LS.set(K.dirs, m); } res(v); };
+    const kd = e => { if (e.key === "Escape") { e.stopPropagation(); close(null); } };
+    ov.addEventListener("click", e => { const b = e.target.closest("[data-d]"); if (b) close(b.dataset.d === "x" ? null : b.dataset.d); else if (e.target === ov) close(null); });
+    document.addEventListener("keydown", kd, true);
+    document.body.appendChild(ov); const f = ov.querySelector('[aria-pressed="true"]'); if (f) f.focus();
+  });
+}
 function learnModal(l) {
   return new Promise(res => {
     const dir = state.setupDir, saved = LS.get(K.learn, null), mine = saved && saved.listId === l.id && saved.phase !== "done";
@@ -2231,13 +2250,14 @@ async function ensureSentences(l, manual) {
 function zinTile(l) {
   if (l.id === "__hard" || !l.words.length) return "";
   const n = zinAvail(l), live = !!(sb && sb.uid);
-  const pool = n >= 3 ? zinPool(l, state.setupDir).length : 0;
+  const pool = n >= 3 ? zinPool(l, "both").length : 0;
   const sub = n >= 3 ? (pool >= 3 ? t("zinTileSub") : t("zinLearnFirst")) : GEN.busy[l.id] ? t("zinBusy") : !live ? t("zinOnly") : GEN.fail[l.id] ? t("zinFail") : t("zinNone");
   return `<button class="act act-zin" data-act="zin"${(n < 3 && !live) || (n >= 3 && pool < 3) ? " disabled" : ""}><span class="act-ic">${ICO.quote}</span><span class="act-t">${esc(t("zinTile"))}</span><span class="act-s">${esc(sub)}</span></button>`;
 }
-function zinOpen() {
+async function zinOpen() {
   const l = getList(state.setupFor); if (!l) return;
   if (zinAvail(l) < 3) { if (GEN.busy[l.id]) toast(t("zinWait")); else ensureSentences(l, true); return; }
+  if (!(await pickDir(l))) return;
   if (zinPool(l, state.setupDir).length < 3) { toast(t("zinLearnFirst")); return; }
   zinStart(l, state.setupDir);
 }
@@ -2423,11 +2443,11 @@ document.addEventListener("click", async ev => {
   const el = ev.target.closest("[data-act]"); if (!el) return;
   const act = el.dataset.act, s = state.session;
   switch (act) {
-    case "learn": { const l = getList(state.setupFor); if (!l) break; const r = await learnModal(l); if (!r) break; if (r.resume) lrnResume(); else lrnStart(l, state.setupDir, r.mode, r.n); break; }
+    case "learn": { const l = getList(state.setupFor); if (!l) break; const sv = LS.get(K.learn, null); if (!(sv && sv.listId === l.id && sv.phase !== "done") && !(await pickDir(l))) break; const r = await learnModal(l); if (!r) break; if (r.resume) lrnResume(); else lrnStart(l, state.setupDir, r.mode, r.n); break; }
     case "lrn-resume": lrnResume(); break;
     case "lrn-discard": LS.del(K.learn); render(); break;
     case "lrn-next": lrnNext(); break;
-    case "zin": zinOpen(); break;
+    case "zin": await zinOpen(); break;
     case "zin-check": zinCheckInput(); break;
     case "zin-idk": zinJudge(false); break;
     case "zin-next": zinNext(); break;
@@ -2471,9 +2491,9 @@ document.addEventListener("click", async ev => {
       document.querySelectorAll('[data-act="dir"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.dir === state.setupDir)));
       break;
     }
-    case "start": { const l = getList(state.setupFor); if (l) startSession(l, el.dataset.mode, state.setupDir); break; }
+    case "start": { const l = getList(state.setupFor); if (l && await pickDir(l)) startSession(l, el.dataset.mode, state.setupDir); break; }
     case "practice-hard": {
-      const l = getList(state.setupFor); if (!l) break;
+      const l = getList(state.setupFor); if (!l || !(await pickDir(l))) break;
       const ids = l.words.filter(w => w.misses > 0).sort((a, b) => b.misses - a.misses).slice(0, 8).map(w => w.id);
       startSession(l, "toets", state.setupDir, ids); break;
     }

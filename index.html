@@ -1454,7 +1454,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 00:30";
+const BUILD = "12-11 00:31";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -2553,7 +2553,14 @@ document.addEventListener("click", async ev => {
       state.session = null; openSetup(nl2.id); toast(t("wrongListMade", { n: words.length }));
       break;
     }
-    case "logo": if (state.view === "setup" || state.view === "results" || state.view === "home" || state.view === "stats") { if (state.view === "results") state.session = null; state.view = "home"; render(); } break;
+    case "logo": {
+      if (state.view === "home") { render(); break; }
+      /* midden in een toets/ronde/bewerking: via de eigen stop-knop, die bewaart of vraagt eerst */
+      const q = document.querySelector('[data-act="stop"], [data-act="lrn-pause"], [data-act="zin-quit"], [data-act="cancel-edit"]');
+      if (q) { q.click(); break; }
+      if (state.view === "results") state.session = null;
+      state.view = "home"; render(); break;
+    }
     case "home": state.session = state.view === "results" ? null : state.session; state.view = "home"; render(); break;
     case "new": openEditor(null); break;
     case "open": openSetup(el.dataset.id); break;

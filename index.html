@@ -863,15 +863,16 @@ function norm(s, ignoreCase) {
   return ignoreCase ? x.toLowerCase() : x;
 }
 const stripAcc = s => s.replace(/ñ/g, "\u0001").replace(/Ñ/g, "\u0002").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\u0001/g, "ñ").replace(/\u0002/g, "Ñ");
-function variants(ans, ic, es) {
+function variants(ans, ic) {
   const out = new Set();
   const add = x => { const n = norm(x, ic); if (n) out.add(n); };
   const forms = x => { add(x); add(x.replace(/[()]/g, "")); add(x.replace(/\([^)]*\)/g, "")); };
   forms(ans);
-  String(ans).split(/[\/;,]/).forEach(forms);
-  if (es) [...out].forEach(v => {   // één Spaans woord: mannelijke en vrouwelijke vorm zijn allebei goed (bonito = bonita)
-    const m = v.match(/^([^\s]*?)(o|a)(s?)$/i);
-    if (m && m[1]) { const o = m[2], sw = o === "o" ? "a" : o === "a" ? "o" : o === "O" ? "A" : "O"; out.add(m[1] + sw + m[3]); }
+  const parts = String(ans).split(/[\/;,]/).map(x => x.trim());
+  parts.forEach((x, i) => {
+    const suf = x.match(/^-?(a|o|as|os)$/i);   // "bonito/a" = bonito én bonita
+    if (suf && i > 0) { const base = parts[i - 1].replace(/\s+/g, " "); if (!/\s/.test(base)) { const st = base.replace(/(o|a|os|as)$/i, ""); if (st !== base) forms(st + suf[1]); } }
+    else forms(x);
   });
   return [...out];
 }
@@ -891,7 +892,7 @@ function check(input, ans, st, lang) {
   const ic = st.ignoreCase;
   const inp = norm(input, ic);
   if (!inp) return { r: "empty" };
-  const vs = variants(ans, ic, lang === "es");
+  const vs = variants(ans, ic);
   if (vs.includes(inp)) return { r: "correct" };
   const ia = stripAcc(inp);
   if (vs.some(v => stripAcc(v) === ia)) return st.ignoreAccents ? { r: "correct" } : { r: "almost", why: "accent" };

@@ -664,6 +664,7 @@ button.tile:disabled{cursor:default;opacity:.8}
   <nav class="nav" aria-label="Lesmio">
     <button type="button" class="logo" data-act="logo" aria-label="Lesmio"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lgG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a6bff"/><stop offset="1" stop-color="#5232d6"/></linearGradient></defs><path d="M22 3h20c11 0 19 8 19 19v18c0 11-8 19-19 19H26L11 61c-1.5 1-3.300 0-3.300-1.800V48C3.500 45 3 41 3 38V22C3 11 11 3 22 3z" fill="url(#lgG)"/><path d="M23 16v23c0 2.500 1.500 4 4 4h13" fill="none" stroke="#fff" stroke-width="7.500" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43" cy="23" r="6" fill="#ff7a66"/></svg><span class="wordmark" aria-hidden="true">Lesm<span class="wm-i">ı</span>o</span></button>
     <div class="nav-r">
+      <button type="button" class="sndbtn" id="bellBtn" data-act="bell" hidden></button>
       <button type="button" class="sndbtn" id="sndBtn" data-act="snd-toggle"></button>
       <span id="navUser"></span>
       <label class="sr" for="uiLang" id="uiLangLabel">Taal</label>
@@ -702,7 +703,7 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 
 const I18N = {
 nl: {
-  welcomeTitle: "Welkom bij Lesmio", mtTile: "Koppelen", mtTileSub: "Koppel de woorden, tegen de klok", mtQuit: "× Stoppen", mtRound: "Ronde {a} van {b}", mtDone: "Alles gekoppeld!", mtTime: "Tijd", mtMist: "Fouten", mtBest: "Beste tijd", mtNewBest: "Nieuw record!", mtAgain: "Nog een keer", mtNeed: "Je hebt minstens 3 woorden nodig.", mtLeft: "{n} te gaan",
+  welcomeTitle: "Welkom bij Lesmio", bellOn: "Herinnering aan (8:00)", bellOff: "Herinnering uit", pushOnMsg: "Herinnering aan: elke ochtend om 8:00.", pushOffMsg: "Herinnering uit.", pushDenied: "Meldingen zijn geblokkeerd. Zet ze aan in de instellingen van je telefoon of browser.", pushIos: "Zet Lesmio eerst op je beginscherm (Deel → Zet op beginscherm) en open hem daar.", pushNo: "Dit apparaat ondersteunt geen meldingen.", pushLogin: "Log eerst in.", pushFail: "Aanzetten is niet gelukt. Probeer het later nog eens.", mtTile: "Koppelen", mtTileSub: "Koppel de woorden, tegen de klok", mtQuit: "× Stoppen", mtRound: "Ronde {a} van {b}", mtDone: "Alles gekoppeld!", mtTime: "Tijd", mtMist: "Fouten", mtBest: "Beste tijd", mtNewBest: "Nieuw record!", mtAgain: "Nog een keer", mtNeed: "Je hebt minstens 3 woorden nodig.", mtLeft: "{n} te gaan",
   achTitle: "Prestaties", achNew: "Nieuwe prestatie", achOf: "{a} van {b} behaald",
   ach_words10: "Eerste stappen", achd_words10: "Oefen 10 woorden", ach_words100: "Woordenjager", achd_words100: "Oefen 100 woorden", ach_words500: "Woordenmeester", achd_words500: "Oefen 500 woorden", ach_words1000: "Woordenlegende", achd_words1000: "Oefen 1000 woorden",
   ach_streak3: "Op dreef", achd_streak3: "3 dagen achter elkaar", ach_streak7: "Weekkampioen", achd_streak7: "7 dagen achter elkaar", ach_streak30: "Maandmeester", achd_streak30: "30 dagen achter elkaar",
@@ -818,7 +819,7 @@ nl: {
   stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
 },
 es: {
-  welcomeTitle: "Te damos la bienvenida a Lesmio", mtTile: "Emparejar", mtTileSub: "Empareja las palabras contra el reloj", mtQuit: "× Salir", mtRound: "Ronda {a} de {b}", mtDone: "¡Todo emparejado!", mtTime: "Tiempo", mtMist: "Errores", mtBest: "Mejor tiempo", mtNewBest: "¡Nuevo récord!", mtAgain: "Otra vez", mtNeed: "Necesitas al menos 3 palabras.", mtLeft: "faltan {n}",
+  welcomeTitle: "Te damos la bienvenida a Lesmio", bellOn: "Recordatorio activado (8:00)", bellOff: "Recordatorio desactivado", pushOnMsg: "Recordatorio activado: cada mañana a las 8:00.", pushOffMsg: "Recordatorio desactivado.", pushDenied: "Las notificaciones están bloqueadas. Actívalas en los ajustes del teléfono o del navegador.", pushIos: "Primero añade Lesmio a la pantalla de inicio (Compartir → Añadir a pantalla de inicio) y ábrelo desde allí.", pushNo: "Este dispositivo no admite notificaciones.", pushLogin: "Primero inicia sesión.", pushFail: "No se pudo activar. Inténtalo más tarde.", mtTile: "Emparejar", mtTileSub: "Empareja las palabras contra el reloj", mtQuit: "× Salir", mtRound: "Ronda {a} de {b}", mtDone: "¡Todo emparejado!", mtTime: "Tiempo", mtMist: "Errores", mtBest: "Mejor tiempo", mtNewBest: "¡Nuevo récord!", mtAgain: "Otra vez", mtNeed: "Necesitas al menos 3 palabras.", mtLeft: "faltan {n}",
   achTitle: "Logros", achNew: "Nuevo logro", achOf: "{a} de {b} conseguidos",
   ach_words10: "Primeros pasos", achd_words10: "Practica 10 palabras", ach_words100: "Cazapalabras", achd_words100: "Practica 100 palabras", ach_words500: "Maestro de palabras", achd_words500: "Practica 500 palabras", ach_words1000: "Leyenda de palabras", achd_words1000: "Practica 1000 palabras",
   ach_streak3: "En racha", achd_streak3: "3 días seguidos", ach_streak7: "Campeón semanal", achd_streak7: "7 días seguidos", ach_streak30: "Maestro del mes", achd_streak30: "30 días seguidos",
@@ -1234,7 +1235,7 @@ async function sbStart(session) {
   try { const pr = await sb.client.from("profiles").select("name").eq("id", sb.uid).maybeSingle(); if (pr.data && pr.data.name) name = pr.data.name; } catch (e) {}
   state.me = { name }; state.needLogin = false; state.storage = "cloud-loading"; render();
   try {
-    state.activity = {}; state.lists = await sbPull(); state.storage = "cloud"; state.loadNote = ""; await sbPullExtras();
+    state.activity = {}; state.lists = await sbPull(); state.storage = "cloud"; state.loadNote = ""; await sbPullExtras(); pushRefresh();
     const local = LS.get(K.lists, []);
     if (local.length) {
       let ok = true;
@@ -1384,6 +1385,44 @@ function speakAudioFallback(text, lang) {   // reservestem via het web, als het 
     const pr = a.play(); if (pr && pr.catch) pr.catch(() => toast(t("noVoice", { lang: langName(lang) })));
   } catch (e) { toast(t("noVoice", { lang: langName(lang) })); }
 }
+/* ---------- dagelijkse herinnering (webpush, 8:00 lokale tijd) ---------- */
+const VAPID_PUB = "BH5Tw2GttPMB5HphtjY2OWS6_dgD__GAy2Qr6Do7eEX4tSV_daFt9YftQYeSBFqgUrmStR_H265DuZfGWh33OEM";
+const PUSH_OK = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+const ICO_BELL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.700 21a2 2 0 0 1-3.400 0"/></svg>';
+const ICO_BELL_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.700 3A6 6 0 0 1 18 8c0 2.300.4 4 .9 5.200M6.300 6.300C6.100 6.800 6 7.400 6 8c0 7-3 9-3 9h14"/><path d="M13.700 21a2 2 0 0 1-3.400 0"/><path d="M2 2l20 20"/></svg>';
+const u8 = b => { const p = "=".repeat((4 - b.length % 4) % 4), r = atob((b + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from([...r].map(c => c.charCodeAt(0))); };
+const pushOn = () => LS.get("overhoor.push", false) && PUSH_OK && Notification.permission === "granted";
+function bellUi() {
+  const b = $("#bellBtn"); if (!b) return;
+  b.hidden = !(PUSH_OK || /iPhone|iPad/.test(navigator.userAgent)) || !(sb && sb.uid);
+  const on = pushOn(); b.innerHTML = on ? ICO_BELL : ICO_BELL_OFF; b.classList.toggle("off", !on);
+  const lb = t(on ? "bellOn" : "bellOff"); b.setAttribute("aria-label", lb); b.title = lb;
+}
+async function pushSave(sub) {
+  const r = await sb.client.from("push_subs").upsert({ user_id: sb.uid, sub: sub.toJSON(), tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "Europe/Amsterdam", lang: LANG, name: state.me ? state.me.name : null, updated_at: new Date().toISOString() });
+  if (r.error) throw r.error;
+}
+async function pushEnable() {
+  if (!(sb && sb.uid)) return toast(t("pushLogin"));
+  if (!PUSH_OK) return toast(/iPhone|iPad/.test(navigator.userAgent) ? t("pushIos") : t("pushNo"));
+  if (Notification.permission === "denied") return toast(t("pushDenied"));
+  try {
+    const perm = Notification.permission === "granted" ? "granted" : await Notification.requestPermission();
+    if (perm !== "granted") return toast(t("pushDenied"));
+    const reg = await navigator.serviceWorker.register("sw.js"); await navigator.serviceWorker.ready;
+    const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: u8(VAPID_PUB) });
+    await pushSave(sub); LS.set("overhoor.push", true); toast(t("pushOnMsg"));
+  } catch (e) { toast(t("pushFail")); }
+  bellUi();
+}
+async function pushDisable() {
+  try { const reg = await navigator.serviceWorker.getRegistration(); const sub = reg && await reg.pushManager.getSubscription(); if (sub) await sub.unsubscribe(); if (sb && sb.uid) await sb.client.from("push_subs").delete().eq("user_id", sb.uid); } catch (e) {}
+  LS.set("overhoor.push", false); toast(t("pushOffMsg")); bellUi();
+}
+async function pushRefresh() {
+  bellUi(); if (!pushOn() || !(sb && sb.uid)) return;
+  try { const reg = await navigator.serviceWorker.register("sw.js"); await navigator.serviceWorker.ready; const sub = await reg.pushManager.getSubscription(); if (sub) await pushSave(sub); else { LS.set("overhoor.push", false); bellUi(); } } catch (e) {}
+}
 /* ---------- geluidjes ---------- */
 const SND = { cfg: Object.assign({ on: true, vol: 0.7 }, LS.get("overhoor.sound", {})), el: {} };
 const ICO_MUTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.500v-13L7.500 9.500z"/><path d="M16 9.500l5 5M21 9.500l-5 5"/></svg>';
@@ -1521,7 +1560,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 00:41";
+const BUILD = "12-11 00:45";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -1767,7 +1806,7 @@ function viewResults() {
 function syncChrome() {
   document.documentElement.lang = LANG;
   const sel = $("#uiLang"); if (sel) sel.value = LANG;
-  const lb = $("#uiLangLabel"); if (lb) lb.textContent = t("uiLang"); sndUi();
+  const lb = $("#uiLangLabel"); if (lb) lb.textContent = t("uiLang"); sndUi(); bellUi();
   const nu = $("#navUser");
   if (nu) nu.innerHTML = state.me ? `<button type="button" class="userchip" data-act="profile" aria-label="${esc(t("profile"))}" title="${esc(t("profile"))}"><span class="av${state.avatar ? " emo" : ""}">${esc(state.avatar || state.me.name.charAt(0).toUpperCase())}</span><span class="un">${esc(state.me.name)}</span></button>` : "";
 }
@@ -2669,6 +2708,7 @@ document.addEventListener("click", async ev => {
     case "stats": state.view = "stats"; render(); break;
     case "practice-all": practiceAllHard(); break;
     case "speak": speak(el.dataset.text, el.dataset.lang); break;
+    case "bell": if (pushOn()) await pushDisable(); else await pushEnable(); break;
     case "snd-toggle": { const on = SND.cfg.on && SND.cfg.vol > 0; SND.cfg.on = !on; if (SND.cfg.on && SND.cfg.vol <= 0) SND.cfg.vol = 0.7; sndSave(); sndUi(); const c = $("#optSfx"); if (c) c.checked = SND.cfg.on; const v = $("#sndVol"); if (v) v.value = Math.round(SND.cfg.vol * 100); sfx("ok", true); break; }
     case "speak-q": { const c = cur(); if (c) speak(c.q, c.ql); break; }
     case "wrong-list": {
@@ -2906,7 +2946,7 @@ if (hot && hot.ready) hot.ready(boot); else boot((hot && hot.data) || {});
 window.__lesmio = { check, makeSession, state, apply: ok => apply(ok), I18N, parseImport, parseColumns, detectSwap, render: () => render() };
 document.addEventListener("input", e => { const el = e.target; if (el && el.id === "sndVol") { SND.cfg.vol = el.value / 100; if (SND.cfg.vol > 0) SND.cfg.on = true; sndSave(); sndUi(); const c = $("#optSfx"); if (c) c.checked = SND.cfg.on; } });
 document.addEventListener("change", e => { const el = e.target; if (el && el.id === "sndVol") sfx("ok", true); });
-sndUi();
+sndUi(); bellUi();
 })();
 </script>
 </body>

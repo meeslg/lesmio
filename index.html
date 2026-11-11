@@ -630,7 +630,7 @@ nl: {
   buddyAsk: "Zin om een rondje te doen?", buddyGo: "Lekker bezig vandaag!",
   streak0: "Start je reeks", streakCap1: "dag op rij", streakCapN: "dagen op rij",
   todayCap: "woorden vandaag", hardCap: "lastige woorden", hardGo: "Oefen ze nu", hardNone: "Nog geen lastige woorden",
-  progress: "Voortgang", progressSub: "Grafieken en statistieken", together: "Samen", wordOne: "woord vandaag", wordMany: "woorden vandaag", partnerToday: "{n} woorden vandaag", tgNone: "Nog geen woorden vandaag. Wie begint?", tgAhead: "Jij loopt voor, {n} woorden meer dan {p}!", tgBehind: "{p} loopt {n} woorden voor. Haal je in?", tgEqual: "Gelijk op! Samen al {n} woorden vandaag.", tgYou: "Jij",
+  progress: "Voortgang", progressSub: "Grafieken en statistieken", together: "Samen", tgErr: "Delen met je partner lukt nog niet ({m}). De activity-tabel in Supabase moet nog worden aangemaakt.", wordOne: "woord vandaag", wordMany: "woorden vandaag", partnerToday: "{n} woorden vandaag", tgNone: "Nog geen woorden vandaag. Wie begint?", tgAhead: "Jij loopt voor, {n} woorden meer dan {p}!", tgBehind: "{p} loopt {n} woorden voor. Haal je in?", tgEqual: "Gelijk op! Samen al {n} woorden vandaag.", tgYou: "Jij",
   practiceAllHard: "Oefen mijn lastigste woorden", noHard: "Je hebt nog geen lastige woorden. Die komen vanzelf als je een toets doet.",
   pickCount: "Hoeveel woorden?", pickText: "Je lastigste woorden uit al je lijsten, de moeilijkste eerst.", allN: "Alle {n}",
   hardListName: "Mijn lastigste woorden", wrongListName: "{name} · foute woorden",
@@ -740,7 +740,7 @@ es: {
   buddyAsk: "¿Hacemos una ronda?", buddyGo: "¡Buen trabajo hoy!",
   streak0: "Empieza tu racha", streakCap1: "día seguido", streakCapN: "días seguidos",
   todayCap: "palabras hoy", hardCap: "palabras difíciles", hardGo: "Practícalas ya", hardNone: "Aún no hay palabras difíciles",
-  progress: "Progreso", progressSub: "Gráficos y estadísticas", together: "Juntos", wordOne: "palabra hoy", wordMany: "palabras hoy", partnerToday: "{n} palabras hoy", tgNone: "Aún no hay palabras hoy. ¿Quién empieza?", tgAhead: "¡Vas por delante, {n} palabras más que {p}!", tgBehind: "{p} va {n} palabras por delante. ¿La alcanzas?", tgEqual: "¡Empate! Ya son {n} palabras hoy entre los dos.", tgYou: "Tú",
+  progress: "Progreso", progressSub: "Gráficos y estadísticas", together: "Juntos", tgErr: "Aún no se puede compartir con tu pareja ({m}). Falta crear la tabla activity en Supabase.", wordOne: "palabra hoy", wordMany: "palabras hoy", partnerToday: "{n} palabras hoy", tgNone: "Aún no hay palabras hoy. ¿Quién empieza?", tgAhead: "¡Vas por delante, {n} palabras más que {p}!", tgBehind: "{p} va {n} palabras por delante. ¿La alcanzas?", tgEqual: "¡Empate! Ya son {n} palabras hoy entre los dos.", tgYou: "Tú",
   practiceAllHard: "Practica mis palabras más difíciles", noHard: "Aún no tienes palabras difíciles. Aparecerán cuando hagas un test.",
   pickCount: "¿Cuántas palabras?", pickText: "Tus palabras más difíciles de todas tus listas, las peores primero.", allN: "Todas ({n})",
   hardListName: "Mis palabras más difíciles", wrongListName: "{name} · palabras falladas",
@@ -1133,6 +1133,8 @@ async function sbPullExtras() {
     ((ac && ac.data) || []).forEach(r => { const o = { w: r.words, s: r.secs, t: r.tests, ok: r.ok }; (r.user_id === sb.uid ? mine : (theirs[r.user_id] || (theirs[r.user_id] = {})))[r.day] = o; });
     const rows = (pr && pr.data) || [];
     const me = rows.find(r => r.id === sb.uid), other = rows.find(r => r.id !== sb.uid);
+    state.actErr = ac && ac.error ? (ac.error.message || "fout") : "";
+    const loc = LS.get(K.act, {}); Object.keys(loc).forEach(d => { if (!mine[d] || (loc[d].w || 0) > (mine[d].w || 0)) mine[d] = loc[d]; });
     state.activity = mine; state.avatar = (me && me.avatar) || "";
     state.partner = other ? { name: other.name, avatar: other.avatar || "", activity: theirs[other.id] || {} } : null;
   } catch (e) {}
@@ -1213,8 +1215,8 @@ function logActivity(words, secs, ok, noTest) {
   if (!words) return;
   const k = dayKey(), a = state.activity[k] || { w: 0, s: 0, t: 0, ok: 0 };
   a.w += words; a.s += secs; a.t += noTest ? 0 : 1; a.ok += ok; state.activity[k] = a;
-  if (sb && sb.uid) sb.client.from("activity").upsert({ user_id: sb.uid, day: k, words: a.w, secs: a.s, tests: a.t, ok: a.ok }).then(() => {}, () => {});
-  else LS.set(K.act, state.activity);
+  LS.set(K.act, state.activity);
+  if (sb && sb.uid) sb.client.from("activity").upsert({ user_id: sb.uid, day: k, words: a.w, secs: a.s, tests: a.t, ok: a.ok }).then(r => { if (r && r.error) state.actErr = r.error.message || "fout"; else state.actErr = ""; }, e => { state.actErr = String((e && e.message) || e); });
 }
 function saveAvatar(a) {
   state.avatar = a; LS.set(K.avatar, a);
@@ -1381,6 +1383,7 @@ function homeTiles() {
     const card = (cls, wh, name, st, w) => `<div class="tg2-p ${cls}"><span class="tg2-av"><img src="m/${wh}-happy.webp" alt="" aria-hidden="true" draggable="false"></span><div class="tg2-i"><b>${esc(name)}</b><span class="tg2-s"><span class="tg2-f">🔥 ${st}</span><span class="tg2-w"><i>${w}</i> ${esc(w === 1 ? t("wordOne") : t("wordMany"))}</span></span></div></div>`;
     h += `<div class="together"><div class="tg2-head"><span class="tg-l">${esc(t("together"))}</span><span class="tg2-msg">${esc(msg)}</span></div><div class="tg2-row">${card("me", who, state.me ? state.me.name : t("tgYou"), si.cur, myW)}${card("pa", pwho, p.name, ps.cur, pw)}</div></div>`;
   }
+  if (state.actErr) h += `<p class="note warn">${esc(t("tgErr", { m: state.actErr }))}</p>`;
   return h;
 }
 function listRow(l) {

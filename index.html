@@ -1449,7 +1449,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "11-11 23:56";
+const BUILD = "11-11 23:58";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -1971,6 +1971,7 @@ function finish() {
   s.result = { at: Date.now(), grade, total, first, mode: s.mode, dir: s.dir, secs: Math.round((Date.now() - s.startedAt) / 1000) };
   const hardMode = s.listId === "__hard";
   if (s.onlyIds || hardMode) s.result.partial = true;
+  setTimeout(() => sfxPlay(grade >= 5.5 ? "done" : "soft"), 450);
   const per = {};
   s.items.forEach(i => { const o = per[i.wid] || (per[i.wid] = { errors: 0, all: true }); o.errors += i.errors; if (i.first !== true) o.all = false; });
   const update = (l, inPlace) => {
@@ -2127,6 +2128,7 @@ function lrnJudge(ok, almost) {
 }
 function lrnEndRound() {
   const s = state.learn, l = getList(s.listId), now = Date.now(), keys = lrnKeys(s);
+  setTimeout(() => sfxPlay("done"), 450);
   let rec = 0;
   keys.forEach(k => {
     const u0 = lrnInfo(s, k), e = s.err[k] || { m: 0, t: 0 }, w = u0.w;
@@ -2391,7 +2393,7 @@ function zinJudge(ok, almost) {
 function zinNext() {
   const s = state.zin; if (!s || s.st === "ask") return;
   s.queue.shift(); s.st = "ask"; s.given = "";
-  if (!s.queue.length) { s.phase = "done"; zinApply(s); }
+  if (!s.queue.length) { s.phase = "done"; zinApply(s); setTimeout(() => sfxPlay("done"), 450); }
   updateZin();
 }
 function zinApply(s) {

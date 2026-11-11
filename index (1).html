@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesmio</title>
+<meta name="description" content="Lesmio - Learn your way. Woordjes leren, oefenen en je voortgang bijhouden.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%238a6bff'/><stop offset='1' stop-color='%235232d6'/></linearGradient></defs><path d='M22 3h20c11 0 19 8 19 19v18c0 11-8 19-19 19H26L11 61c-1.500 1-3.300 0-3.300-1.800V48C3.500 45 3 41 3 38V22C3 11 11 3 22 3z' fill='url(%23g)'/><path d='M23 16v23c0 2.500 1.500 4 4 4h13' fill='none' stroke='white' stroke-width='7.500' stroke-linecap='round' stroke-linejoin='round'/><circle cx='43' cy='23' r='6' fill='%23ff7a66'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Lesmio: crème papier, witte kaarten, navy tekst. Paars is de hoofdkleur; koraal voor kaartjes, mint voor lastige woorden en goed gedaan. Zachte kleurvlakken, ronde vormen, speelse beweging. Mobiel eerst, op desktop twee kolommen. */
+  --paper:#f8f7ff; --surface:#ffffff; --soft:#f0edfc; --ink:#18223b; --muted:#667085; --line:#e8e4f8; --line-strong:#d7d1f0;
+  --violet:#6d4aff; --violet-strong:#5232d6; --violet-soft:#eeeaff;
+  --coral:#ff7a66; --coral-strong:#bf3f2b; --coral-soft:#ffe9e3;
+  --mint:#3dd1a7; --mint-strong:#0b7a5d; --mint-soft:#daf6ec;
+  --accent:var(--violet); --accent-strong:var(--violet-strong); --accent-soft:var(--violet-soft);
+  --g-violet:linear-gradient(135deg,#7f5fff 0%,#5a38ee 100%);
+  --g-coral:linear-gradient(135deg,#ff9884 0%,#ff6a53 100%);
+  --g-mint:linear-gradient(135deg,#5de3bf 0%,#2cc095 100%);
+  --on-color:#1d1430;
+  --logo-bg:#18223b; --logo-fg:#ffffff;
+  --good:#0b7a5d; --good-bg:#daf6ec; --bad:#c7324b; --bad-bg:#fde8ec; --warn:#955806; --warn-bg:#fdf3df;
+  --sh:0 1px 2px rgba(24,34,59,.05),0 16px 32px -20px rgba(70,45,160,.32);
+  --sh-hover:0 2px 4px rgba(24,34,59,.06),0 26px 44px -20px rgba(70,45,160,.45);
+  --sh-sm:0 1px 2px rgba(24,34,59,.06);
+  --r:20px;
+  --f:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0e1126; --surface:#171b38; --soft:#1f2448; --ink:#eef0fb; --muted:#9ba2c8; --line:#2a3060; --line-strong:#3b4280;
+    --violet:#8d74ff; --violet-strong:#b4a4ff; --violet-soft:#2a2468;
+    --coral:#ff8f7c; --coral-strong:#ffaa9a; --coral-soft:#46231f;
+    --mint:#4fdcb4; --mint-strong:#71e8c8; --mint-soft:#123a31;
+    --logo-bg:#eef0fb; --logo-fg:#0e1126;
+    --good:#71e8c8; --good-bg:#123a31; --bad:#ff7d94; --bad-bg:#3d1626; --warn:#f0b955; --warn-bg:#352a10;
+    --sh:0 1px 2px rgba(0,0,0,.3),0 16px 32px -20px rgba(0,0,0,.7);
+    --sh-hover:0 2px 4px rgba(0,0,0,.35),0 26px 44px -20px rgba(0,0,0,.8);
+    --sh-sm:0 1px 2px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0e1126; --surface:#171b38; --soft:#1f2448; --ink:#eef0fb; --muted:#9ba2c8; --line:#2a3060; --line-strong:#3b4280;
+  --violet:#8d74ff; --violet-strong:#b4a4ff; --violet-soft:#2a2468;
+  --coral:#ff8f7c; --coral-strong:#ffaa9a; --coral-soft:#46231f;
+  --mint:#4fdcb4; --mint-strong:#71e8c8; --mint-soft:#123a31;
+  --logo-bg:#eef0fb; --logo-fg:#0e1126;
+  --good:#71e8c8; --good-bg:#123a31; --bad:#ff7d94; --bad-bg:#3d1626; --warn:#f0b955; --warn-bg:#352a10;
+  --sh:0 1px 2px rgba(0,0,0,.3),0 16px 32px -20px rgba(0,0,0,.7);
+  --sh-hover:0 2px 4px rgba(0,0,0,.35),0 26px 44px -20px rgba(0,0,0,.8);
+  --sh-sm:0 1px 2px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.5;min-height:100%}
+button,input,textarea,select{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--f);text-wrap:balance;margin:0;line-height:1.12;letter-spacing:-.025em;font-weight:800}
+p{margin:0}
+:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:16px 18px 80px}
+.narrow{max-width:760px;margin:0 auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.muted,.lmeta{color:var(--muted);font-size:14px}
+.note{color:var(--muted);font-size:14px;margin-top:16px}
+.note.warn{color:var(--warn)}
+.hint{color:var(--muted);font-size:14px;margin:4px 0 12px}
+svg{display:block}
+
+/* weergave-overgang */
+.view.enter{animation:viewIn .45s cubic-bezier(.2,.7,.2,1) both}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* navigatie */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 0 20px}
+.logo{display:inline-flex;align-items:center;gap:10px;background:none;border:0;padding:2px 8px 2px 0;margin:0;cursor:pointer;color:var(--ink);border-radius:12px}
+.logo svg{width:38px;height:38px;flex:none;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.logo:hover svg{transform:rotate(-8deg) scale(1.06)}
+.wordmark{font-weight:800;font-size:25px;letter-spacing:-.04em;line-height:1}
+.wm-i{position:relative;display:inline-block}
+.wm-i::after{content:"";position:absolute;left:50%;top:.075em;width:.2em;height:.2em;border-radius:50%;background:var(--coral);transform:translateX(-50%)}
+.langsel{appearance:none;-webkit-appearance:none;background-color:var(--surface);border:1px solid var(--line-strong);border-radius:99px;padding:8px 34px 8px 16px;min-height:40px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:var(--sh-sm);transition:border-color .15s,box-shadow .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.langsel:hover{border-color:var(--violet);box-shadow:0 0 0 3px var(--violet-soft)}
+
+/* knoppen */
+.btn{appearance:none;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:14px;padding:10px 18px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;text-align:center;box-shadow:var(--sh-sm);transition:transform .15s cubic-bezier(.3,1.5,.5,1),border-color .15s,background-color .15s,box-shadow .2s,filter .15s}
+.btn svg{width:18px;height:18px;flex:none}
+.btn:hover{border-color:var(--violet);transform:translateY(-2px);box-shadow:0 10px 20px -12px rgba(80,50,200,.4)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn-primary{background:var(--g-violet);border-color:transparent;color:#fff;box-shadow:0 12px 24px -12px rgba(98,60,240,.75),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn-primary:hover{border-color:transparent;filter:brightness(1.07);box-shadow:0 16px 28px -12px rgba(98,60,240,.85),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn-lg{min-height:54px;padding:12px 24px;font-size:16.5px;border-radius:16px}
+.btn-sm{min-height:38px;padding:6px 14px;font-size:15px;border-radius:12px}
+.btn-quiet{background:transparent;border-color:transparent;box-shadow:none;color:var(--muted);padding-left:8px;padding-right:8px}
+.btn-quiet:hover{border-color:transparent;color:var(--ink);transform:none;box-shadow:none}
+.btn-danger{color:var(--bad);border-color:var(--bad-bg)}
+.btn-danger:hover{border-color:var(--bad)}
+.btn-danger-solid{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn-good{color:var(--good);background:var(--good-bg);border-color:transparent}
+.btn-good:hover{border-color:var(--good)}
+.btn-bad{color:var(--bad);background:var(--bad-bg);border-color:transparent}
+.btn-bad:hover{border-color:var(--bad)}
+
+/* hero */
+.hero{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:center;border:1px solid var(--line);border-radius:32px;padding:44px 48px;margin-bottom:34px;overflow:hidden;background:
+  radial-gradient(60% 90% at 105% -10%,var(--violet-soft),transparent 70%),
+  radial-gradient(50% 80% at -5% 110%,var(--coral-soft),transparent 70%),
+  radial-gradient(40% 60% at 55% 115%,var(--mint-soft),transparent 70%),
+  var(--surface);box-shadow:var(--sh)}
+.hero-copy{position:relative;z-index:2}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--violet-strong)}
+.eyebrow::before{content:"";width:20px;height:3px;border-radius:3px;background:var(--coral)}
+.hero h1{font-size:clamp(34px,5.4vw,56px);letter-spacing:-.04em;margin:14px 0 14px}
+.hl{color:var(--violet-strong);background:linear-gradient(transparent 68%,var(--coral-soft) 68%,var(--coral-soft) 92%,transparent 92%);padding:0 2px}
+.tag{color:var(--muted);max-width:46ch;font-size:17px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.duo{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:22px}
+.pill{display:inline-block;padding:3px 13px;border-radius:99px;font-weight:700;font-size:13px;background:var(--surface);border:1px solid var(--line-strong);color:var(--ink)}
+.duo .pill:first-child{background:var(--violet-soft);border-color:transparent;color:var(--violet-strong)}
+.duo .pill:last-child{background:var(--coral-soft);border-color:transparent;color:var(--coral-strong)}
+.duo .arr{color:var(--muted);font-weight:800}
+
+.stack{position:relative;height:300px;z-index:1}
+.blob{position:absolute;border-radius:50%;filter:blur(1px)}
+.blob.b1{width:120px;height:120px;right:6%;bottom:6%;background:var(--mint-soft);border:2px dashed var(--mint)}
+.blob.b2{width:44px;height:44px;left:8%;top:6%;background:var(--coral);opacity:.85}
+.vc{position:absolute;width:210px;padding:16px 18px 18px;border-radius:22px;background:var(--surface);border:1px solid var(--line);box-shadow:0 24px 40px -22px rgba(70,45,160,.5);animation:floaty 6s ease-in-out infinite;--r:0deg;transform:rotate(var(--r))}
+.vc::before{content:"";position:absolute;left:18px;top:0;width:44px;height:6px;border-radius:0 0 6px 6px;background:var(--c)}
+.vc .vc-l{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.vc b{display:block;font-size:26px;letter-spacing:-.03em;line-height:1.15;margin-top:6px}
+.vc i{display:block;font-style:normal;font-weight:700;color:var(--c-strong);margin-top:4px}
+.vc.v1{--r:-6deg;--c:var(--violet);--c-strong:var(--violet-strong);left:2%;top:34px}
+.vc.v2{--r:5deg;--c:var(--coral);--c-strong:var(--coral-strong);right:0;top:0;animation-delay:-2s}
+.vc.v3{--r:-2deg;--c:var(--mint);--c-strong:var(--mint-strong);left:26%;bottom:0;animation-delay:-4s}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-9px) rotate(var(--r))}}
+
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 16px}
+.sec-head h2{font-size:26px}
+.banner{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border:1px solid transparent;background:var(--violet-soft);color:var(--ink);border-radius:var(--r);padding:14px 18px;margin-bottom:26px}
+.banner-act{display:flex;gap:6px}
+
+/* lijstkaarten */
+.lists{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.lrow{--c:var(--violet);--cs:var(--violet-soft);--cst:var(--violet-strong);position:relative;display:flex;flex-direction:column;align-items:stretch;gap:0;width:100%;text-align:left;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:18px 18px 16px;cursor:pointer;min-height:190px;overflow:hidden;transition:transform .25s cubic-bezier(.3,1.4,.5,1),box-shadow .25s,border-color .2s}
+.lrow::after{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--c)}
+.lrow:nth-child(3n+2){--c:var(--coral);--cs:var(--coral-soft);--cst:var(--coral-strong)}
+.lrow:nth-child(3n+3){--c:var(--mint);--cs:var(--mint-soft);--cst:var(--mint-strong)}
+.lrow:hover{transform:translateY(-5px) rotate(-.4deg);box-shadow:var(--sh-hover);border-color:var(--c)}
+.lrow:active{transform:translateY(-1px) scale(.99)}
+.lrow.static{cursor:default;min-height:80px;box-shadow:none;justify-content:center}
+.lrow.static::after{display:none}
+.lrow.static:hover{transform:none;border-color:var(--line);box-shadow:none}
+.ltop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.ltile{width:46px;height:46px;border-radius:15px;background:var(--cs);color:var(--cst);display:grid;place-items:center;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.ltile svg{width:24px;height:24px}
+.lrow:hover .ltile{transform:rotate(-8deg) scale(1.1)}
+.lname{display:block;font-weight:800;font-size:19px;line-height:1.25;letter-spacing:-.02em}
+.lrow .lmeta{display:block;margin-top:3px}
+.lprev{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.lprev span{font-size:13px;font-weight:600;padding:2px 10px;border-radius:99px;background:var(--cs);color:var(--cst);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.go{display:inline-flex;align-items:center;gap:6px;margin-top:auto;padding-top:14px;font-size:14px;font-weight:800;color:var(--cst);opacity:.0;transform:translateX(-6px);transition:opacity .2s,transform .25s}
+.go svg{width:16px;height:16px}
+.lrow:hover .go,.lrow:focus-visible .go{opacity:1;transform:none}
+.chip{display:inline-block;font-size:11.5px;font-weight:800;padding:1px 9px;border-radius:99px;background:var(--mint-soft);color:var(--mint-strong);margin-left:8px;vertical-align:2px}
+
+.mark{font-weight:800;font-size:16px;line-height:1;width:46px;height:46px;display:inline-grid;place-items:center;border:2.5px solid currentColor;border-radius:50%;flex:none;font-variant-numeric:tabular-nums}
+.mark.good{color:var(--good);background:var(--good-bg)}
+.mark.pen{color:var(--bad);background:var(--bad-bg)}
+.mark.none{color:var(--muted);border:1.5px dashed var(--line-strong);background:transparent;font-size:11px;font-weight:700}
+.marks{display:flex;flex-wrap:wrap;gap:10px}
+
+/* panelen */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:20px}
+.panel > h3,.panel > summary{font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.panel > summary{cursor:pointer;margin:0;list-style-position:inside}
+details.panel[open] > summary{margin-bottom:12px}
+.group{margin:30px 0 0}
+.group > h3{font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+/* lijst-detail */
+.back{margin-left:-8px;margin-bottom:10px}
+.setup{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:28px;align-items:start}
+.setup-main,.setup-side{display:grid;gap:20px;min-width:0}
+.title-block h2{font-size:clamp(30px,4.5vw,44px);letter-spacing:-.04em;margin-top:8px}
+.title-block .lmeta{margin-top:8px;font-size:15px}
+.acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.act{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;border:0;border-radius:22px;padding:18px 18px 20px;cursor:pointer;min-height:140px;overflow:hidden;transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .25s}
+.act::after{content:"";position:absolute;right:-28px;bottom:-28px;width:96px;height:96px;border-radius:50%;background:rgba(255,255,255,.2);transition:transform .35s}
+.act:hover{transform:translateY(-4px) rotate(-.6deg)}
+.act:hover::after{transform:scale(1.35)}
+.act:active{transform:scale(.98)}
+.act-ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.28);margin-bottom:auto}
+.act-ic svg{width:22px;height:22px}
+.act-t{font-weight:800;font-size:19px;letter-spacing:-.02em;margin-top:14px}
+.act-s{font-size:14px;opacity:.85;font-weight:600}
+.act-test{background:var(--g-violet);color:#fff;box-shadow:0 18px 30px -16px rgba(98,60,240,.8)}
+.act-cards{background:var(--g-coral);color:var(--on-color);box-shadow:0 18px 30px -16px rgba(255,100,80,.75)}
+.act-hard{background:var(--g-mint);color:var(--on-color);box-shadow:0 18px 30px -16px rgba(40,190,150,.7)}
+.seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.seg .btn{justify-content:space-between;text-align:left;font-weight:700}
+.seg .btn small{color:var(--muted);font-weight:500;font-size:13px}
+.seg .btn[aria-pressed="true"]{border-color:var(--violet);background:var(--violet-soft);color:var(--violet-strong);box-shadow:0 0 0 1px var(--violet)}
+.seg .btn[aria-pressed="true"]::after{content:"✓";font-weight:800}
+.seg .btn[aria-pressed="true"] small{display:none}
+.switch{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.switch:last-child{border-bottom:0;padding-bottom:0}
+.switch input{appearance:none;-webkit-appearance:none;width:48px;height:28px;border-radius:99px;background:var(--line-strong);position:relative;flex:none;cursor:pointer;transition:background-color .2s;margin:0}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.switch input:checked{background:var(--violet)}
+.switch input:checked::after{transform:translateX(20px)}
+.switch span{font-weight:700}
+.switch small{display:block;color:var(--muted);font-size:13px;font-weight:500}
+.hard{list-style:none;margin:0 0 12px;padding:0;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.panel .hard{margin-bottom:0}
+.hard li{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:baseline;padding:10px 14px;border-bottom:1px solid var(--line)}
+.hard li:last-child{border-bottom:0}
+.hq{font-weight:700;overflow-wrap:anywhere}
+.ha{color:var(--muted);overflow-wrap:anywhere}
+.hx{font-size:12.5px;font-weight:800;color:var(--bad);background:var(--bad-bg);padding:1px 9px;border-radius:99px;white-space:nowrap}
+.wlist{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);max-height:420px;overflow-y:auto}
+.wlist li{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line);font-size:15px}
+.wlist li:last-child{border-bottom:0}
+.wlist li span:first-child{font-weight:700}
+.row-btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+
+/* editor */
+.edit-top{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.edit-top h2{font-size:30px}
+.edit-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:start}
+.edit-side{display:grid;gap:20px;min-width:0}
+.field{display:grid;gap:6px;margin-bottom:14px;min-width:0}
+.field label{font-size:13px;font-weight:700;color:var(--muted)}
+.inp{font-size:16px;padding:11px 13px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);color:var(--ink);width:100%;min-width:0;transition:border-color .15s,box-shadow .15s}
+.inp:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 4px var(--violet-soft)}
+.inp::placeholder{color:var(--muted);opacity:.7}
+.colhead{display:grid;grid-template-columns:22px minmax(0,1fr) minmax(0,1fr) 34px;gap:6px;padding:2px 0 8px;font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.colhead span:nth-child(1),.colhead span:nth-child(4){display:none}
+.colhead span:nth-child(2){grid-column:2;color:var(--violet-strong)}
+.colhead span:nth-child(3){grid-column:3;color:var(--coral-strong)}
+.wrows{border-top:1px solid var(--line)}
+.wrow{display:grid;grid-template-columns:22px minmax(0,1fr) minmax(0,1fr) 34px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.wnum{color:var(--muted);font-size:12px;text-align:right;font-variant-numeric:tabular-nums}
+.wrow .inp{padding:9px 10px;font-size:16px;border-radius:10px}
+.wrow .wq:focus{border-color:var(--violet)}
+.wrow .wa:focus{border-color:var(--coral);box-shadow:0 0 0 4px var(--coral-soft)}
+.wdel{border:0;background:none;color:var(--muted);font-size:22px;line-height:1;width:34px;height:38px;border-radius:10px;cursor:pointer;transition:background-color .15s,color .15s,transform .15s}
+.wdel:hover{color:var(--bad);background:var(--bad-bg);transform:rotate(90deg)}
+.sticky{position:sticky;bottom:0;background:linear-gradient(to bottom,transparent,var(--surface) 35%);padding:22px 0 4px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.wcount{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums;font-weight:700}
+.sticky .btn{min-width:150px}
+
+/* importeren */
+.imp{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:var(--sh);padding:0 20px;margin:0}
+.imp > summary{margin:0;padding:16px 0;cursor:pointer;font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--violet-strong);list-style-position:inside}
+.imp[open] > summary{border-bottom:1px solid var(--line);margin-bottom:14px}
+.imp-body{padding-bottom:18px}
+.mode{display:flex;gap:4px;margin:0 0 12px;background:var(--soft);padding:4px;border-radius:14px}
+.mode .btn{flex:1;min-height:38px;padding:6px 10px;font-size:15px;background:transparent;border-color:transparent;box-shadow:none;color:var(--muted)}
+.mode .btn:hover{transform:none;box-shadow:none}
+.mode .btn[aria-pressed="true"]{background:var(--surface);color:var(--violet-strong);box-shadow:var(--sh-sm)}
+.imp textarea{min-height:140px;font-size:15px;resize:vertical;font-family:inherit;line-height:1.45}
+.imp-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.imp-two .field{margin-bottom:0}
+.imp-two textarea{min-height:170px}
+.imp-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:10px 0 0}
+.imp-swap{display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:600;font-size:15px;cursor:pointer}
+.imp-swap input{width:20px;height:20px;accent-color:var(--violet);flex:none;margin:0}
+.prev{margin-top:12px}
+.prev-meta{font-size:14px;color:var(--muted);margin:0 0 8px}
+.prev-meta b{color:var(--ink)}
+.prev-note{font-size:14px;margin:8px 0 0;color:var(--warn);background:var(--warn-bg);border-radius:10px;padding:6px 12px}
+.prev-note.ok{color:var(--good);background:var(--good-bg)}
+.prev-tab{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.prev-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line);font-size:15px;animation:rise .25s ease both}
+.prev-row:last-child{border-bottom:0}
+.prev-row span{padding:7px 12px;overflow-wrap:anywhere}
+.prev-row span:first-child{font-weight:700;background:var(--violet-soft)}
+.prev-row span:last-child{background:var(--coral-soft)}
+.prev-more{padding:7px 12px;color:var(--muted);font-size:14px}
+.imp-add{margin-top:14px}
+
+/* Spaanse tekens */
+.chars{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.chars button{min-width:40px;min-height:40px;padding:0 8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:var(--sh-sm);transition:transform .15s cubic-bezier(.3,1.6,.5,1),background-color .15s,border-color .15s}
+.chars button:hover{border-color:var(--coral);background:var(--coral-soft);transform:translateY(-2px)}
+.chars button:active{transform:scale(.94)}
+.chars button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chars .cap{font-size:16px}
+.chars-edit{position:sticky;top:0;z-index:5;background:var(--surface);margin:0 0 10px;padding:8px 0}
+
+/* toets */
+.mode-toets{--act:var(--violet);--act-soft:var(--violet-soft);--act-strong:var(--violet-strong);--g-act:var(--g-violet)}
+.mode-kaartjes{--act:var(--coral);--act-soft:var(--coral-soft);--act-strong:var(--coral-strong);--g-act:var(--g-coral)}
+.test-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.count{font-variant-numeric:tabular-nums;color:var(--muted);font-size:15px}
+.count b{color:var(--ink)}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:20px}
+.bar i{display:block;height:100%;width:0;background:var(--g-act);border-radius:99px;transition:width .5s cubic-bezier(.3,1.2,.5,1)}
+.sheet{position:relative;background:linear-gradient(180deg,var(--act-soft),var(--surface) 46%);color:var(--ink);border:1px solid var(--line);border-radius:30px;padding:34px 34px 34px;box-shadow:var(--sh);overflow:hidden}
+.sheet::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:var(--g-act)}
+.sheet::after{content:"";position:absolute;right:-50px;top:-50px;width:170px;height:170px;border-radius:50%;background:var(--act);opacity:.1;pointer-events:none}
+.q-lang,.a-lang{display:block;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.q-lang{display:inline-block;color:var(--act-strong);background:var(--surface);border-radius:99px;padding:3px 12px;box-shadow:var(--sh-sm)}
+.q{font-weight:800;font-size:clamp(36px,7vw,62px);line-height:1.08;letter-spacing:-.04em;margin:14px 0 10px;overflow-wrap:anywhere;min-height:1.1em}
+.phase{min-height:30px;margin-bottom:16px}
+.phase span{display:inline-block;font-size:12.5px;font-weight:800;padding:3px 12px;border-radius:99px;animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+.phase .retry{background:var(--warn-bg);color:var(--warn)}
+.phase .confirm{background:var(--mint-soft);color:var(--mint-strong)}
+.answer{display:block;width:100%;font-size:24px;font-weight:600;color:var(--ink);background:var(--surface);border:2px solid var(--line-strong);border-radius:16px;padding:14px 18px;outline:none;margin-top:8px;transition:border-color .15s,box-shadow .15s}
+.answer:focus-visible{outline:none;border-color:var(--act);box-shadow:0 0 0 5px var(--act-soft)}
+.answer::placeholder{color:var(--muted);opacity:.7;font-size:18px;font-weight:500}
+.sheet.st-correct .answer{border-color:var(--good);color:var(--good);box-shadow:0 0 0 5px var(--good-bg)}
+.sheet.st-wrong .answer{border-color:var(--bad)}
+.sheet.st-almost .answer{border-color:var(--warn)}
+.card{cursor:pointer;user-select:none;-webkit-user-select:none;perspective:900px}
+.card.st-back{cursor:default}
+.back-ans{font-size:clamp(26px,6vw,38px);color:var(--ink);background:var(--surface);border:2px solid var(--act);border-radius:18px;padding:14px 18px;font-weight:800;letter-spacing:-.02em;margin-top:8px;overflow-wrap:anywhere;animation:flipIn .45s cubic-bezier(.3,1.3,.5,1) both;transform-origin:50% 0}
+.flip-hint{color:var(--muted);font-size:14px;font-weight:700;margin-top:6px}
+.fb{min-height:20px;margin:18px 0}
+.fb-box{border:1px solid var(--line);border-radius:18px;padding:14px 18px;animation:pop .35s cubic-bezier(.3,1.6,.5,1);background:var(--surface)}
+.fb-good{background:var(--good-bg);border-color:transparent}
+.fb-good b{color:var(--good);font-size:18px}
+.fb-good .fb-sub{display:block;font-size:14px;margin-top:2px}
+.fb-warn{background:var(--warn-bg);border-color:transparent;color:var(--warn)}
+.fb-bad{background:var(--bad-bg);border-color:transparent}
+.fb-title{font-weight:800;color:var(--bad)}
+.fb-bad .you{color:var(--muted);font-size:15px;margin-top:2px}
+.fb-bad .you s{text-decoration-color:var(--bad);text-decoration-thickness:2px}
+.fb-bad .right{font-size:24px;font-weight:800;margin-top:4px;overflow-wrap:anywhere;letter-spacing:-.02em}
+.fb-bad .hint{margin:4px 0 0;font-size:14px}
+.test-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.test-actions .span2{grid-column:1/-1}
+.mode-toets .test-actions .btn-primary{background:var(--g-violet)}
+.mode-kaartjes .btn-primary{background:var(--g-coral);color:var(--on-color);box-shadow:0 12px 24px -12px rgba(255,100,80,.75),inset 0 1px 0 rgba(255,255,255,.35)}
+.tally{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:24px;font-size:14px;font-variant-numeric:tabular-nums;font-weight:700;color:var(--muted)}
+.tally span{border-radius:99px;padding:3px 14px;background:var(--surface);border:1px solid var(--line)}
+.tally .ok{background:var(--good-bg);border-color:transparent}
+.tally .ok b{color:var(--good)}
+.tally .bad{background:var(--bad-bg);border-color:transparent}
+.tally .bad b{color:var(--bad)}
+.keys{text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
+.shake{animation:shake .32s}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+@keyframes rise{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:scale(.94)}60%{opacity:1;transform:scale(1.025)}100%{transform:scale(1)}}
+@keyframes flipIn{from{opacity:0;transform:rotateX(80deg)}to{opacity:1;transform:none}}
+
+/* resultaat */
+.res-card{position:relative;border:1px solid var(--line);border-radius:32px;padding:36px 28px 30px;overflow:hidden;box-shadow:var(--sh);background:
+  radial-gradient(60% 70% at 100% 0%,var(--violet-soft),transparent 70%),
+  radial-gradient(50% 60% at 0% 100%,var(--mint-soft),transparent 70%),
+  var(--surface)}
+.res-head{display:grid;justify-items:center;text-align:center;gap:10px;padding:0 0 6px}
+.ring{position:relative;width:170px;height:170px}
+.ring.good{color:var(--mint-strong)}
+.ring.pen{color:var(--bad)}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:11}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:currentColor;stroke-linecap:round;animation:ring 1s .15s cubic-bezier(.3,.9,.4,1) backwards}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font-size:54px;font-weight:800;letter-spacing:-.04em;color:var(--ink);font-variant-numeric:tabular-nums}
+@keyframes ring{from{stroke-dashoffset:var(--c)}}
+.res-head h2{font-size:30px}
+.perfect{text-align:center;color:var(--good);font-weight:800;margin:18px 0}
+.res-actions{display:grid;gap:12px;margin-top:26px}
+
+/* overlay + toast */
+.overlay{position:fixed;inset:0;background:rgba(14,17,38,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:16px;z-index:20;animation:fade .15s}
+.modal{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:24px;padding:24px;max-width:400px;width:100%;box-shadow:0 30px 70px -20px rgba(0,0,0,.5);animation:pop .3s cubic-bezier(.3,1.6,.5,1)}
+.modal h3{font-size:21px;margin-bottom:6px}
+.modal p{color:var(--muted)}
+.modal-act{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:14px;font-size:15px;font-weight:700;max-width:calc(100% - 32px);opacity:0;pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.3,1.5,.5,1);z-index:30;box-shadow:var(--sh)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@keyframes fade{from{opacity:0}}
+
+
+/* account */
+.nav-r{display:flex;align-items:center;gap:10px}
+.userchip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line-strong);border-radius:99px;padding:4px 14px 4px 4px;min-height:40px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:var(--sh-sm);transition:border-color .15s,box-shadow .15s}
+.userchip:hover{border-color:var(--coral);box-shadow:0 0 0 3px var(--coral-soft)}
+.userchip .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--g-violet);color:#fff;font-weight:800;font-size:14px}
+.userchip .lo{color:var(--muted);font-weight:600;border-left:1px solid var(--line-strong);padding-left:8px}
+.login{max-width:460px;margin:24px auto 0}
+.login-card{border:1px solid var(--line);border-radius:30px;padding:36px 32px 30px;box-shadow:var(--sh);background:radial-gradient(70% 60% at 100% 0%,var(--violet-soft),transparent 70%),radial-gradient(60% 50% at 0% 100%,var(--coral-soft),transparent 70%),var(--surface)}
+.login-card h1{font-size:34px;letter-spacing:-.035em;margin:12px 0 8px}
+.login-card .tag{margin-bottom:22px;font-size:16px}
+.login-card .btn{width:100%;margin-top:6px}
+.login-err{color:var(--bad);background:var(--bad-bg);border-radius:12px;padding:8px 14px;font-weight:600;font-size:14px;margin:0 0 10px}
+.by{color:var(--cst);font-weight:700}
+@media (max-width:560px){.userchip .lo{display:none}.userchip{padding-right:6px}}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;padding:30px 24px 10px;gap:8px}
+  .stack{height:250px;max-width:420px;width:100%;margin:0 auto}
+  .setup,.edit-grid{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:12px 14px 70px}
+  .hero{border-radius:26px}
+  .vc{width:172px;padding:13px 14px 14px}
+  .vc b{font-size:22px}
+  .sheet{padding:26px 20px 26px;border-radius:26px}
+  .imp-two{grid-template-columns:1fr}
+}
+@media (max-width:380px){
+  .wrow,.colhead{grid-template-columns:16px minmax(0,1fr) minmax(0,1fr) 30px;gap:4px}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+<script>window.LESMIO_SB={url:"https://wzhobkwbgxaqbhzkghpt.supabase.co",key:"sb_publishable__p1cgOnEZf5MUY1EbFYPsA_9iSy6fGO"};</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav" aria-label="Lesmio">
+    <button type="button" class="logo" data-act="logo" aria-label="Lesmio"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lgG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a6bff"/><stop offset="1" stop-color="#5232d6"/></linearGradient></defs><path d="M22 3h20c11 0 19 8 19 19v18c0 11-8 19-19 19H26L11 61c-1.5 1-3.300 0-3.300-1.800V48C3.500 45 3 41 3 38V22C3 11 11 3 22 3z" fill="url(#lgG)"/><path d="M23 16v23c0 2.500 1.500 4 4 4h13" fill="none" stroke="#fff" stroke-width="7.500" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43" cy="23" r="6" fill="#ff7a66"/></svg><span class="wordmark" aria-hidden="true">Lesm<span class="wm-i">ı</span>o</span></button>
+    <div class="nav-r">
+      <span id="navUser"></span>
+      <label class="sr" for="uiLang" id="uiLangLabel">Taal</label>
+      <select class="langsel" id="uiLang"><option value="nl">Nederlands</option><option value="es">Español</option></select>
+    </div>
+  </nav>
+  <main id="app"></main>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+
+/* ---------- helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-5);
+const clone = o => JSON.parse(JSON.stringify(o));
+const fmtGrade = g => (g >= 10 ? "10" : g.toFixed(1).replace(".", ","));
+const gradeClass = g => (g >= 5.5 ? "good" : "pen");
+const fmtTime = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0") + " min";
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+};
+// let op: de oude prefix "overhoor." blijft bewust staan, zodat bestaande lijsten en voortgang behouden blijven
+const K = { lists: "overhoor.lists", settings: "overhoor.settings", session: "overhoor.session", dirs: "overhoor.dirs", ui: "overhoor.ui" };
+
+/* ---------- taal van het programma (NL / ES) ---------- */
+let LANG = LS.get(K.ui, null);
+if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || "")) ? "es" : "nl";
+
+const I18N = {
+nl: {
+  welcomeTitle: "Welkom bij Lesmio",
+  loginTitle: "Inloggen",
+  loginSub: "Log in om je woordenlijsten te zien. Lijsten zijn gedeeld, je cijfers blijven van jou.",
+  loginEmail: "E-mailadres",
+  loginPw: "Wachtwoord",
+  loginBtn: "Inloggen",
+  loginBusy: "Bezig met inloggen…",
+  loginErr: "Dat klopt niet. Controleer je e-mailadres en wachtwoord.",
+  loginNet: "Geen verbinding met de server. Probeer het later opnieuw.",
+  logout: "Uitloggen",
+  byName: "van {n}",
+
+  actTestSub: "Blanco beginnen, fouten komen terug",
+  actCardsSub: "Omdraaien en zelf beoordelen",
+  openList: "Openen",
+  heroSeen: "Jouw woorden, jouw tempo",
+  tag: "Je gaat er blanco in. Wat je in één keer goed hebt, is klaar. Fouten komen terug tot je ze twee keer goed hebt.",
+  uiLang: "Taal", lNl: "Nederlands", lEs: "Spaans",
+  inProgress: "Nog bezig:", modeCards: "Kaartjes", modeTest: "Toets", progressKnown: "{d} van {n} gekend",
+  resume: "Verder", discard: "Wissen",
+  myLists: "Mijn lijsten", newListBtn: "+ Nieuwe lijst", loadingLists: "Lijsten laden…",
+  noteExample: "Probeer de toets met deze voorbeeldlijst, of maak je eigen lijst met <b>+ Nieuwe lijst</b>.",
+  noteLocal: "Je lijsten worden in deze browser bewaard.",
+  loadSlow: "Je lijsten kunnen nog niet worden opgehaald. Controleer je verbinding.",
+  loadFail: "Je opgeslagen lijsten zijn nu niet bereikbaar. Nieuwe lijsten worden in deze browser bewaard.",
+  fresh: "nieuw", lastGrade: "Laatste cijfer {g}", exampleChip: "Voorbeeld", exName: "Spaans – voorbeeld",
+  words1: "1 woord", wordsN: "{n} woorden",
+  backToLists: "← Mijn lijsten", startTest: "Start toets",
+  direction: "Richting", both: "Beide kanten op", bothSub: "elk woord 2×",
+  checking: "Nakijken",
+  optCase: "Hoofdletters negeren", optCaseSub: "Madrid en madrid rekenen allebei goed",
+  optAcc: "Accenten negeren", optAccSub: "Uit: está en esta geeft een herkansing",
+  optRetype: "Overtypen bij fout", optRetypeSub: "Typ het goede antwoord over voor je verder gaat",
+  lastGrades: "Laatste cijfers", hardWords: "Lastigste woorden", failN: "{n}× fout", practiceHard: "Oefen deze {n}",
+  allWords: "Alle woorden ({n})", makeOwn: "Maak er een eigen lijst van", editList: "Lijst bewerken", del: "Verwijderen",
+  save: "Opslaan", back: "← Terug", newListTitle: "Nieuwe lijst", listName: "Naam van de lijst", listNamePh: "bijv. Spaans – hoofdstuk 4", unnamed: "Naamloze lijst",
+  editHint: "Meerdere goede antwoorden? Zet er een / of komma tussen. Tekst tussen haakjes mag je weglaten bij de toets, zoals <i>(het) huis</i>.",
+  impTitle: "Woorden importeren",
+  impHint: "Plak je woorden in bijna elk formaat of kies een bestand. Ik herken het scheidingsteken zelf: tab, =, ;, |, –, → of om-en-om regels.",
+  impModeOne: "Eén lijst", impModeTwo: "Twee kolommen",
+  impPh: "kaas = queso\nhet huis - la casa\nlopen → caminar\n1. de boom; el árbol",
+  impPhA: "Nederlandse woorden, één per regel", impPhB: "Spaanse woorden, in dezelfde volgorde",
+  impFile: "Bestand kiezen (.txt, .csv)",
+  impPhoto: "Foto of afbeelding",
+  impReading: "Foto wordt gelezen… dit kan even duren",
+  impPhotoErr: "Foto lezen is niet gelukt. Controleer je internet en probeer opnieuw.",
+  impPhotoNone: "Er is geen tekst gevonden in deze foto.",
+  impPhotoDone: "Tekst uit foto gelezen. Controleer de woorden hieronder.",
+  impXlsx: "Excel-bestanden kan ik niet lezen. Sla het op als CSV, of kopieer de cellen en plak ze hier.",
+  impSwap: "Spaans staat links: kolommen omwisselen", impSwapAuto: "Spaans links herkend, kolommen zijn omgewisseld.",
+  impFound: "Herkend: {w} · scheiding: {sep}", impSkipped: "Overgeslagen regels: {n} (geen vertaling gevonden)",
+  impNone: "Plak je woorden hierboven om een voorbeeld te zien.", impMore: "… en {n} meer",
+  impAdd: "Toevoegen ({n})",
+  sepTab: "tab", sepArrow: "pijl", sepEq: "=", sepPipe: "|", sepDash: "streepje", sepSemi: ";", sepColon: ":", sepComma: "komma", sepPairs: "om-en-om regels", sepCols: "twee kolommen",
+  delRow: "Verwijder regel {n}", charsLabel: "Spaanse tekens", capsLabel: "Hoofdletters",
+  stop: "× Stoppen", countLine: "{d} van {n} gekend", flipAria: "Draai het kaartje om", tapFlip: "Tik om om te draaien",
+  keysHint: "Toetsenbord: spatie draait om, ← wist ik niet, → wist ik",
+  tallyOk: "✓ {n} goed", tallyBad: "✗ {n} fout", tallyLeft: "nog {n} te gaan",
+  typeAns: "Typ je antwoord", typeAnsEmpty: "Typ een antwoord, of kies Weet ik niet",
+  phaseRetry: "Herkansing", phaseConfirm: "Nog één keer goed",
+  check: "Controleer", idk: "Weet ik niet", next: "Volgende", override: "Toch goed rekenen", flip: "Draai om", dontknow: "Wist ik niet", knew: "Wist ik",
+  almost: "Bijna!", whyTypo: "Kijk nog even naar de spelling.", whyAccent: "Let op de accenten.", whyCase: "Let op de hoofdletters.", oneMore: "Je krijgt nog één poging.",
+  good: "Goed!", fullAns: "Volledig antwoord: {a}",
+  answerIs: "Het antwoord is", wrongT: "Helaas, fout", you: "Jij:", retypeHint: "Typ het over om door te gaan.", retypePh: "Typ het goede antwoord over", enterNext: "Enter voor de volgende",
+  v1: "Uitstekend", v2: "Goed gedaan", v3: "Voldoende", v4: "Nog even oefenen",
+  gradeAria: "Cijfer {g}", resultLine: "{f} van de {t} in één keer goed · {time}",
+  wentWrong: "Deze gingen fout", perfect: "Alles in één keer goed.",
+  redoWrong1: "Oefen alleen het foute woord", redoWrongN: "Oefen alleen de {n} foute woorden", redoAll: "Hele lijst opnieuw", toLists: "Naar mijn lijsten",
+  emptyList: "Deze lijst heeft nog geen woorden.", needWord: "Voeg minstens één woord met vertaling toe.",
+  nothingParsed: "Geen woorden herkend. Zet op elke regel: woord = vertaling",
+  added1: "1 woord toegevoegd", addedN: "{n} woorden toegevoegd", addedDup: "{w} toegevoegd, {d} stonden er al",
+  skip1: "1 regel zonder vertaling is overgeslagen.", skipN: "{n} regels zonder vertaling zijn overgeslagen.",
+  saveFull: "Opslaan lukte niet: de opslag is vol. Verwijder een oude lijst.", saveFail: "Opslaan lukte niet. Probeer het zo nog eens.", deleteFail: "Verwijderen lukte niet. Probeer het zo nog eens.",
+  cancel: "Annuleren",
+  delTitle: "Lijst verwijderen?", delText: "‘{name}’ en de cijfers ervan worden verwijderd.",
+  discardTitle: "Wijzigingen weggooien?", discardText: "Je hebt nog niet opgeslagen.", discardOk: "Weggooien", keepEditing: "Verder bewerken",
+  stopTitle: "Stoppen met overhoren?", stopText: "Je voortgang in deze ronde gaat verloren.", stopOk: "Stoppen", keepGoing: "Doorgaan"
+},
+es: {
+  welcomeTitle: "Te damos la bienvenida a Lesmio",
+  loginTitle: "Iniciar sesión",
+  loginSub: "Inicia sesión para ver tus listas. Las listas se comparten, tus notas son solo tuyas.",
+  loginEmail: "Correo electrónico",
+  loginPw: "Contraseña",
+  loginBtn: "Entrar",
+  loginBusy: "Entrando…",
+  loginErr: "Eso no es correcto. Revisa tu correo y contraseña.",
+  loginNet: "Sin conexión con el servidor. Inténtalo más tarde.",
+  logout: "Cerrar sesión",
+  byName: "de {n}",
+
+  actTestSub: "Empieza en blanco, los fallos vuelven",
+  actCardsSub: "Dale la vuelta y juzga tú mismo",
+  openList: "Abrir",
+  heroSeen: "Tus palabras, a tu ritmo",
+  tag: "Empiezas en blanco. Lo que aciertas a la primera, queda hecho. Los fallos vuelven hasta que los aciertas dos veces.",
+  uiLang: "Idioma", lNl: "Neerlandés", lEs: "Español",
+  inProgress: "En curso:", modeCards: "Tarjetas", modeTest: "Test", progressKnown: "{d} de {n} sabidas",
+  resume: "Continuar", discard: "Borrar",
+  myLists: "Mis listas", newListBtn: "+ Nueva lista", loadingLists: "Cargando listas…",
+  noteExample: "Prueba el test con esta lista de ejemplo, o crea la tuya con <b>+ Nueva lista</b>.",
+  noteLocal: "Tus listas se guardan en este navegador.",
+  loadSlow: "Todavía no se pueden cargar tus listas. Comprueba tu conexión.",
+  loadFail: "No se puede acceder a tus listas guardadas ahora. Las listas nuevas se guardarán en este navegador.",
+  fresh: "nueva", lastGrade: "Última nota {g}", exampleChip: "Ejemplo", exName: "Neerlandés – ejemplo",
+  words1: "1 palabra", wordsN: "{n} palabras",
+  backToLists: "← Mis listas", startTest: "Empezar test",
+  direction: "Dirección", both: "En ambos sentidos", bothSub: "cada palabra 2×",
+  checking: "Corrección",
+  optCase: "Ignorar mayúsculas", optCaseSub: "Madrid y madrid cuentan como correctas",
+  optAcc: "Ignorar acentos", optAccSub: "Desactivado: está y esta dan una segunda oportunidad",
+  optRetype: "Reescribir al fallar", optRetypeSub: "Escribe la respuesta correcta antes de continuar",
+  lastGrades: "Últimas notas", hardWords: "Palabras más difíciles", failN: "{n}× fallo", practiceHard: "Practica estas {n}",
+  allWords: "Todas las palabras ({n})", makeOwn: "Crea tu propia lista a partir de esta", editList: "Editar lista", del: "Eliminar",
+  save: "Guardar", back: "← Volver", newListTitle: "Nueva lista", listName: "Nombre de la lista", listNamePh: "p. ej. Neerlandés – tema 4", unnamed: "Lista sin nombre",
+  editHint: "¿Varias respuestas correctas? Sepáralas con / o coma. El texto entre paréntesis se puede omitir en el test, por ejemplo <i>(la) casa</i>.",
+  impTitle: "Importar palabras",
+  impHint: "Pega tus palabras en casi cualquier formato o elige un archivo. Reconozco el separador: tabulador, =, ;, |, –, → o líneas alternas.",
+  impModeOne: "Una lista", impModeTwo: "Dos columnas",
+  impPh: "kaas = queso\nhet huis - la casa\nlopen → caminar\n1. de boom; el árbol",
+  impPhA: "Palabras en neerlandés, una por línea", impPhB: "Palabras en español, en el mismo orden",
+  impFile: "Elegir archivo (.txt, .csv)",
+  impPhoto: "Foto o imagen",
+  impReading: "Leyendo la foto… puede tardar un poco",
+  impPhotoErr: "No se pudo leer la foto. Revisa tu conexión e inténtalo de nuevo.",
+  impPhotoNone: "No se encontró texto en esta foto.",
+  impPhotoDone: "Texto leído de la foto. Revisa las palabras de abajo.",
+  impXlsx: "No puedo leer archivos de Excel. Guárdalo como CSV o copia las celdas y pégalas aquí.",
+  impSwap: "El español está a la izquierda: intercambiar columnas", impSwapAuto: "Detecté el español a la izquierda y intercambié las columnas.",
+  impFound: "Reconocido: {w} · separador: {sep}", impSkipped: "Líneas omitidas: {n} (sin traducción)",
+  impNone: "Pega tus palabras arriba para ver una vista previa.", impMore: "… y {n} más",
+  impAdd: "Añadir ({n})",
+  sepTab: "tabulador", sepArrow: "flecha", sepEq: "=", sepPipe: "|", sepDash: "guion", sepSemi: ";", sepColon: ":", sepComma: "coma", sepPairs: "líneas alternas", sepCols: "dos columnas",
+  delRow: "Eliminar la fila {n}", charsLabel: "Caracteres especiales", capsLabel: "Mayúsculas",
+  stop: "× Parar", countLine: "{d} de {n} sabidas", flipAria: "Dar la vuelta a la tarjeta", tapFlip: "Toca para girar",
+  keysHint: "Teclado: espacio gira, ← no lo sabía, → lo sabía",
+  tallyOk: "✓ {n} bien", tallyBad: "✗ {n} mal", tallyLeft: "quedan {n}",
+  typeAns: "Escribe tu respuesta", typeAnsEmpty: "Escribe una respuesta o elige No lo sé",
+  phaseRetry: "Segunda oportunidad", phaseConfirm: "Una vez más",
+  check: "Comprobar", idk: "No lo sé", next: "Siguiente", override: "Contar como correcta", flip: "Girar", dontknow: "No lo sabía", knew: "Lo sabía",
+  almost: "¡Casi!", whyTypo: "Revisa la ortografía.", whyAccent: "Fíjate en los acentos.", whyCase: "Fíjate en las mayúsculas.", oneMore: "Tienes un intento más.",
+  good: "¡Bien!", fullAns: "Respuesta completa: {a}",
+  answerIs: "La respuesta es", wrongT: "Vaya, incorrecto", you: "Tú:", retypeHint: "Escríbela para continuar.", retypePh: "Escribe la respuesta correcta", enterNext: "Enter para continuar",
+  v1: "Excelente", v2: "Bien hecho", v3: "Aprobado", v4: "A seguir practicando",
+  gradeAria: "Nota {g}", resultLine: "{f} de {t} a la primera · {time}",
+  wentWrong: "Estas salieron mal", perfect: "Todo bien a la primera.",
+  redoWrong1: "Practica solo la palabra fallada", redoWrongN: "Practica solo las {n} palabras falladas", redoAll: "Repetir toda la lista", toLists: "Ir a mis listas",
+  emptyList: "Esta lista aún no tiene palabras.", needWord: "Añade al menos una palabra con su traducción.",
+  nothingParsed: "No se reconoció ninguna palabra. Escribe en cada línea: palabra = traducción",
+  added1: "1 palabra añadida", addedN: "{n} palabras añadidas", addedDup: "{w} añadidas, {d} ya estaban",
+  skip1: "Se omitió 1 fila sin traducción.", skipN: "Se omitieron {n} filas sin traducción.",
+  saveFull: "No se pudo guardar: el almacenamiento está lleno. Elimina una lista antigua.", saveFail: "No se pudo guardar. Inténtalo de nuevo en un momento.", deleteFail: "No se pudo eliminar. Inténtalo de nuevo en un momento.",
+  cancel: "Cancelar",
+  delTitle: "¿Eliminar la lista?", delText: "«{name}» y sus notas se eliminarán.",
+  discardTitle: "¿Descartar los cambios?", discardText: "Todavía no has guardado.", discardOk: "Descartar", keepEditing: "Seguir editando",
+  stopTitle: "¿Parar el test?", stopText: "Perderás el progreso de esta ronda.", stopOk: "Parar", keepGoing: "Continuar"
+}};
+const t = (k, p) => {
+  let s = I18N[LANG][k]; if (s == null) s = I18N.nl[k]; if (s == null) s = k;
+  return p ? s.replace(/\{(\w+)\}/g, (m, n) => (p[n] != null ? p[n] : m)) : s;
+};
+const langName = c => (c === "nl" ? t("lNl") : c === "es" ? t("lEs") : String(c || ""));
+const wordsLabel = n => (n === 1 ? t("words1") : t("wordsN", { n }));
+const dateLoc = () => (LANG === "es" ? "es-ES" : "nl-NL");
+const defaultDir = () => (LANG === "es" ? "aq" : "qa");   // qa = Nederlands → Spaans, aq = Spaans → Nederlands
+
+function toast(msg) {
+  const el = $("#toast"); el.textContent = msg; el.classList.add("show");
+  clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), 3400);
+}
+function confirmBox({ title, text = "", ok = "OK", cancel = t("cancel"), danger = false }) {
+  return new Promise(res => {
+    const ov = document.createElement("div"); ov.className = "overlay";
+    ov.innerHTML = `<div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle"><h3 id="mTitle">${esc(title)}</h3>${text ? `<p>${esc(text)}</p>` : ""}<div class="modal-act"><button class="btn" id="mNo" data-m="0">${esc(cancel)}</button><button class="btn ${danger ? "btn-danger-solid" : "btn-primary"}" id="mYes" data-m="1">${esc(ok)}</button></div></div>`;
+    const close = v => { ov.remove(); document.removeEventListener("keydown", kd, true); res(v); };
+    const kd = e => { if (e.key === "Escape") { e.stopPropagation(); close(false); } };
+    ov.addEventListener("click", e => { const b = e.target.closest("[data-m]"); if (b) close(b.dataset.m === "1"); else if (e.target === ov) close(false); });
+    document.addEventListener("keydown", kd, true);
+    document.body.appendChild(ov); $("#mYes", ov).focus();
+  });
+}
+
+/* ---------- voorbeeldlijst (niet opgeslagen): links Nederlands, rechts Spaans ---------- */
+const EXAMPLE = {
+  id: "voorbeeld", example: true, get name() { return t("exName"); }, qLang: "nl", aLang: "es", results: [],
+  words: [
+    ["het huis", "la casa"], ["de buurt", "el barrio"], ["betrouwbaar", "fiable / confiable"],
+    ["uiteindelijk", "al final / finalmente"], ["klagen", "quejarse"], ["grondig", "minucioso"],
+    ["de tuin", "el jardín"], ["de boom", "el árbol"], ["verbaasd", "sorprendido"],
+    ["voorstellen", "proponer / sugerir"], ["eigenlijk", "en realidad"], ["waarschuwen", "advertir / avisar"],
+    ["het ontbijt", "el desayuno"], ["lenen", "prestar"]
+  ].map(([q, a], i) => ({ id: "v" + i, q, a, misses: 0 }))
+};
+
+/* ---------- nakijken ---------- */
+function norm(s, ignoreCase) {
+  let x = String(s || "").normalize("NFC")
+    .replace(/[‘’`´]/g, "'").replace(/[“”]/g, '"')
+    .replace(/\s+/g, " ").trim().replace(/^[¿¡\s]+/, "").replace(/[.!?]+$/, "").trim();
+  return ignoreCase ? x.toLowerCase() : x;
+}
+const stripAcc = s => s.replace(/ñ/g, "\u0001").replace(/Ñ/g, "\u0002").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\u0001/g, "ñ").replace(/\u0002/g, "Ñ");
+function variants(ans, ic) {
+  const out = new Set();
+  const add = x => { const n = norm(x, ic); if (n) out.add(n); };
+  const forms = x => { add(x); add(x.replace(/[()]/g, "")); add(x.replace(/\([^)]*\)/g, "")); };
+  forms(ans);
+  String(ans).split(/[\/;,]/).forEach(forms);
+  return [...out];
+}
+function lev(a, b) {
+  if (a === b) return 0;
+  const m = a.length, n = b.length; if (!m) return n; if (!n) return m;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[n];
+}
+const tol = n => (n <= 2 ? 0 : n <= 5 ? 1 : n <= 10 ? 2 : 3);
+function check(input, ans, st) {
+  const ic = st.ignoreCase;
+  const inp = norm(input, ic);
+  if (!inp) return { r: "empty" };
+  const vs = variants(ans, ic);
+  if (vs.includes(inp)) return { r: "correct" };
+  const ia = stripAcc(inp);
+  if (vs.some(v => stripAcc(v) === ia)) return st.ignoreAccents ? { r: "correct" } : { r: "almost", why: "accent" };
+  if (!ic && vs.some(v => v.toLowerCase() === inp.toLowerCase())) return { r: "almost", why: "case" };
+  const il = ia.toLowerCase();
+  if (vs.some(v => { const vv = stripAcc(v).toLowerCase(); return lev(il, vv) <= tol(vv.length); })) return { r: "almost", why: "typo" };
+  return { r: "wrong" };
+}
+const WHY = { typo: "whyTypo", accent: "whyAccent", case: "whyCase" };
+
+/* IMPORT-START */
+/* ---------- importeren: veel formaten ---------- */
+const HEADER_RE = /^(nederlands|neerlandés|neerlandes|dutch|spaans|español|espanol|spanish|term|terms|definition|definitie|woord|woorden|vertaling|word|translation|vraag|antwoord|front|back|palabra|traducción|traduccion)$/i;
+const cleanCell = s => String(s == null ? "" : s).replace(/\s+/g, " ").trim();
+function splitQ(line, d) {   // csv-achtig splitsen, met aanhalingstekens
+  const out = []; let cur = "", q = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (q) { if (c === '"') { if (line[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+    else if (c === '"' && cur === "") q = true;
+    else if (c === d) { out.push(cur); cur = ""; }
+    else cur += c;
+  }
+  out.push(cur);
+  return out.map(cleanCell);
+}
+const byRe = re => l => { const m = re.exec(l); return m ? [cleanCell(l.slice(0, m.index)), cleanCell(l.slice(m.index + m[0].length))] : null; };
+const DELIMS = [
+  { k: "tab",   test: l => l.includes("\t"), split: l => splitQ(l, "\t") },
+  { k: "arrow", test: l => /->|=>|→|⇒|>>/.test(l), split: byRe(/\s*(?:->|=>|→|⇒|>>)\s*/) },
+  { k: "eq",    test: l => l.includes("="), split: byRe(/\s*=\s*/) },
+  { k: "pipe",  test: l => l.includes("|"), split: l => l.replace(/^\s*\|/, "").replace(/\|\s*$/, "").split("|").map(cleanCell) },
+  { k: "dash",  test: l => /\s[-–—]\s/.test(l), split: byRe(/\s+[-–—]\s+/) },
+  { k: "semi",  test: l => l.includes(";"), split: l => splitQ(l, ";") },
+  { k: "colon", test: l => l.includes(":"), split: byRe(/\s*:\s*/) },
+  { k: "comma", test: l => l.includes(","), split: l => splitQ(l, ",") }
+];
+function parseImport(text) {
+  let lines = String(text || "").replace(/^﻿/, "").split(/\r?\n/)
+    .map(l => l.replace(/^\s*(?:\d+[.)]|[-•*·])\s+/, "").replace(/\s+$/, ""))
+    .filter(l => l.trim() && !/^[\s|:+-]+$/.test(l));
+  if (!lines.length) return { rows: [], skipped: 0, sep: "" };
+  const need = Math.max(1, Math.ceil(lines.length * 0.6));
+  const dl = DELIMS.find(d => lines.filter(d.test).length >= need);
+  const rows = []; let skipped = 0, sep;
+  if (dl) {
+    sep = dl.k;
+    lines.forEach(l => {
+      const c = dl.split(l);
+      if (c && c.length >= 2 && cleanCell(c[0]) && cleanCell(c[1])) rows.push({ q: cleanCell(c[0]), a: cleanCell(c[1]) });
+      else skipped++;
+    });
+  } else {
+    sep = "pairs";
+    for (let i = 0; i + 1 < lines.length; i += 2) {
+      const q = cleanCell(lines[i]), a = cleanCell(lines[i + 1]);
+      if (q && a) rows.push({ q, a }); else skipped += 2;
+    }
+    if (lines.length % 2) skipped++;
+  }
+  if (rows.length > 1 && HEADER_RE.test(rows[0].q) && HEADER_RE.test(rows[0].a)) rows.shift();
+  return { rows, skipped, sep };
+}
+function parseColumns(a, b) {
+  const A = String(a || "").split(/\r?\n/).map(cleanCell).filter(Boolean);
+  const B = String(b || "").split(/\r?\n/).map(cleanCell).filter(Boolean);
+  const n = Math.min(A.length, B.length), rows = [];
+  for (let i = 0; i < n; i++) rows.push({ q: A[i], a: B[i] });
+  return { rows, skipped: Math.abs(A.length - B.length), sep: "cols" };
+}
+const ES_HINT = /[áéíóúñ¿¡]|^(el|la|los|las|un|una|unos|unas)\s/i;
+const NL_HINT = /^(de|het|een)\s/i;
+function detectSwap(rows) {   // staat het Spaans links? (artikelen en accenten verraden het)
+  if (!rows.length) return false;
+  const sc = side => rows.reduce((n, r) => n + (ES_HINT.test(r[side]) ? 1 : 0) - (NL_HINT.test(r[side]) ? 1 : 0), 0);
+  const diff = sc("q") - sc("a");
+  return diff > 0 && diff >= Math.max(1, rows.length * 0.15);
+}
+/* IMPORT-END */
+
+/* ---------- state ---------- */
+const state = {
+  view: "home", lastView: null, lists: [], storage: "loading", loadNote: "", needLogin: false, me: null,
+  setupFor: null, setupDir: "qa", editing: null, session: null, caps: false,
+  imp: { mode: "one", text: "", a: "", b: "", swap: false, touched: false },
+  settings: Object.assign({ ignoreCase: true, ignoreAccents: false, retype: false }, LS.get(K.settings, {}))
+};
+const getList = id => (id === EXAMPLE.id ? EXAMPLE : state.lists.find(l => l.id === id));
+
+/* ---------- opslag: per gebruiker in de artifact-database, anders in deze browser ---------- */
+let cloud = null;
+const chains = {};
+const serial = (id, fn) => { const p = (chains[id] || Promise.resolve()).catch(() => {}).then(fn); chains[id] = p; return p; };
+const bodyOf = l => { const b = clone(l); delete b.id; delete b.example; return b; };
+
+function waitForClaude(ms) {
+  return new Promise(res => {
+    const t0 = Date.now();
+    (function poll() {
+      if (window.claude && typeof window.claude.use === "function") return res(window.claude);
+      if (Date.now() - t0 > ms) return res(null);
+      setTimeout(poll, 100);
+    })();
+  });
+}
+function goLocal(noteKey) {
+  cloud = null; state.storage = "local"; state.lists = LS.get(K.lists, []);
+  if (noteKey) state.loadNote = noteKey;
+  if (state.view === "home" || state.view === "setup") render();
+}
+async function initStorage() {
+  const cl = await waitForClaude(200);
+  if (!cl && window.LESMIO_SB && window.supabase) { try { return await initSupabase(window.LESMIO_SB); } catch (e) { sb = null; return goLocal("loadFail"); } }
+  let db = null, user = null, id = null;
+  if (cl) {
+    try { [db, user] = await Promise.all([cl.use("db"), cl.use("user")]); } catch (e) {}
+    if (db && user) { try { id = await user.id(); } catch (e) {} }
+  }
+  if (!db || !id) return goLocal();
+  try {
+    const col = db.doc("data/users/" + id + "/profile").collection("lists");
+    cloud = { col };
+    state.storage = "cloud-loading";
+    let migrated = false;
+    const timer = setTimeout(() => {
+      state.loadNote = "loadSlow";
+      if (state.view === "home") render();
+    }, 10000);
+    col.onSnapshot(snap => {
+      state.lists = snap.docs.map(d => Object.assign({}, d.data(), { id: d.id }));
+      if (!snap.metadata.fromCache) {
+        clearTimeout(timer); state.loadNote = ""; state.storage = "cloud";
+        if (!migrated) { migrated = true; migrateLocal(); }
+      }
+      if (state.view === "home" || state.view === "setup") render();
+    }, () => {
+      clearTimeout(timer);
+      goLocal("loadFail");
+    });
+  } catch (e) { goLocal(); }
+}
+async function migrateLocal() {
+  const local = LS.get(K.lists, []);
+  if (!local.length || !cloud) return;
+  for (const l of local) {
+    if (!state.lists.find(x => x.id === l.id)) {
+      try { await cloud.col.doc(l.id).set(bodyOf(l)); } catch (e) { return; }
+    }
+  }
+  LS.del(K.lists);
+}
+function saveList(list) {
+  list.updatedAt = Date.now();
+  const i = state.lists.findIndex(l => l.id === list.id);
+  if (i >= 0) state.lists[i] = list; else state.lists.push(list);
+  if (state.me && !list.by) list.by = state.me.name;
+  if (sb && sb.uid) return sbSave(list);
+  if (cloud) return serial(list.id, () => cloud.col.doc(list.id).set(bodyOf(list)));
+  LS.set(K.lists, state.lists);
+  return Promise.resolve();
+}
+function deleteList(id) {
+  state.lists = state.lists.filter(l => l.id !== id);
+  if (sb && sb.uid) return serial(id, async () => { const r = await sb.client.from("lists").delete().eq("id", id); if (r.error) throw r.error; });
+  if (cloud) return serial(id, () => cloud.col.doc(id).delete());
+  LS.set(K.lists, state.lists);
+  return Promise.resolve();
+}
+
+/* ---------- opslag via Supabase (alleen op de echte website): inloggen, gedeelde lijsten, cijfers per persoon ---------- */
+let sb = null;
+function splitList(l) {
+  const body = bodyOf(l); delete body.results;
+  body.words = (l.words || []).map(w => ({ id: w.id, q: w.q, a: w.a }));
+  const prog = { results: l.results || [], misses: {} };
+  (l.words || []).forEach(w => { if (w.misses) prog.misses[w.id] = w.misses; });
+  return { body, prog };
+}
+function joinList(row, prog) {
+  const l = Object.assign({}, row.data, { id: row.id });
+  const p = (prog && prog[row.id]) || {};
+  l.results = p.results || [];
+  (l.words || []).forEach(w => { w.misses = (p.misses && p.misses[w.id]) || 0; });
+  return l;
+}
+async function sbPull() {
+  const [a, b] = await Promise.all([sb.client.from("lists").select("id,data"), sb.client.from("progress").select("list_id,data")]);
+  if (a.error) throw a.error;
+  const prog = {}; ((b && b.data) || []).forEach(r => { prog[r.list_id] = r.data; });
+  return a.data.map(r => joinList(r, prog));
+}
+function sbSave(list) {
+  const { body, prog } = splitList(list);
+  return serial(list.id, async () => {
+    const r1 = await sb.client.from("lists").upsert({ id: list.id, data: body, updated_at: new Date().toISOString() });
+    if (r1.error) throw r1.error;
+    const r2 = await sb.client.from("progress").upsert({ user_id: sb.uid, list_id: list.id, data: prog });
+    if (r2.error) throw r2.error;
+  });
+}
+async function sbStart(session) {
+  sb.uid = session.user.id;
+  let name = (session.user.email || "").split("@")[0];
+  try { const pr = await sb.client.from("profiles").select("name").eq("id", sb.uid).maybeSingle(); if (pr.data && pr.data.name) name = pr.data.name; } catch (e) {}
+  state.me = { name }; state.needLogin = false; state.storage = "cloud-loading"; render();
+  try {
+    state.lists = await sbPull(); state.storage = "cloud"; state.loadNote = "";
+    const local = LS.get(K.lists, []);
+    if (local.length) {
+      let ok = true;
+      for (const l of local) { if (!state.lists.find(x => x.id === l.id)) { try { await sbSave(l); state.lists.push(l); } catch (e) { ok = false; break; } } }
+      if (ok) LS.del(K.lists);
+    }
+  } catch (e) { clearInterval(sb.timer); sb = null; goLocal("loadFail"); return; }
+  render();
+  clearInterval(sb.timer);
+  const refresh = async () => {
+    if (!sb || document.hidden || (state.view !== "home" && state.view !== "setup")) return;
+    try { const l = await sbPull(); if (JSON.stringify(l) !== JSON.stringify(state.lists)) { state.lists = l; if (state.view === "home" || state.view === "setup") render(); } } catch (e) {}
+  };
+  sb.timer = setInterval(refresh, 45000);
+  document.addEventListener("visibilitychange", refresh);
+}
+async function initSupabase(cfg) {
+  sb = { client: window.supabase.createClient(cfg.url, cfg.key), uid: null, timer: null };
+  let session = null;
+  try { const r = await sb.client.auth.getSession(); session = r.data && r.data.session; } catch (e) {}
+  if (!session) { state.needLogin = true; state.storage = "loading"; render(); return; }
+  await sbStart(session);
+}
+async function sbLogin(email, pw) {
+  const r = await sb.client.auth.signInWithPassword({ email, password: pw });
+  if (r.error) return r.error.status && r.error.status < 500 ? "loginErr" : "loginNet";
+  await sbStart(r.data.session); return null;
+}
+async function sbLogout() {
+  if (sb) { try { await sb.client.auth.signOut(); } catch (e) {} clearInterval(sb.timer); }
+  LS.del(K.session);
+  state.lists = []; state.me = null; state.session = null; state.view = "home";
+  if (!sb) { location.reload(); return; }
+  state.needLogin = true; state.storage = "loading";
+  render();
+}
+function viewLogin() {
+  return `<div class="view enter login"><div class="login-card"><span class="eyebrow">Learn your way</span><h1>${esc(t("loginTitle"))}</h1><p class="tag">${esc(t("loginSub"))}</p>
+  <form id="loginForm" novalidate>
+    <div class="field"><label for="lgEmail">${esc(t("loginEmail"))}</label><input class="inp" id="lgEmail" type="email" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" required></div>
+    <div class="field"><label for="lgPw">${esc(t("loginPw"))}</label><input class="inp" id="lgPw" type="password" autocomplete="current-password" required></div>
+    <p class="login-err" id="lgErr" role="alert" hidden></p>
+    <button class="btn btn-primary btn-lg" type="submit" id="lgBtn">${esc(t("loginBtn"))}</button>
+  </form></div></div>`;
+}
+const saveErr = e => toast(e && e.code === "quota_exceeded" ? t("saveFull") : t("saveFail"));
+
+/* ---------- Spaanse tekens ---------- */
+const CHARS = ["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"];
+function charBar(cls, id) {
+  return `<div class="chars ${cls || ""}"${id ? ` id="${id}"` : ""} role="group" aria-label="${esc(t("charsLabel"))}"><button type="button" class="cap" data-act="caps" aria-pressed="${state.caps}" aria-label="${esc(t("capsLabel"))}">⇧</button>${CHARS.map(c => { const v = state.caps ? c.toUpperCase() : c; return `<button type="button" data-act="char" data-base="${c}" data-ch="${v}">${v}</button>`; }).join("")}</div>`;
+}
+function refreshChars() {
+  document.querySelectorAll('.chars [data-act="char"]').forEach(b => { const v = state.caps ? b.dataset.base.toUpperCase() : b.dataset.base; b.dataset.ch = v; b.textContent = v; });
+  document.querySelectorAll('[data-act="caps"]').forEach(b => b.setAttribute("aria-pressed", String(state.caps)));
+}
+let lastInput = null;
+function insertChar(ch) {
+  const ae = document.activeElement;
+  const el = ae && ae.matches && ae.matches("input,textarea") ? ae : lastInput;
+  if (!el || !document.contains(el)) return;
+  el.focus();
+  const s = el.selectionStart == null ? el.value.length : el.selectionStart;
+  const e2 = el.selectionEnd == null ? s : el.selectionEnd;
+  el.value = el.value.slice(0, s) + ch + el.value.slice(e2);
+  try { el.setSelectionRange(s + ch.length, s + ch.length); } catch (e) {}
+  el.dispatchEvent(new Event("input", { bubbles: true }));
+}
+document.addEventListener("focusin", e => { if (e.target.matches && e.target.matches("input.inp, input.answer, textarea")) lastInput = e.target; });
+["pointerdown", "mousedown"].forEach(n => document.addEventListener(n, e => { if (e.target.closest && e.target.closest(".chars")) e.preventDefault(); }));
+
+const ICO = {
+  book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
+  chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',
+  leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15"/><path d="M5 19c3-5 6-8 10-10"/></svg>',
+  pen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/></svg>',
+  cards: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="3"/><path d="M7 3h11a3 3 0 0 1 3 3v11"/></svg>',
+  target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg>',
+  photo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.5l1.5-2h6l1.500 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.500"/></svg>',
+  arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'
+};
+const LICONS = ["book", "chat", "leaf"];
+const listIcon = l => ICO[LICONS[[...(l.name || "x")].reduce((a, c) => a + c.charCodeAt(0), 0) % 3]];
+
+/* ---------- views ---------- */
+function viewHome() {
+  const lists = [...state.lists].sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  const loading = state.storage === "loading" || (state.storage === "cloud-loading" && !lists.length);
+  const showExample = !loading && !lists.length;
+  const saved = LS.get(K.session, null);
+  let h = `<header class="hero"><div class="hero-copy"><span class="eyebrow">Learn your way</span><h1>${esc(t("welcomeTitle")).replace("Lesmio", '<span class="hl">Lesmio</span>')}</h1><p class="tag">${esc(t("tag"))}</p><div class="hero-cta"><button class="btn btn-primary btn-lg" data-act="new">${ICO.plus}${esc(t("newListBtn").replace(/^\+\s*/, ""))}</button></div><div class="duo"><span class="pill">${esc(langName("nl"))}</span><span class="arr" aria-hidden="true">⇄</span><span class="pill">${esc(langName("es"))}</span></div></div><div class="stack" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><div class="vc v1"><span class="vc-l">${esc(langName("nl"))}</span><b>huis</b><i>casa</i></div><div class="vc v2"><span class="vc-l">${esc(langName("es"))}</span><b>gracias</b><i>dank je</i></div><div class="vc v3"><span class="vc-l">${esc(langName("nl"))}</span><b>kaas</b><i>queso</i></div></div></header>`;
+  if (saved && saved.items && saved.items.length) {
+    const d = saved.items.filter(i => i.done).length;
+    h += `<div class="banner"><div><b>${esc(t("inProgress"))}</b> ${esc(saved.listName)}<div class="muted">${esc(saved.mode === "kaartjes" ? t("modeCards") : t("modeTest"))} · ${esc(t("progressKnown", { d, n: saved.items.length }))}</div></div><div class="banner-act"><button class="btn btn-primary btn-sm" data-act="resume">${esc(t("resume"))}</button><button class="btn btn-quiet btn-sm" data-act="discard">${esc(t("discard"))}</button></div></div>`;
+  }
+  h += `<section><div class="sec-head"><h2>${esc(t("myLists"))}</h2></div><div class="lists">`;
+  if (loading) h += `<div class="lrow static"><span class="lmeta">${esc(t("loadingLists"))}</span></div>`;
+  (showExample ? [EXAMPLE] : lists).forEach(l => { h += listRow(l); });
+  h += `</div>`;
+  if (showExample) h += `<p class="note">${t("noteExample")}</p>`;
+  if (state.storage === "local") h += `<p class="note">${esc(t("noteLocal"))}</p>`;
+  if (state.loadNote) h += `<p class="note warn">${esc(t(state.loadNote))}</p>`;
+  return h + `</section>`;
+}
+function listRow(l) {
+  const full = (l.results || []).filter(r => !r.partial);
+  const last = full[full.length - 1];
+  const mark = last ? `<span class="mark ${gradeClass(last.grade)}" aria-label="${esc(t("lastGrade", { g: fmtGrade(last.grade) }))}">${fmtGrade(last.grade)}</span>` : `<span class="mark none">${esc(t("fresh"))}</span>`;
+  const prev = l.words.slice(0, 3).map(w => `<span>${esc(w.q)}</span>`).join("");
+  return `<button class="lrow" data-act="open" data-id="${esc(l.id)}"><span class="ltop"><span class="ltile">${listIcon(l)}</span>${mark}</span><span class="lname">${esc(l.name)}${l.example ? `<span class="chip">${esc(t("exampleChip"))}</span>` : ""}</span><span class="lmeta">${esc(langName("nl"))} → ${esc(langName("es"))} · ${esc(wordsLabel(l.words.length))}${l.by && state.me && l.by !== state.me.name ? ` · <span class="by">${esc(t("byName", { n: l.by }))}</span>` : ""}</span><span class="lprev">${prev}</span><span class="go">${esc(t("openList"))}${ICO.arrow}</span></button>`;
+}
+
+function viewSetup() {
+  const l = getList(state.setupFor);
+  if (!l) { state.view = "home"; return viewHome(); }
+  const nl = langName("nl"), es = langName("es"), st = state.settings;
+  const res = (l.results || []).filter(r => !r.partial).slice(-6);
+  const hard = l.words.filter(w => w.misses > 0).sort((a, b) => b.misses - a.misses).slice(0, 8);
+  const dirs = [["qa", `${nl} → ${es}`, ""], ["aq", `${es} → ${nl}`, ""], ["both", t("both"), t("bothSub")]];
+  const sw = (id, key, label, sub) => `<label class="switch" for="${id}"><input type="checkbox" id="${id}" data-set="${key}" ${st[key] ? "checked" : ""}><span>${esc(label)}<small>${esc(sub)}</small></span></label>`;
+  return `
+  <div class="view enter">
+  <button class="btn btn-quiet btn-sm back" data-act="home">${esc(t("backToLists"))}</button>
+  <div class="setup">
+  <div class="setup-main">
+  <div class="title-block"><span class="eyebrow">${esc(nl)} → ${esc(es)}</span><h2>${esc(l.name)}</h2><p class="lmeta">${esc(wordsLabel(l.words.length))}</p></div>
+  <div class="acts">
+    <button class="act act-test" data-act="start" data-mode="toets"><span class="act-ic">${ICO.pen}</span><span class="act-t">${esc(t("startTest"))}</span><span class="act-s">${esc(t("actTestSub"))}</span></button>
+    <button class="act act-cards" data-act="start" data-mode="kaartjes"><span class="act-ic">${ICO.cards}</span><span class="act-t">${esc(t("modeCards"))}</span><span class="act-s">${esc(t("actCardsSub"))}</span></button>
+    ${hard.length ? `<button class="act act-hard" data-act="practice-hard"><span class="act-ic">${ICO.target}</span><span class="act-t">${esc(t("practiceHard", { n: hard.length }))}</span><span class="act-s">${esc(t("hardWords"))}</span></button>` : ""}
+  </div>
+  <div class="panel"><h3>${esc(t("direction"))}</h3><div class="seg" role="group" aria-label="${esc(t("direction"))}">${dirs.map(([v, tx, s]) => `<button class="btn" id="dir-${v}" data-act="dir" data-dir="${v}" aria-pressed="${state.setupDir === v}">${esc(tx)}${s ? `<small>${esc(s)}</small>` : ""}</button>`).join("")}</div></div>
+  <div class="panel"><h3>${esc(t("checking"))}</h3>
+    ${sw("optCase", "ignoreCase", t("optCase"), t("optCaseSub"))}
+    ${sw("optAcc", "ignoreAccents", t("optAcc"), t("optAccSub"))}
+    ${sw("optRetype", "retype", t("optRetype"), t("optRetypeSub"))}
+  </div>
+  </div>
+  <div class="setup-side">
+  ${res.length ? `<div class="panel"><h3>${esc(t("lastGrades"))}</h3><div class="marks">${res.map(r => `<span class="mark ${gradeClass(r.grade)}" title="${esc(new Date(r.at).toLocaleDateString(dateLoc()))}">${fmtGrade(r.grade)}</span>`).join("")}</div></div>` : ""}
+  ${hard.length ? `<div class="panel"><h3>${esc(t("hardWords"))}</h3><ul class="hard">${hard.map(w => `<li><span class="hq">${esc(w.q)}</span><span class="ha">${esc(w.a)}</span><span class="hx">${esc(t("failN", { n: w.misses }))}</span></li>`).join("")}</ul></div>` : ""}
+  <details class="panel"><summary>${esc(t("allWords", { n: l.words.length }))}</summary><ul class="wlist">${l.words.map(w => `<li><span>${esc(w.q)}</span><span>${esc(w.a)}</span></li>`).join("")}</ul></details>
+  <div class="row-btns"><button class="btn" data-act="edit">${esc(l.example ? t("makeOwn") : t("editList"))}</button>${l.example ? "" : `<button class="btn btn-danger" data-act="delete">${esc(t("del"))}</button>`}</div>
+  </div>
+  </div>
+  </div>`;
+}
+
+function wrowHtml(w, i) {
+  const att = `autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"`;
+  return `<div class="wrow" data-i="${i}"><span class="wnum">${i + 1}</span><input class="inp wq" id="wq-${i}" value="${esc(w.q)}" placeholder="${i === 0 ? "huis" : ""}" aria-label="${esc(langName("nl"))} ${i + 1}" ${att} enterkeyhint="next"><input class="inp wa" id="wa-${i}" value="${esc(w.a)}" placeholder="${i === 0 ? "casa" : ""}" aria-label="${esc(langName("es"))} ${i + 1}" ${att} enterkeyhint="next"><button class="wdel" data-act="delrow" aria-label="${esc(t("delRow", { n: i + 1 }))}" tabindex="-1">×</button></div>`;
+}
+function ensureEmptyRow() {
+  const w = state.editing.words, last = w[w.length - 1];
+  if (!last || last.q || last.a) w.push({ id: uid(), q: "", a: "" });
+}
+function importHtml() {
+  const im = state.imp, one = im.mode === "one";
+  return `<details class="imp" id="impBox"><summary>${esc(t("impTitle"))}</summary>
+  <div class="imp-body">
+    <p class="hint">${esc(t("impHint"))}</p>
+    <div class="mode" role="group"><button type="button" class="btn" data-act="imp-mode" data-mode="one" aria-pressed="${one}">${esc(t("impModeOne"))}</button><button type="button" class="btn" data-act="imp-mode" data-mode="two" aria-pressed="${!one}">${esc(t("impModeTwo"))}</button></div>
+    <div id="impOne"${one ? "" : " hidden"}>
+      <textarea class="inp" id="impTa" spellcheck="false" placeholder="${esc(t("impPh"))}">${esc(im.text)}</textarea>
+      <div class="imp-tools"><label class="btn btn-sm" for="impFile">${esc(t("impFile"))}</label><input class="sr" type="file" id="impFile" accept=".txt,.csv,.tsv,text/plain,text/csv,text/tab-separated-values"><label class="btn btn-sm" for="impPhoto">${ICO.photo}${esc(t("impPhoto"))}</label><input class="sr" type="file" id="impPhoto" accept="image/*"></div>
+      <label class="imp-swap" for="impSwap"><input type="checkbox" id="impSwap"${im.swap ? " checked" : ""}><span>${esc(t("impSwap"))}</span></label>
+    </div>
+    <div id="impTwo" class="imp-two"${one ? " hidden" : ""}>
+      <div class="field"><label class="l-nl" for="impA">${esc(langName("nl"))}</label><textarea class="inp" id="impA" spellcheck="false" placeholder="${esc(t("impPhA"))}">${esc(im.a)}</textarea></div>
+      <div class="field"><label class="l-es" for="impB">${esc(langName("es"))}</label><textarea class="inp" id="impB" spellcheck="false" placeholder="${esc(t("impPhB"))}">${esc(im.b)}</textarea></div>
+    </div>
+    <div class="prev" id="impPrev" aria-live="polite"></div>
+    <button type="button" class="btn btn-primary btn-sm imp-add" id="impAdd" data-act="imp-add" disabled>${esc(t("impAdd", { n: 0 }))}</button>
+  </div></details>`;
+}
+function viewEdit() {
+  const e = state.editing; ensureEmptyRow();
+  return `
+  <div class="view enter">
+  <div class="edit-top"><button class="btn btn-quiet btn-sm" data-act="cancel-edit">${esc(t("back"))}</button><h2>${esc(e.isNew ? t("newListTitle") : t("editList"))}</h2></div>
+  <div class="edit-grid">
+  <div class="edit-side">
+  <div class="panel"><div class="field" style="margin:0"><label for="eName">${esc(t("listName"))}</label><input class="inp" id="eName" value="${esc(e.name)}" placeholder="${esc(t("listNamePh"))}" autocomplete="off"></div></div>
+  ${importHtml()}
+  </div>
+  <div class="panel">
+  <p class="hint">${t("editHint")}</p>
+  ${charBar("chars-edit")}
+  <div class="colhead"><span></span><span>${esc(langName("nl"))}</span><span>${esc(langName("es"))}</span><span></span></div>
+  <div class="wrows" id="wrows">${e.words.map(wrowHtml).join("")}</div>
+  <div class="sticky"><span class="wcount" id="wcount"></span><button class="btn btn-primary" data-act="save">${esc(t("save"))}</button></div>
+  </div>
+  </div>
+  </div>`;
+}
+function updateCount() {
+  const n = state.editing.words.filter(w => w.q.trim() && w.a.trim()).length;
+  const c = $("#wcount"); if (c) c.textContent = wordsLabel(n);
+}
+
+/* import: voorbeeld bijwerken tijdens het typen */
+function importResult() {
+  const im = state.imp;
+  const res = im.mode === "two" ? parseColumns(im.a, im.b) : parseImport(im.text);
+  let swap = false, auto = false;
+  if (im.mode === "one") {
+    auto = detectSwap(res.rows);
+    swap = im.touched ? im.swap : auto;
+    im.swap = swap;
+  }
+  const rows = swap ? res.rows.map(r => ({ q: r.a, a: r.q })) : res.rows;
+  return { rows, skipped: res.skipped, sep: res.sep, swap, auto: auto && !im.touched };
+}
+function updateImport() {
+  const prev = $("#impPrev"); if (!prev) return;
+  const im = state.imp, r = importResult();
+  const sw = $("#impSwap"); if (sw) sw.checked = r.swap;
+  const btn = $("#impAdd");
+  btn.disabled = !r.rows.length; btn.textContent = t("impAdd", { n: r.rows.length });
+  const hasInput = im.mode === "two" ? (im.a.trim() || im.b.trim()) : im.text.trim();
+  if (!hasInput) { prev.innerHTML = `<p class="prev-meta">${esc(t("impNone"))}</p>`; return; }
+  const sepKey = { tab: "sepTab", arrow: "sepArrow", eq: "sepEq", pipe: "sepPipe", dash: "sepDash", semi: "sepSemi", colon: "sepColon", comma: "sepComma", pairs: "sepPairs", cols: "sepCols" }[r.sep];
+  const show = r.rows.slice(0, 6);
+  prev.innerHTML =
+    `<p class="prev-meta"><b>${esc(t("impFound", { w: wordsLabel(r.rows.length), sep: sepKey ? t(sepKey) : "-" }))}</b></p>` +
+    (r.rows.length ? `<div class="prev-tab">${show.map(x => `<div class="prev-row"><span>${esc(x.q)}</span><span>${esc(x.a)}</span></div>`).join("")}${r.rows.length > show.length ? `<div class="prev-more">${esc(t("impMore", { n: r.rows.length - show.length }))}</div>` : ""}</div>` : "") +
+    (r.auto && r.swap ? `<p class="prev-note ok">${esc(t("impSwapAuto"))}</p>` : "") +
+    (r.skipped ? `<p class="prev-note">${esc(t("impSkipped", { n: r.skipped }))}</p>` : "");
+}
+function addParsed(parsed) {
+  const e = state.editing;
+  const key = w => (w.q.trim() + "|" + w.a.trim()).toLowerCase();
+  const have = new Set(e.words.filter(w => w.q.trim() || w.a.trim()).map(key));
+  const fresh = parsed.filter(p => { const k = key(p); if (have.has(k)) return false; have.add(k); return true; });
+  const dup = parsed.length - fresh.length;
+  e.words = e.words.filter(w => w.q.trim() || w.a.trim()).concat(fresh.map(p => ({ id: uid(), q: p.q, a: p.a })));
+  e.dirty = true; ensureEmptyRow();
+  $("#wrows").innerHTML = e.words.map(wrowHtml).join("");
+  updateCount();
+  toast(dup ? t("addedDup", { w: wordsLabel(fresh.length), d: dup }) : fresh.length === 1 ? t("added1") : t("addedN", { n: fresh.length }));
+}
+
+function viewTest() {
+  const s = state.session, cards = s.mode === "kaartjes";
+  const att = `autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go"`;
+  return `
+  <div class="view enter narrow mode-${cards ? "kaartjes" : "toets"}">
+  <div class="test-top"><button class="btn btn-quiet btn-sm" data-act="stop">${esc(t("stop"))}</button><div class="count">${t("countLine", { d: '<b id="tDone">0</b>', n: '<span id="tTotal">0</span>' })}</div></div>
+  <div class="bar" aria-hidden="true"><i id="tBar"></i></div>
+  <div class="sheet${cards ? " card" : ""}" id="tSheet"${cards ? ` data-act="flip" role="button" tabindex="0" aria-label="${esc(t("flipAria"))}"` : ""}>
+    <span class="q-lang" id="tQLang"></span>
+    <div class="q" id="tQ" aria-live="polite"></div>
+    <div class="phase" id="tPhase"></div>
+    ${cards
+      ? `<span class="a-lang" id="tALang"></span><div class="back-ans" id="tBack" hidden></div><div class="flip-hint" id="tHint">${esc(t("tapFlip"))}</div>`
+      : `<label class="a-lang" for="tInput" id="tALang"></label><input class="answer" id="tInput" ${att}>`}
+  </div>
+  ${cards ? "" : charBar("", "tChars")}
+  <div class="fb" id="tFb" aria-live="polite"></div>
+  <div class="test-actions" id="tActions"></div>
+  <div class="tally"><span class="ok">${t("tallyOk", { n: '<b id="tOk">0</b>' })}</span><span class="bad">${t("tallyBad", { n: '<b id="tBad">0</b>' })}</span><span>${t("tallyLeft", { n: '<b id="tLeft">0</b>' })}</span></div>
+  ${cards ? `<p class="keys">${esc(t("keysHint"))}</p>` : ""}
+  </div>`;
+}
+
+const RING = +(2 * Math.PI * 54).toFixed(1);
+function viewResults() {
+  const s = state.session, r = s.result;
+  const hard = s.items.filter(i => i.errors > 0).sort((a, b) => b.errors - a.errors);
+  const wids = [...new Set(hard.map(i => i.wid))];
+  const verdict = r.grade >= 9 ? t("v1") : r.grade >= 7.5 ? t("v2") : r.grade >= 5.5 ? t("v3") : t("v4");
+  return `
+  <div class="view enter narrow"><div class="res-card">
+  <div class="res-head">
+    <div class="ring ${gradeClass(r.grade)}"><svg viewBox="0 0 140 140" aria-hidden="true"><circle class="bg" cx="70" cy="70" r="54"/><circle class="fg" cx="70" cy="70" r="54" style="stroke-dasharray:${RING};stroke-dashoffset:${(RING * (1 - r.grade / 10)).toFixed(1)};--c:${RING}"/></svg><span aria-label="${esc(t("gradeAria", { g: fmtGrade(r.grade) }))}">${fmtGrade(r.grade)}</span></div>
+    <h2>${esc(verdict)}</h2>
+    <p class="lmeta">${esc(t("resultLine", { f: r.first, t: r.total, time: fmtTime(r.secs) }))}</p>
+  </div>
+  ${hard.length
+    ? `<div class="group"><h3>${esc(t("wentWrong"))}</h3><ul class="hard">${hard.map(i => `<li><span class="hq">${esc(i.q)}</span><span class="ha">${esc(i.a)}</span><span class="hx">${esc(t("failN", { n: i.errors }))}</span></li>`).join("")}</ul></div>`
+    : `<p class="perfect">${esc(t("perfect"))}</p>`}
+  <div class="res-actions">
+    ${hard.length ? `<button class="btn btn-primary" data-act="redo-wrong">${esc(wids.length === 1 ? t("redoWrong1") : t("redoWrongN", { n: wids.length }))}</button>` : ""}
+    <button class="btn${hard.length ? "" : " btn-primary"}" data-act="redo-all">${esc(t("redoAll"))}</button>
+    <button class="btn btn-quiet" data-act="home">${esc(t("toLists"))}</button>
+  </div>
+  </div></div>`;
+}
+
+function syncChrome() {
+  document.documentElement.lang = LANG;
+  const sel = $("#uiLang"); if (sel) sel.value = LANG;
+  const lb = $("#uiLangLabel"); if (lb) lb.textContent = t("uiLang");
+  const nu = $("#navUser");
+  if (nu) nu.innerHTML = state.me ? `<button type="button" class="userchip" data-act="logout" aria-label="${esc(t("logout"))}" title="${esc(t("logout"))}"><span class="av">${esc(state.me.name.charAt(0).toUpperCase())}</span><span class="un">${esc(state.me.name)}</span><span class="lo">${esc(t("logout"))}</span></button>` : "";
+}
+function render() {
+  const app = $("#app");
+  const v = state.view;
+  syncChrome();
+  if (state.needLogin) { app.innerHTML = viewLogin(); return; }
+  if (window.LESMIO_SB && state.storage === "loading" && !state.me) { app.innerHTML = ""; return; }
+  app.innerHTML = v === "setup" ? viewSetup() : v === "edit" ? viewEdit() : v === "test" ? viewTest() : v === "results" ? viewResults() : viewHome();
+  if (state.view === "home") app.innerHTML = `<div class="view enter">${app.innerHTML}</div>`;
+  if (state.view === "edit") { updateCount(); updateImport(); }
+  if (state.view !== state.lastView) { window.scrollTo(0, 0); state.lastView = state.view; }
+}
+
+/* ---------- toets-motor (WRTS-stijl) ---------- */
+// links in de lijst staat Nederlands (q), rechts Spaans (a)
+let autoTimer = null;
+function makeSession(list, mode, dir, onlyIds) {
+  const words = list.words.filter(w => !onlyIds || onlyIds.includes(w.id));
+  const items = [];
+  const mk = (w, f) => ({ k: w.id + (f ? ":f" : ":r"), wid: w.id, q: f ? w.q : w.a, a: f ? w.a : w.q, ql: f ? "nl" : "es", al: f ? "es" : "nl", phase: "new", errors: 0, first: null, done: false });
+  words.forEach(w => {
+    if (dir === "qa" || dir === "both") items.push(mk(w, true));
+    if (dir === "aq" || dir === "both") items.push(mk(w, false));
+  });
+  return { listId: list.id, listName: list.name, example: !!list.example, mode, dir, onlyIds: onlyIds || null, items, queue: shuffle(items.map(i => i.k)), cur: null, st: "ask", ok: 0, bad: 0, given: "", startedAt: Date.now() };
+}
+const cur = () => { const s = state.session; return s && s.items.find(i => i.k === s.cur); };
+const saveSession = () => LS.set(K.session, state.session);
+
+function startSession(list, mode, dir, onlyIds) {
+  const s = makeSession(list, mode, dir, onlyIds);
+  if (!s.items.length) return toast(t("emptyList"));
+  state.session = s; state.view = "test"; render(); nextItem();
+}
+function resumeSession(s) {
+  state.session = s; state.view = "test"; render();
+  if (!s.cur) nextItem();
+  else if (s.st === "correct" || s.st === "busy") { if (s.st === "busy") s.st = "correct"; advance(); }
+  else updateTest(s.st !== "almost");
+}
+function nextItem() {
+  const s = state.session; clearTimeout(autoTimer);
+  if (!s.queue.length) { s.cur = null; return finish(); }
+  s.cur = s.queue.shift();
+  s.st = s.mode === "kaartjes" ? "front" : "ask";
+  s.given = ""; s.why = ""; s.idk = false; s.override = false;
+  saveSession(); updateTest(true);
+}
+function apply(ok) {
+  const s = state.session, it = cur();
+  if (ok) {
+    s.ok++; if (it.first === null) it.first = true;
+    if (it.phase === "retry") { it.phase = "confirm"; s.queue.push(it.k); }  // na herkansing: nog één keer, achteraan de lijst
+    else it.done = true;                                                      // in één keer goed, of de bevestiging goed: klaar
+  } else {
+    s.bad++; if (it.first === null) it.first = false;
+    it.errors++; it.phase = "retry";
+    const k = Math.min(s.queue.length, 3 + (Math.random() < 0.5 ? 0 : 1));    // na 3 à 4 woorden terug
+    s.queue.splice(k, 0, it.k);
+  }
+}
+function advance() {
+  const s = state.session; if (!s || !s.cur) return;
+  clearTimeout(autoTimer);
+  if (s.st === "correct") apply(true);
+  else if (s.st === "wrong") apply(!!s.override);
+  else return;
+  s.st = "busy"; nextItem();
+}
+function shake(el) { el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake"); }
+function doCheck() {
+  const s = state.session, it = cur(), inp = $("#tInput"); if (!s || !it || !inp) return;
+  if (s.st === "correct") return advance();
+  if (s.st === "wrong") {
+    if (state.settings.retype) {
+      const r = check(inp.value, it.a, { ignoreCase: true, ignoreAccents: false });
+      if (r.r !== "correct") { shake(inp); inp.select(); return; }
+    }
+    return advance();
+  }
+  if (s.st !== "ask" && s.st !== "almost") return;
+  const r = check(inp.value, it.a, state.settings);
+  if (r.r === "empty") { shake(inp); inp.placeholder = t("typeAnsEmpty"); return; }
+  s.given = inp.value;
+  if (r.r === "correct") { s.st = "correct"; autoTimer = setTimeout(advance, 950); }
+  else if (r.r === "almost" && s.st === "ask") { s.st = "almost"; s.why = r.why; }
+  else s.st = "wrong";
+  saveSession(); updateTest(false);
+}
+function idk() {
+  const s = state.session; if (!s || (s.st !== "ask" && s.st !== "almost")) return;
+  s.given = ""; s.idk = true; s.st = "wrong"; saveSession(); updateTest(false);
+}
+function flip() { const s = state.session; if (s && s.st === "front") { s.st = "back"; saveSession(); updateTest(false); } }
+function know(ok) { const s = state.session; if (!s || s.st !== "back") return; apply(ok); s.st = "busy"; nextItem(); }
+
+const B = (act, label, cls = "") => `<button class="btn ${cls}" data-act="${act}">${esc(label)}</button>`;
+function updateTest(fresh) {
+  const s = state.session, it = cur(); if (!it || !$("#tQ")) return;
+  const total = s.items.length, done = s.items.filter(i => i.done).length;
+  $("#tDone").textContent = done; $("#tTotal").textContent = total;
+  $("#tBar").style.width = (done / total * 100) + "%";
+  $("#tOk").textContent = s.ok; $("#tBad").textContent = s.bad; $("#tLeft").textContent = total - done;
+  $("#tQLang").textContent = langName(it.ql);
+  $("#tQ").textContent = it.q;
+  $("#tPhase").innerHTML = it.phase === "retry" ? `<span class="retry">${esc(t("phaseRetry"))}</span>` : it.phase === "confirm" ? `<span class="confirm">${esc(t("phaseConfirm"))}</span>` : "";
+  $("#tSheet").className = "sheet" + (s.mode === "kaartjes" ? " card" : "") + " st-" + s.st + (it.ql === "nl" || it.ql === "es" ? " q-" + it.ql : "");
+  const fb = $("#tFb"), act = $("#tActions");
+  $("#tALang").textContent = langName(it.al);
+
+  if (s.mode === "kaartjes") {
+    const back = s.st === "back";
+    $("#tBack").hidden = !back; $("#tBack").textContent = it.a;
+    $("#tALang").hidden = !back; $("#tHint").hidden = back;
+    fb.innerHTML = "";
+    act.innerHTML = back ? B("dontknow", t("dontknow"), "btn-bad") + B("know", t("knew"), "btn-good") : B("flip", t("flip"), "btn-primary span2");
+    return;
+  }
+
+  const ch = $("#tChars"); if (ch) ch.hidden = it.al !== "es";
+  const inp = $("#tInput");
+  if (fresh) inp.value = "";
+  inp.lang = it.al;
+  if (s.st === "ask") {
+    inp.placeholder = t("typeAns");
+    fb.innerHTML = "";
+    act.innerHTML = B("check", t("check"), "btn-primary") + B("idk", t("idk"));
+  } else if (s.st === "almost") {
+    fb.innerHTML = `<div class="fb-box fb-warn"><b>${esc(t("almost"))}</b> ${esc(t(WHY[s.why] || "whyTypo"))} ${esc(t("oneMore"))}</div>`;
+    act.innerHTML = B("check", t("check"), "btn-primary") + B("idk", t("idk"));
+    inp.select();
+  } else if (s.st === "correct") {
+    const full = norm(s.given, true) !== norm(it.a, true) ? `<span class="fb-sub">${esc(t("fullAns", { a: it.a }))}</span>` : "";
+    fb.innerHTML = `<div class="fb-box fb-good"><b>${esc(t("good"))}</b>${full}</div>`;
+    act.innerHTML = B("next", t("next"), "btn-primary span2");
+  } else if (s.st === "wrong") {
+    inp.value = "";
+    inp.placeholder = state.settings.retype ? t("retypePh") : t("enterNext");
+    fb.innerHTML = `<div class="fb-box fb-bad"><div class="fb-title">${esc(s.idk ? t("answerIs") : t("wrongT"))}</div>${s.idk ? "" : `<div class="you">${esc(t("you"))} <s>${esc(s.given)}</s></div>`}<div class="right">${esc(it.a)}</div>${state.settings.retype ? `<p class="hint">${esc(t("retypeHint"))}</p>` : ""}</div>`;
+    act.innerHTML = B("next", t("next"), "btn-primary" + (s.idk ? " span2" : "")) + (s.idk ? "" : B("override", t("override")));
+  }
+  try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); }
+}
+
+function finish() {
+  const s = state.session;
+  const total = s.items.length, first = s.items.filter(i => i.first === true).length;
+  const grade = Math.round((1 + 9 * first / total) * 10) / 10;
+  s.result = { at: Date.now(), grade, total, first, mode: s.mode, dir: s.dir, secs: Math.round((Date.now() - s.startedAt) / 1000) };
+  if (s.onlyIds) s.result.partial = true;
+  const list = getList(s.listId);
+  if (list) {
+    const errs = {};
+    s.items.forEach(i => { if (i.errors) errs[i.wid] = (errs[i.wid] || 0) + i.errors; });
+    if (list.example) { list.results.push(s.result); list.words.forEach(w => { if (errs[w.id]) w.misses += errs[w.id]; }); }
+    else {
+      const copy = clone(list);
+      copy.results = (copy.results || []).concat([s.result]).slice(-30);
+      copy.words.forEach(w => { if (errs[w.id]) w.misses = (w.misses || 0) + errs[w.id]; });
+      saveList(copy).catch(saveErr);
+    }
+  }
+  LS.del(K.session);
+  state.view = "results"; render();
+}
+
+/* ---------- acties ---------- */
+function openSetup(id) {
+  state.setupFor = id; state.setupDir = LS.get(K.dirs, {})[id] || defaultDir();
+  state.view = "setup"; render();
+}
+function openEditor(list) {
+  state.imp = { mode: "one", text: "", a: "", b: "", swap: false, touched: false };
+  if (!list) state.editing = { id: uid(), isNew: true, name: "", words: [], results: [] };
+  else if (list.example) state.editing = { id: uid(), isNew: true, name: list.name, words: list.words.map(w => ({ id: uid(), q: w.q, a: w.a })), results: [], dirty: true };
+  else state.editing = Object.assign(clone(list), { isNew: false, dirty: false });
+  state.view = "edit"; render();
+  if (!list) setTimeout(() => { const n = $("#eName"); if (n) n.focus(); }, 50);
+}
+async function saveEdit() {
+  const e = state.editing;
+  const incomplete = e.words.filter(w => (w.q.trim() && !w.a.trim()) || (!w.q.trim() && w.a.trim())).length;
+  const words = e.words.filter(w => w.q.trim() && w.a.trim()).map(w => ({ id: w.id || uid(), q: w.q.trim(), a: w.a.trim(), misses: w.misses || 0 }));
+  if (!words.length) return toast(t("needWord"));
+  const list = { id: e.id, name: e.name.trim() || t("unnamed"), qLang: "nl", aLang: "es", words, results: e.results || [], createdAt: e.createdAt || Date.now() };
+  const p = saveList(list);
+  state.editing = null;
+  openSetup(list.id);
+  if (incomplete) toast(incomplete === 1 ? t("skip1") : t("skipN", { n: incomplete }));
+  p.catch(saveErr);
+}
+function readFile(f) {
+  if (!f) return;
+  if (/\.xlsx?$/i.test(f.name)) { toast(t("impXlsx")); return; }
+  if (f.size > 1.5e6) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    state.imp.mode = "one"; state.imp.text = String(rd.result || ""); state.imp.touched = false;
+    const ta = $("#impTa"); if (ta) ta.value = state.imp.text;
+    updateImport();
+  };
+  rd.readAsText(f);
+}
+
+/* foto -> tekst (OCR in de browser met Tesseract.js, wordt pas geladen als je het gebruikt) */
+let ocrLib = null;
+function loadOcr() {
+  if (window.Tesseract) return Promise.resolve(window.Tesseract);
+  if (ocrLib) return ocrLib;
+  ocrLib = new Promise((res, rej) => {
+    const sc = document.createElement("script");
+    sc.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+    sc.onload = () => window.Tesseract ? res(window.Tesseract) : rej(new Error("no lib"));
+    sc.onerror = () => { ocrLib = null; rej(new Error("load")); };
+    document.head.appendChild(sc);
+  });
+  return ocrLib;
+}
+async function prepImage(f) {
+  const bmp = await createImageBitmap(f);
+  const sc = Math.min(1, 2200 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas");
+  c.width = Math.round(bmp.width * sc); c.height = Math.round(bmp.height * sc);
+  const g = c.getContext("2d"); g.filter = "grayscale(1) contrast(1.25)"; g.drawImage(bmp, 0, 0, c.width, c.height);
+  return c;
+}
+// woorden op dezelfde regel met een grote ruimte ertussen = twee kolommen (tab ertussen)
+function ocrText(data) {
+  const out = [];
+  (data.lines || []).forEach(l => {
+    const ws = (l.words || []).filter(w => w.text && w.text.trim());
+    if (!ws.length) return;
+    const hs = ws.map(w => w.bbox.y1 - w.bbox.y0).sort((a, b) => a - b);
+    const h = hs[Math.floor(hs.length / 2)] || 20;
+    let line = ws[0].text;
+    for (let i = 1; i < ws.length; i++) {
+      const gap = ws[i].bbox.x0 - ws[i - 1].bbox.x1;
+      line += (gap > h * 1.6 ? "\t" : " ") + ws[i].text;
+    }
+    out.push(line.trim());
+  });
+  return out.join("\n");
+}
+async function readImage(f) {
+  if (!f) return;
+  const prev = $("#impPrev"), btn = $("#impAdd");
+  if (prev) prev.innerHTML = `<p class="prev-meta"><b>${esc(t("impReading"))}</b></p>`;
+  if (btn) btn.disabled = true;
+  try {
+    const [T, img] = await Promise.all([loadOcr(), prepImage(f)]);
+    const r = await T.recognize(img, "nld+spa", {});
+    const txt = ocrText(r.data) || (r.data.text || "").trim();
+    if (!txt) { updateImport(); toast(t("impPhotoNone")); return; }
+    state.imp.mode = "one"; state.imp.text = txt; state.imp.touched = false;
+    const ta = $("#impTa"); if (ta) ta.value = txt;
+    const one = $("#impOne"), two = $("#impTwo"); if (one) one.hidden = false; if (two) two.hidden = true;
+    document.querySelectorAll('[data-act="imp-mode"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === "one")));
+    updateImport(); toast(t("impPhotoDone"));
+  } catch (e) {
+    updateImport(); toast(t("impPhotoErr"));
+  }
+}
+
+document.addEventListener("click", async ev => {
+  const el = ev.target.closest("[data-act]"); if (!el) return;
+  const act = el.dataset.act, s = state.session;
+  switch (act) {
+    case "logout": sbLogout(); break;
+    case "logo": if (state.view === "setup" || state.view === "results" || state.view === "home") { if (state.view === "results") state.session = null; state.view = "home"; render(); } break;
+    case "home": state.session = state.view === "results" ? null : state.session; state.view = "home"; render(); break;
+    case "new": openEditor(null); break;
+    case "open": openSetup(el.dataset.id); break;
+    case "edit": openEditor(getList(state.setupFor)); break;
+    case "dir": {
+      state.setupDir = el.dataset.dir;
+      const m = LS.get(K.dirs, {}); m[state.setupFor] = state.setupDir; LS.set(K.dirs, m);
+      document.querySelectorAll('[data-act="dir"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.dir === state.setupDir)));
+      break;
+    }
+    case "start": { const l = getList(state.setupFor); if (l) startSession(l, el.dataset.mode, state.setupDir); break; }
+    case "practice-hard": {
+      const l = getList(state.setupFor); if (!l) break;
+      const ids = l.words.filter(w => w.misses > 0).sort((a, b) => b.misses - a.misses).slice(0, 8).map(w => w.id);
+      startSession(l, "toets", state.setupDir, ids); break;
+    }
+    case "delete": {
+      const l = getList(state.setupFor); if (!l) break;
+      if (await confirmBox({ title: t("delTitle"), text: t("delText", { name: l.name }), ok: t("del"), danger: true })) {
+        deleteList(l.id).catch(() => toast(t("deleteFail")));
+        state.view = "home"; render();
+      }
+      break;
+    }
+    case "resume": { const saved = LS.get(K.session, null); if (saved) resumeSession(saved); break; }
+    case "discard": LS.del(K.session); render(); break;
+
+    /* editor */
+    case "cancel-edit": {
+      const e = state.editing;
+      if (e && e.dirty && !(await confirmBox({ title: t("discardTitle"), text: t("discardText"), ok: t("discardOk"), cancel: t("keepEditing"), danger: true }))) break;
+      const back = e && !e.isNew ? e.id : null;
+      state.editing = null;
+      if (back) openSetup(back); else { state.view = "home"; render(); }
+      break;
+    }
+    case "save": saveEdit(); break;
+    case "delrow": {
+      const e = state.editing, i = +el.closest(".wrow").dataset.i;
+      e.words.splice(i, 1); e.dirty = true; ensureEmptyRow();
+      $("#wrows").innerHTML = e.words.map(wrowHtml).join(""); updateCount(); break;
+    }
+    case "imp-mode": {
+      state.imp.mode = el.dataset.mode;
+      document.querySelectorAll('[data-act="imp-mode"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === state.imp.mode)));
+      $("#impOne").hidden = state.imp.mode !== "one"; $("#impTwo").hidden = state.imp.mode !== "two";
+      updateImport(); break;
+    }
+    case "imp-add": {
+      const r = importResult();
+      if (!r.rows.length) { toast(t("nothingParsed")); break; }
+      addParsed(r.rows);
+      state.imp = { mode: state.imp.mode, text: "", a: "", b: "", swap: false, touched: false };
+      ["#impTa", "#impA", "#impB"].forEach(id => { const x = $(id); if (x) x.value = ""; });
+      $("#impBox").open = false; updateImport(); break;
+    }
+    case "char": insertChar(el.dataset.ch); break;
+    case "caps": state.caps = !state.caps; refreshChars(); break;
+
+    /* toets */
+    case "check": doCheck(); break;
+    case "idk": idk(); break;
+    case "next": doCheck(); break;
+    case "override": if (s && s.st === "wrong") { s.override = true; advance(); } break;
+    case "flip": flip(); break;
+    case "know": know(true); break;
+    case "dontknow": know(false); break;
+    case "stop": {
+      if (await confirmBox({ title: t("stopTitle"), text: t("stopText"), ok: t("stopOk"), cancel: t("keepGoing"), danger: true })) {
+        clearTimeout(autoTimer); LS.del(K.session);
+        const id = s && s.listId; state.session = null;
+        if (id && getList(id)) openSetup(id); else { state.view = "home"; render(); }
+      } else if ($("#tInput")) $("#tInput").focus();
+      break;
+    }
+    case "redo-wrong": {
+      const l = getList(s.listId); if (!l) break;
+      const ids = [...new Set(s.items.filter(i => i.errors > 0).map(i => i.wid))];
+      startSession(l, s.mode, s.dir, ids); break;
+    }
+    case "redo-all": { const l = getList(s.listId); if (l) startSession(l, s.mode, s.dir); break; }
+  }
+});
+
+document.addEventListener("change", ev => {
+  const el = ev.target;
+  if (el.id === "uiLang") {
+    LANG = el.value === "es" ? "es" : "nl"; LS.set(K.ui, LANG);
+    const ti = $("#tInput"), keep = ti ? ti.value : null, s = state.session;
+    render();
+    if (state.view === "test" && s) {
+      updateTest(false);
+      const ni = $("#tInput"); if (ni && keep != null && (s.st === "ask" || s.st === "almost")) ni.value = keep;
+    }
+    return;
+  }
+  if (el.id === "impPhoto") { readImage(el.files && el.files[0]); el.value = ""; return; }
+  if (el.id === "impFile") { readFile(el.files && el.files[0]); el.value = ""; return; }
+  if (el.id === "impSwap") { state.imp.swap = el.checked; state.imp.touched = true; updateImport(); return; }
+  if (el.dataset && el.dataset.set) { state.settings[el.dataset.set] = el.checked; LS.set(K.settings, state.settings); }
+});
+
+document.addEventListener("input", ev => {
+  const el = ev.target, e = state.editing;
+  if (state.view !== "edit" || !e) return;
+  if (el.id === "eName") { e.name = el.value; e.dirty = true; return; }
+  if (el.id === "impTa") { state.imp.text = el.value; state.imp.touched = false; updateImport(); return; }
+  if (el.id === "impA") { state.imp.a = el.value; updateImport(); return; }
+  if (el.id === "impB") { state.imp.b = el.value; updateImport(); return; }
+  if (el.matches(".wq, .wa")) {
+    const i = +el.closest(".wrow").dataset.i, w = e.words[i]; if (!w) return;
+    w[el.classList.contains("wq") ? "q" : "a"] = el.value; e.dirty = true;
+    if (i === e.words.length - 1 && (w.q || w.a)) {
+      e.words.push({ id: uid(), q: "", a: "" });
+      $("#wrows").insertAdjacentHTML("beforeend", wrowHtml(e.words[i + 1], i + 1));
+    }
+    updateCount();
+  }
+});
+
+document.addEventListener("paste", ev => {
+  const el = ev.target;
+  if (state.view !== "edit" || !el.matches || !el.matches(".wq, .wa")) return;
+  const text = (ev.clipboardData || window.clipboardData).getData("text");
+  if (!/\n/.test(text.trim())) return;
+  const rows = parseImport(text).rows;
+  if (rows.length < 2) return;
+  ev.preventDefault();
+  addParsed(detectSwap(rows) ? rows.map(r => ({ q: r.a, a: r.q })) : rows);
+});
+
+document.addEventListener("dragover", ev => { if (state.view === "edit" && ev.dataTransfer && [...(ev.dataTransfer.types || [])].includes("Files")) ev.preventDefault(); });
+document.addEventListener("drop", ev => {
+  if (state.view !== "edit" || !ev.dataTransfer || !ev.dataTransfer.files || !ev.dataTransfer.files.length) return;
+  ev.preventDefault();
+  const b = $("#impBox"); if (b) b.open = true;
+  readFile(ev.dataTransfer.files[0]);
+});
+
+document.addEventListener("submit", async ev => {
+  if (ev.target.id !== "loginForm") return;
+  ev.preventDefault();
+  const em = $("#lgEmail").value.trim(), pw = $("#lgPw").value, er = $("#lgErr"), bt = $("#lgBtn");
+  if (!em || !pw) { er.textContent = t("loginErr"); er.hidden = false; return; }
+  er.hidden = true; bt.disabled = true; bt.textContent = t("loginBusy");
+  let key = null;
+  try { key = await sbLogin(em, pw); } catch (e) { key = "loginNet"; }
+  if (key) { const e2 = $("#lgErr"), b2 = $("#lgBtn"); if (e2) { e2.textContent = t(key); e2.hidden = false; } if (b2) { b2.disabled = false; b2.textContent = t("loginBtn"); } }
+});
+document.addEventListener("keydown", ev => {
+  const el = ev.target, s = state.session;
+  if (document.querySelector(".overlay")) return;
+  if (state.view === "test" && s) {
+    if (el.id === "tInput") {
+      if (ev.key === "Enter") { ev.preventDefault(); doCheck(); return; }
+      // al verder typen terwijl "Goed!" nog in beeld is: meteen door naar het volgende woord
+      if (s.st === "correct" && ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !ev.altKey) {
+        ev.preventDefault(); advance(); el.value = ev.key; return;
+      }
+    }
+    if (s.mode === "kaartjes" && !ev.ctrlKey && !ev.metaKey) {
+      if (s.st === "front" && (ev.key === " " || ev.key === "Enter")) { ev.preventDefault(); flip(); }
+      else if (s.st === "back" && (ev.key === "ArrowLeft" || ev.key === "1")) { ev.preventDefault(); know(false); }
+      else if (s.st === "back" && (ev.key === "ArrowRight" || ev.key === "2")) { ev.preventDefault(); know(true); }
+    }
+    return;
+  }
+  if (state.view === "edit" && ev.key === "Enter" && el.matches && el.matches(".wq, .wa")) {
+    ev.preventDefault();
+    const row = el.closest(".wrow");
+    if (el.classList.contains("wq")) row.querySelector(".wa").focus();
+    else { const nx = row.nextElementSibling; if (nx) nx.querySelector(".wq").focus(); }
+  }
+});
+
+/* ---------- start ---------- */
+function boot(data) {
+  if (data && data.session && data.session.items) resumeSession(data.session);
+  else render();
+  initStorage();
+}
+if (window.claude && window.claude.hot && window.claude.hot.snapshot) {
+  window.claude.hot.snapshot(() => ({ session: state.view === "test" ? state.session : null }));
+}
+const hot = window.claude && window.claude.hot;
+if (hot && hot.ready) hot.ready(boot); else boot((hot && hot.data) || {});
+
+/* testhaakje voor de motor (geen invloed op de app) */
+window.__lesmio = { check, makeSession, state, apply: ok => apply(ok), I18N, parseImport, parseColumns, detectSwap };
+})();
+</script>
+</body>
+</html>

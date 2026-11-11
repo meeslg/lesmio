@@ -1092,7 +1092,7 @@ function deleteList(id) {
 /* ---------- opslag via Supabase (alleen op de echte website): inloggen, gedeelde lijsten, cijfers per persoon ---------- */
 let sb = null;
 function splitList(l) {
-  const body = bodyOf(l); delete body.results;
+  const body = bodyOf(l); delete body.results; delete body.owner;
   body.words = (l.words || []).map(w => ({ id: w.id, q: w.q, a: w.a }));
   const prog = { results: l.results || [], misses: {}, run: {}, n: {}, L: {}, used: l.used || 0 };
   (l.words || []).forEach(w => { if (w.misses) prog.misses[w.id] = w.misses; if (w.run) prog.run[w.id] = w.run; if (w.n) prog.n[w.id] = w.n; if (w.L) prog.L[w.id] = w.L; });
@@ -1100,6 +1100,7 @@ function splitList(l) {
 }
 function joinList(row, prog) {
   const l = Object.assign({}, row.data, { id: row.id });
+  if (row.created_by) l.owner = row.created_by;
   const p = (prog && prog[row.id]) || {};
   l.results = p.results || [];
   l.used = p.used || 0;
@@ -1107,7 +1108,7 @@ function joinList(row, prog) {
   return l;
 }
 async function sbPull() {
-  const [a, b] = await Promise.all([sb.client.from("lists").select("id,data"), sb.client.from("progress").select("list_id,data")]);
+  const [a, b] = await Promise.all([sb.client.from("lists").select("id,data,created_by"), sb.client.from("progress").select("list_id,data")]);
   if (a.error) throw a.error;
   const prog = {}; ((b && b.data) || []).forEach(r => { prog[r.list_id] = r.data; });
   return a.data.map(r => joinList(r, prog));
@@ -1211,6 +1212,8 @@ function streakInfo(a) {
   });
   return { cur, best: Math.max(best, cur) };
 }
+/* alleen eigen lijsten tellen mee voor streak en woorden vandaag */
+const isMine = l => !l || !l.owner || !sb || !sb.uid || l.owner === sb.uid;
 function logActivity(words, secs, ok, noTest) {
   if (!words) return;
   const k = dayKey(), a = state.activity[k] || { w: 0, s: 0, t: 0, ok: 0 };
@@ -1874,7 +1877,9 @@ function finish() {
     if (!hardMode) c.results = (c.results || []).concat([s.result]).slice(-30);
     saveList(c, { progressOnly: true }).catch(saveErr);
   });
-  logActivity(Object.keys(per).length, s.result.secs, Object.values(per).filter(o => o.all).length);
+  const mineW = new Set(); targets.filter(isMine).forEach(l => l.words.forEach(w => mineW.add(w.id)));
+  const mk = Object.keys(per).filter(id => mineW.has(id));
+  if (mk.length) logActivity(mk.length, Math.round(s.result.secs * mk.length / Object.keys(per).length), mk.filter(id => per[id].all).length);
   LS.del(K.session);
   state.view = "results"; render();
 }
@@ -2018,7 +2023,7 @@ function lrnEndRound() {
   if (l) { l.used = now; if (!l.example) saveList(l, { progressOnly: true }).catch(saveErr); }
   const rw = lrnWords(s).length;
   s.sum.words += rw; s.sum.rec += rec; s.sum.total += keys.length; s.last = { rec, total: keys.length };
-  logActivity(rw, Math.round((now - s.rstart) / 1000), rec, true);
+  if (isMine(l)) logActivity(rw, Math.round((now - s.rstart) / 1000), rec, true);
   s.phase = s.ri + 1 < s.rounds.length ? "rdone" : "done"; s.cur = null;
   if (s.phase === "done") LS.del(K.learn); else saveLearn();
 }
@@ -2348,7 +2353,7 @@ document.addEventListener("click", async ev => {
     case "stop": {
       if (await confirmBox({ title: t("stopTitle"), text: t("stopText"), ok: t("stopOk"), cancel: t("keepGoing"), danger: true })) {
         clearTimeout(autoTimer); LS.del(K.session);
-        if (s && s.items) { const dw = new Set(s.items.filter(i => i.done).map(i => i.wid)); logActivity(dw.size, Math.round((Date.now() - s.startedAt) / 1000), s.items.filter(i => i.done && i.first === true).length, true); }
+        if (s && s.items && isMine(getList(s.listId))) { const dw = new Set(s.items.filter(i => i.done).map(i => i.wid)); logActivity(dw.size, Math.round((Date.now() - s.startedAt) / 1000), s.items.filter(i => i.done && i.first === true).length, true); }
         const id = s && s.listId; state.session = null;
         if (id && getList(id)) openSetup(id); else { state.view = "home"; render(); }
       } else if ($("#tInput")) $("#tInput").focus();

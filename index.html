@@ -108,6 +108,23 @@ svg{display:block}
 .btn-bad{color:var(--bad);background:var(--bad-bg);border-color:transparent}
 .btn-bad:hover{border-color:var(--bad)}
 
+
+/* mascottes */
+.mc{display:block;height:auto;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.buddy{position:absolute;right:30px;bottom:0;z-index:3;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.hero .stack{display:none}
+.buddy{right:56px}
+.buddy-img{width:270px}
+.bub{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:9px 14px;font-weight:800;font-size:14px;color:var(--ink);box-shadow:var(--sh);margin-bottom:10px;max-width:190px;text-align:center}
+.bub::after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;background:var(--surface);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:translateX(-50%) rotate(45deg)}
+.fb-box{position:relative}
+.fb-mc{float:right;width:84px;margin:-14px -8px -14px 12px}
+.fb-box::after{content:"";display:block;clear:both}
+.res-mc{width:170px;margin:-6px auto -2px}
+.lm-mc{width:84px;flex:none;margin:-8px 4px -10px -6px}
+.lm-t{flex:1;min-width:0}
+@media(max-width:760px){.buddy{position:relative;right:auto;bottom:auto;margin:0 auto -10px}.buddy-img{width:190px}.fb-mc{width:68px}.res-mc{width:140px}}
+
 /* hero */
 .hero{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:center;border:1px solid var(--line);border-radius:32px;padding:44px 48px;margin-bottom:34px;overflow:hidden;background:
   radial-gradient(60% 90% at 105% -10%,var(--violet-soft),transparent 70%),
@@ -382,7 +399,7 @@ details.panel[open] > summary{margin-bottom:12px}
 .llegend i{width:10px;height:10px;border-radius:50%;display:inline-block}
 .llegend b{color:var(--ink)}
 .modal-learn{max-width:480px;max-height:calc(100vh - 32px);overflow:auto}
-.lm-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.lm-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
 .lopt{border:1px solid var(--line-strong);border-radius:18px;padding:16px;margin-top:12px;background:var(--surface)}
 .lopt-main{border-color:#7f5fff;box-shadow:0 0 0 3px rgba(127,95,255,.14)}
 .lopt-h{display:flex;align-items:center;gap:10px;font-size:18px}
@@ -602,6 +619,7 @@ if (LANG !== "nl" && LANG !== "es") LANG = /^es/i.test((navigator.language || ""
 const I18N = {
 nl: {
   welcomeTitle: "Welkom bij Lesmio",
+  buddyAsk: "Zin om een rondje te doen?", buddyGo: "Lekker bezig vandaag!",
   streak0: "Start je reeks", streakCap1: "dag op rij", streakCapN: "dagen op rij",
   todayCap: "woorden vandaag", hardCap: "lastige woorden", hardGo: "Oefen ze nu", hardNone: "Nog geen lastige woorden",
   progress: "Voortgang", progressSub: "Grafieken en statistieken", together: "Samen", partnerToday: "{n} woorden vandaag",
@@ -711,6 +729,7 @@ nl: {
 },
 es: {
   welcomeTitle: "Te damos la bienvenida a Lesmio",
+  buddyAsk: "¿Hacemos una ronda?", buddyGo: "¡Buen trabajo hoy!",
   streak0: "Empieza tu racha", streakCap1: "día seguido", streakCapN: "días seguidos",
   todayCap: "palabras hoy", hardCap: "palabras difíciles", hardGo: "Practícalas ya", hardNone: "Aún no hay palabras difíciles",
   progress: "Progreso", progressSub: "Gráficos y estadísticas", together: "Juntos", partnerToday: "{n} palabras hoy",
@@ -1291,12 +1310,17 @@ const LICONS = ["book", "chat", "leaf"];
 const listIcon = l => ICO[LICONS[[...(l.name || "x")].reduce((a, c) => a + c.charCodeAt(0), 0) % 3]];
 
 /* ---------- views ---------- */
+/* ---------- mascottes ---------- */
+function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
+function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
+function gradeMood(g) { return g >= 9 ? "celebrate" : g >= 7.5 ? "thumbs" : g >= 5.5 ? "proud" : "encourage"; }
+function buddyBubble() { const w = (state.activity[dayKey()] || {}).w || 0; return `<div class="buddy" aria-hidden="true"><div class="bub">${esc(t(w ? "buddyGo" : "buddyAsk"))}</div>${mcImg("neutral", "buddy-img")}</div>`; }
 function viewHome() {
   const lists = [...state.lists].sort((a, b) => (b.used || b.updatedAt || 0) - (a.used || a.updatedAt || 0));
   const loading = state.storage === "loading" || (state.storage === "cloud-loading" && !lists.length);
   const showExample = !loading && !lists.length;
   const saved = LS.get(K.session, null);
-  let h = `<header class="hero"><div class="hero-copy"><span class="eyebrow">Learn your way</span><h1>${esc(t("welcomeTitle")).replace("Lesmio", '<span class="hl">Lesmio</span>')}</h1><p class="tag">${esc(t("tag"))}</p><div class="hero-cta"><button class="btn btn-primary btn-lg" data-act="new">${ICO.plus}${esc(t("newListBtn").replace(/^\+\s*/, ""))}</button></div><div class="duo"><span class="pill">${esc(langName("nl"))}</span><span class="arr" aria-hidden="true">⇄</span><span class="pill">${esc(langName("es"))}</span></div></div><div class="stack" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><div class="vc v1"><span class="vc-l">${esc(langName("nl"))}</span><b>huis</b><i>casa</i></div><div class="vc v2"><span class="vc-l">${esc(langName("es"))}</span><b>gracias</b><i>dank je</i></div><div class="vc v3"><span class="vc-l">${esc(langName("nl"))}</span><b>kaas</b><i>queso</i></div></div></header>`;
+  let h = `<header class="hero"><div class="hero-copy"><span class="eyebrow">Learn your way</span><h1>${esc(t("welcomeTitle")).replace("Lesmio", '<span class="hl">Lesmio</span>')}</h1><p class="tag">${esc(t("tag"))}</p><div class="hero-cta"><button class="btn btn-primary btn-lg" data-act="new">${ICO.plus}${esc(t("newListBtn").replace(/^\+\s*/, ""))}</button></div><div class="duo"><span class="pill">${esc(langName("nl"))}</span><span class="arr" aria-hidden="true">⇄</span><span class="pill">${esc(langName("es"))}</span></div></div><div class="stack" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><div class="vc v1"><span class="vc-l">${esc(langName("nl"))}</span><b>huis</b><i>casa</i></div><div class="vc v2"><span class="vc-l">${esc(langName("es"))}</span><b>gracias</b><i>dank je</i></div><div class="vc v3"><span class="vc-l">${esc(langName("nl"))}</span><b>kaas</b><i>queso</i></div></div>${buddyBubble()}</header>`;
   if (!loading) h += homeTiles();
   if (saved && saved.items && saved.items.length) {
     const d = saved.items.filter(i => i.done).length;
@@ -1502,6 +1526,7 @@ function viewResults() {
   return `
   <div class="view enter narrow"><div class="res-card">
   <div class="res-head">
+    ${mcImg(gradeMood(r.grade), "res-mc")}
     <div class="ring ${gradeClass(r.grade)}"><svg viewBox="0 0 140 140" aria-hidden="true"><circle class="bg" cx="70" cy="70" r="54"/><circle class="fg" cx="70" cy="70" r="54" style="stroke-dasharray:${RING};stroke-dashoffset:${(RING * (1 - r.grade / 10)).toFixed(1)};--c:${RING}"/></svg><span aria-label="${esc(t("gradeAria", { g: fmtGrade(r.grade) }))}">${fmtGrade(r.grade)}</span></div>
     <h2>${esc(verdict)}</h2>
     <p class="lmeta">${esc(t("resultLine", { f: r.first, t: r.total, time: fmtTime(r.secs) }))}</p>
@@ -1759,17 +1784,17 @@ function updateTest(fresh) {
     fb.innerHTML = "";
     act.innerHTML = B("check", t("check"), "btn-primary") + B("idk", t("idk"));
   } else if (s.st === "almost") {
-    fb.innerHTML = `<div class="fb-box fb-warn"><b>${esc(t("almost"))}</b> ${esc(t(WHY[s.why] || "whyTypo"))} ${esc(t("oneMore"))}</div>`;
+    fb.innerHTML = `<div class="fb-box fb-warn">${mcImg("thumbs", "fb-mc")}<b>${esc(t("almost"))}</b> ${esc(t(WHY[s.why] || "whyTypo"))} ${esc(t("oneMore"))}</div>`;
     act.innerHTML = B("check", t("check"), "btn-primary") + B("idk", t("idk"));
     inp.select();
   } else if (s.st === "correct") {
     const full = norm(s.given, true) !== norm(it.a, true) ? `<span class="fb-sub">${esc(t("fullAns", { a: it.a }))}</span>` : "";
-    fb.innerHTML = `<div class="fb-box fb-good"><b>${esc(t("good"))}</b>${full}</div>`;
+    fb.innerHTML = `<div class="fb-box fb-good">${mcImg("happy", "fb-mc")}<b>${esc(t("good"))}</b>${full}</div>`;
     act.innerHTML = B("next", t("next"), "btn-primary span2");
   } else if (s.st === "wrong") {
     inp.value = "";
     inp.placeholder = state.settings.retype ? t("retypePh") : t("enterNext");
-    fb.innerHTML = `<div class="fb-box fb-bad"><div class="fb-title">${esc(s.idk ? t("answerIs") : t("wrongT"))}</div>${s.idk ? "" : `<div class="you">${esc(t("you"))} <s>${esc(s.given)}</s></div>`}<div class="right">${esc(it.a)}${spkBtn(it.a, it.al)}</div>${state.settings.retype ? `<p class="hint">${esc(t("retypeHint"))}</p>` : ""}</div>`;
+    fb.innerHTML = `<div class="fb-box fb-bad">${mcImg("encourage", "fb-mc")}<div class="fb-title">${esc(s.idk ? t("answerIs") : t("wrongT"))}</div>${s.idk ? "" : `<div class="you">${esc(t("you"))} <s>${esc(s.given)}</s></div>`}<div class="right">${esc(it.a)}${spkBtn(it.a, it.al)}</div>${state.settings.retype ? `<p class="hint">${esc(t("retypeHint"))}</p>` : ""}</div>`;
     act.innerHTML = B("next", t("next"), "btn-primary" + (s.idk ? " span2" : "")) + (s.idk ? "" : B("override", t("override")));
   }
   try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); }
@@ -2008,13 +2033,13 @@ function updateLearn() {
         const cls = s.st === "ask" ? "" : isA ? " good" : chosen ? " bad" : " dim";
         return `<button class="opt${cls}" data-act="lrn-opt" data-i="${i}" ${s.st !== "ask" ? "disabled" : ""}><kbd>${i + 1}</kbd><span>${esc(o)}</span></button>`;
       }).join("")}</div>`;
-      if (s.st === "wrong") { fb = `<div class="fb-box fb-bad"><b>${esc(t("lrnWrongIs"))}</b> ${esc(u.a)}<div class="muted">${esc(t("lrnAgainLater"))}</div></div>`; acts = nb("lrn-next", t("lrnNext")); }
-      else if (s.st === "right") fb = `<div class="fb-box fb-good"><b>${esc(t("lrnRight"))}</b></div>`;
+      if (s.st === "wrong") { fb = `<div class="fb-box fb-bad">${mcImg("encourage", "fb-mc")}<b>${esc(t("lrnWrongIs"))}</b> ${esc(u.a)}<div class="muted">${esc(t("lrnAgainLater"))}</div></div>`; acts = nb("lrn-next", t("lrnNext")); }
+      else if (s.st === "right") fb = `<div class="fb-box fb-good">${mcImg("happy", "fb-mc")}<b>${esc(t("lrnRight"))}</b></div>`;
     } else {
       const att = `autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go"`;
       body = `<label class="a-lang" for="lrnInput">${esc(langName(u.al))}</label><input class="answer" id="lrnInput" value="${esc(s.given || "")}" ${att} ${s.st !== "ask" ? "readonly" : ""}>${u.al === "es" ? charBar("", "lrnChars") : ""}`;
       if (s.st === "ask") acts = `${nb("lrn-check", t("lrnCheck"))}<button class="btn btn-lg" data-act="lrn-idk">${esc(t("lrnIdk"))}</button>`;
-      else if (s.st === "wrong") { fb = `<div class="fb-box fb-bad"><b>${esc(t("lrnWrongIs"))}</b> ${esc(u.a)}<div class="muted">${esc(t("lrnAgainLater"))}</div></div>`; acts = nb("lrn-next", t("lrnNext")); }
+      else if (s.st === "wrong") { fb = `<div class="fb-box fb-bad">${mcImg("encourage", "fb-mc")}<b>${esc(t("lrnWrongIs"))}</b> ${esc(u.a)}<div class="muted">${esc(t("lrnAgainLater"))}</div></div>`; acts = nb("lrn-next", t("lrnNext")); }
       else if (s.st === "almost") { fb = `<div class="fb-box fb-good"><b>${esc(t("lrnAlmost"))}</b> ${esc(u.a)}</div>`; acts = nb("lrn-next", t("lrnNext")); }
       else fb = `<div class="fb-box fb-good"><b>${esc(t("lrnRight"))}</b></div>`;
     }
@@ -2023,12 +2048,12 @@ function updateLearn() {
     <div class="fb" aria-live="polite">${fb}</div><div class="test-actions">${acts}</div>`;
   } else if (s.phase === "rdone") {
     const l = s.last;
-    h = `<div class="res-card lrn-sum"><div class="res-head"><div class="lrn-emoji">🌱</div><h2>${esc(t("lrnRoundDone"))}</h2><p class="lmeta">${esc(t("lrnRoundSum", { a: l.rec, b: l.total }))}</p></div>
+    h = `<div class="res-card lrn-sum"><div class="res-head">${mcImg("proud", "res-mc")}<h2>${esc(t("lrnRoundDone"))}</h2><p class="lmeta">${esc(t("lrnRoundSum", { a: l.rec, b: l.total }))}</p></div>
     <div class="res-actions">${nb("lrn-next", t("lrnNextRound"))}<button class="btn" data-act="lrn-pause">${esc(t("lrnPause"))}</button></div></div>`;
   } else if (s.phase === "done") {
     const l = getList(s.listId), hard = s.sum.hard.map(id => l && l.words.find(w => w.id === id)).filter(Boolean);
     const plan = l ? lrnPlan(l, s.dir, s.n || 10) : null;
-    h = `<div class="res-card lrn-sum"><div class="res-head"><div class="lrn-emoji">🎉</div><h2>${esc(t("lrnDoneTitle"))}</h2><p class="lmeta">${esc(t("lrnDoneSum", { a: s.sum.rec, b: s.sum.total, w: wordsLabel(s.sum.words) }))}</p></div>
+    h = `<div class="res-card lrn-sum"><div class="res-head">${mcImg("celebrate", "res-mc")}<h2>${esc(t("lrnDoneTitle"))}</h2><p class="lmeta">${esc(t("lrnDoneSum", { a: s.sum.rec, b: s.sum.total, w: wordsLabel(s.sum.words) }))}</p></div>
     ${hard.length ? `<div class="group"><h3>${esc(t("lrnStillHard"))}</h3><ul class="hard">${hard.slice(0, 12).map(w => `<li><span class="hq">${esc(w.q)}</span><span class="ha">${esc(w.a)}</span></li>`).join("")}</ul></div>` : ""}
     ${l ? `<div class="group"><h3>${esc(t("lrnStatusNow"))}</h3>${lrnBar(lrnCounts(l, s.dir), l.words.length)}</div>` : ""}
     <div class="res-actions">${s.mode === "all" ? "" : nb("lrn-more", plan && plan.done ? t("lrnReviewGo") : t("lrnMore"))}<button class="btn${s.mode === "all" ? " btn-primary" : ""}" data-act="lrn-list">${esc(t("lrnToList"))}</button></div></div>`;
@@ -2060,7 +2085,7 @@ function learnModal(l) {
       <div class="lopt"><div class="lopt-h"><b>${esc(t("lrnAll"))}</b></div><p class="muted">${esc(t("lrnAllSub"))}</p>
         <button class="btn" data-go="all">${esc(t("lrnAllGo", { n: l.words.length }))}</button></div>`;
     };
-    ov.innerHTML = `<div class="modal modal-learn" role="dialog" aria-modal="true" aria-labelledby="lmTitle"><div class="lm-head"><div><h3 id="lmTitle">${esc(t("lrnTitle"))}</h3><p>${esc(l.name)} · ${esc(dn)}</p></div><button type="button" class="btn btn-quiet btn-sm" data-go="x" aria-label="${esc(t("cancel"))}">✕</button></div><div id="lmBody"></div></div>`;
+    ov.innerHTML = `<div class="modal modal-learn" role="dialog" aria-modal="true" aria-labelledby="lmTitle"><div class="lm-head">${mcImg("thumbs", "lm-mc")}<div class="lm-t"><h3 id="lmTitle">${esc(t("lrnTitle"))}</h3><p>${esc(l.name)} · ${esc(dn)}</p></div><button type="button" class="btn btn-quiet btn-sm" data-go="x" aria-label="${esc(t("cancel"))}">✕</button></div><div id="lmBody"></div></div>`;
     const close = v => { ov.remove(); document.removeEventListener("keydown", kd, true); res(v); };
     const kd = e => { if (e.key === "Escape") { e.stopPropagation(); close(null); } };
     ov.addEventListener("click", e => {
@@ -2409,7 +2434,7 @@ const hot = window.claude && window.claude.hot;
 if (hot && hot.ready) hot.ready(boot); else boot((hot && hot.data) || {});
 
 /* testhaakje voor de motor (geen invloed op de app) */
-window.__lesmio = { check, makeSession, state, apply: ok => apply(ok), I18N, parseImport, parseColumns, detectSwap };
+window.__lesmio = { check, makeSession, state, apply: ok => apply(ok), I18N, parseImport, parseColumns, detectSwap, render: () => render() };
 })();
 </script>
 </body>

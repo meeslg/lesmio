@@ -1235,7 +1235,8 @@ function sbSave(list, progressOnly) {
 async function sbPullExtras() {
   try {
     const since = dayKey(new Date(Date.now() - 140 * 864e5));
-    let pr = await sb.client.from("profiles").select("id,name,avatar");
+    let pr = await sb.client.from("profiles").select("id,name,avatar,tz");
+    if (pr.error) pr = await sb.client.from("profiles").select("id,name,avatar");
     if (pr.error) pr = await sb.client.from("profiles").select("id,name");
     const ac = await sb.client.from("activity").select("user_id,day,words,secs,tests,ok").gte("day", since);
     const mine = {}, theirs = {};
@@ -1245,13 +1246,14 @@ async function sbPullExtras() {
     state.actErr = ac && ac.error ? (ac.error.message || "fout") : "";
     const loc = state.actErr ? LS.get(K.act, {}) : {}; Object.keys(loc).forEach(d => { if (!mine[d] || (loc[d].w || 0) > (mine[d].w || 0)) mine[d] = loc[d]; });
     state.activity = mine; state.avatar = (me && me.avatar) || "";
-    state.partner = other ? { name: other.name, avatar: other.avatar || "", activity: theirs[other.id] || {} } : null;
+    state.partner = other ? { name: other.name, avatar: other.avatar || "", tz: other.tz || "", activity: theirs[other.id] || {} } : null;
   } catch (e) {}
 }
 async function sbStart(session) {
   sb.uid = session.user.id;
   let name = (session.user.email || "").split("@")[0];
   try { const pr = await sb.client.from("profiles").select("name").eq("id", sb.uid).maybeSingle(); if (pr.data && pr.data.name) name = pr.data.name; } catch (e) {}
+  try { const tz = Intl.DateTimeFormat().resolvedOptions().timeZone; if (tz) sb.client.from("profiles").update({ tz }).eq("id", sb.uid).then(() => {}, () => {}); } catch (e) {}
   state.me = { name }; state.needLogin = false; state.storage = "cloud-loading"; render();
   try {
     state.activity = {}; state.lists = await sbPull(); state.storage = "cloud"; state.loadNote = ""; await sbPullExtras(); pushRefresh();
@@ -1308,6 +1310,7 @@ function viewLogin() {
 /* ---------- dagen, reeksen, activiteit ---------- */
 const AVATARS = ["🦦", "🥔", "🧀", "🦖", "🐙", "🥑", "🦔", "🐌", "🦩", "🐸", "🦥", "🦆"];
 const dayKey = (d = new Date()) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+function partnerDay(p) { try { if (p && p.tz) { const d = new Date().toLocaleDateString("en-CA", { timeZone: p.tz }); if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d; } } catch (e) {} return dayKey(); }
 function streakInfo(a) {
   const has = k => a[k] && a[k].w > 0;
   let cur = 0; const d = new Date(); d.setHours(12, 0, 0, 0);
@@ -1579,7 +1582,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 00:55";
+const BUILD = "12-11 01:17";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -1619,7 +1622,7 @@ function homeTiles() {
     <button type="button" class="tile t-prog" data-act="stats"><span class="t-ic" aria-hidden="true">${ICO.chart}</span><b class="t-title">${esc(t("progress"))}</b><span>${esc(t("progressSub"))}</span><em>${ICO.arrow}</em></button>
   </section>`;
   if (state.partner) {
-    const p = state.partner, ps = streakInfo(p.activity), pw = (p.activity[dayKey()] || {}).w || 0;
+    const p = state.partner, ps = streakInfo(p.activity), pw = (p.activity[partnerDay(p)] || {}).w || 0;
     const myW = today, who = buddyWho() === "leslie" ? "mees" : "leslie", pwho = buddyWho();
     const msg = !myW && !pw ? t("tgNone") : myW === pw ? t("tgEqual", { n: myW + pw }) : myW > pw ? t("tgAhead", { n: myW - pw, p: p.name }) : t("tgBehind", { n: pw - myW, p: p.name });
     const card = (cls, wh, name, st, w) => `<div class="tg2-p ${cls}"><span class="tg2-av"><img src="m/${wh}-happy.webp" alt="" aria-hidden="true" draggable="false"></span><div class="tg2-i"><b>${esc(name)}</b><span class="tg2-s"><span class="tg2-f">🔥 ${st}</span><span class="tg2-w"><i>${w}</i> ${esc(w === 1 ? t("wordOne") : t("wordMany"))}</span></span></div></div>`;

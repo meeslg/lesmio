@@ -738,7 +738,7 @@ nl: {
   hardListName: "Mijn lastigste woorden", wrongListName: "{name} · foute woorden",
   wrongToList: "Maak een nieuwe lijst van de foute woorden", wrongListMade: "Nieuwe lijst gemaakt met {n} woorden",
   profile: "Profiel", chooseAvatar: "Kies je avatar", noAvatar: "Letter", close: "Sluiten",
-  sound: "Geluid", optSpeak: "Uitspraak automatisch afspelen", optSpeakSub: "Je hoort het woord en daarna het goede antwoord",
+  sound: "Geluid", optHap: "Trillingen", optHapSub: "Een subtiele trilling als je ergens op tikt", optSpeak: "Uitspraak automatisch afspelen", optSpeakSub: "Je hoort het woord en daarna het goede antwoord",
   lrnTile: "Woorden leren", lrnTileSub: "Slim of alles, in korte rondes", lrnTileResume: "Verder waar je was",
   lrnTitle: "Woorden leren", lrnSlim: "Slim leren", lrnRec: "Aanbevolen", lrnSlimSub: "We kiezen zelf de woorden die je nu het hardst nodig hebt: nieuwe, lastige en woorden die je weer moet herhalen.",
   lrnPer: "Woorden per sessie", lrnAll: "Alle woorden leren", lrnAllSub: "De hele lijst van begin tot eind, ook woorden die je al kent.", lrnAllGo: "Start ({n})",
@@ -854,7 +854,7 @@ es: {
   hardListName: "Mis palabras más difíciles", wrongListName: "{name} · palabras falladas",
   wrongToList: "Crear una lista nueva con las palabras falladas", wrongListMade: "Lista nueva creada con {n} palabras",
   profile: "Perfil", chooseAvatar: "Elige tu avatar", noAvatar: "Letra", close: "Cerrar",
-  sound: "Sonido", optSpeak: "Reproducir la pronunciación automáticamente", optSpeakSub: "Oyes la palabra y luego la respuesta correcta",
+  sound: "Sonido", optHap: "Vibraciones", optHapSub: "Una vibración sutil al tocar", optSpeak: "Reproducir la pronunciación automáticamente", optSpeakSub: "Oyes la palabra y luego la respuesta correcta",
   lrnTile: "Aprender palabras", lrnTileSub: "Inteligente o todo, en rondas cortas", lrnTileResume: "Continuar donde lo dejaste",
   lrnTitle: "Aprender palabras", lrnSlim: "Aprendizaje inteligente", lrnRec: "Recomendado", lrnSlimSub: "Elegimos las palabras que más necesitas ahora: nuevas, difíciles y las que toca repasar.",
   lrnPer: "Palabras por sesión", lrnAll: "Aprender todas las palabras", lrnAllSub: "Toda la lista de principio a fin, también las que ya sabes.", lrnAllGo: "Empezar ({n})",
@@ -1446,7 +1446,7 @@ async function pushRefresh() {
   try { const reg = await navigator.serviceWorker.register("sw.js"); await navigator.serviceWorker.ready; const sub = await reg.pushManager.getSubscription(); if (sub) await pushSave(sub); else { LS.set("overhoor.push", false); bellUi(); } } catch (e) {}
 }
 /* ---------- geluidjes ---------- */
-const SND = { cfg: Object.assign({ on: true, vol: 0.7 }, LS.get("overhoor.sound", {})), el: {} };
+const SND = { cfg: Object.assign({ on: true, vol: 0.7, hap: true }, LS.get("overhoor.sound", {})), el: {} };
 const ICO_MUTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.500v-13L7.500 9.500z"/><path d="M16 9.500l5 5M21 9.500l-5 5"/></svg>';
 function sndSave() { LS.set("overhoor.sound", SND.cfg); }
 function sndUi() {
@@ -1462,8 +1462,19 @@ function sfxPlay(name, vary) {
     a.volume = Math.min(1, SND.cfg.vol * (name === "tick" ? 0.8 : 1)); a.currentTime = 0; if (vary) { a.preservesPitch = false; a.playbackRate = 0.96 + Math.random() * 0.1; } else a.playbackRate = 1; const pr = a.play(); if (pr && pr.catch) pr.catch(() => {});
   } catch (e) {}
 }
+/* subtiele trilling: Android via vibrate(), iPhone via het switch-haptic van Safari */
+function hap(kind) {
+  if (!SND.cfg.hap) return;
+  try {
+    if (navigator.vibrate) { navigator.vibrate(kind === "bad" ? [22, 50, 22] : kind === "ok" ? 14 : 8); return; }
+    let l = SND.hapEl;
+    if (!l) { l = SND.hapEl = document.createElement("label"); l.dataset.hap = "1"; l.setAttribute("aria-hidden", "true"); l.style.cssText = "position:fixed;left:-99px;top:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden"; const i = document.createElement("input"); i.type = "checkbox"; i.setAttribute("switch", ""); i.tabIndex = -1; l.appendChild(i); document.body.appendChild(l); }
+    l.click(); if (kind === "bad") setTimeout(() => l.click(), 90);
+  } catch (e) {}
+}
 /* "ok"/"bad" tellen mee voor de reeks: elke 3 goed achter elkaar = wow + confetti */
 function sfx(name, preview) {
+  if (name === "ok" || name === "bad") hap(name);
   if (!preview && (name === "ok" || name === "bad")) {
     SND.last = Date.now();
     if (name === "bad") SND.streak = 0;
@@ -1582,7 +1593,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 01:38";
+const BUILD = "12-11 13:42";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -1668,6 +1679,7 @@ function viewSetup() {
   <div class="panel"><h3>${esc(t("sound"))}</h3>
     <label class="switch" for="optSfx"><input type="checkbox" id="optSfx" ${SND.cfg.on ? "checked" : ""}><span>${esc(t("optSfx"))}<small>${esc(t("optSfxSub"))}</small></span></label>
     <div class="volrow">${ICO.speaker}<input type="range" id="sndVol" min="0" max="100" value="${Math.round(SND.cfg.vol * 100)}" aria-label="${esc(t("sndVol"))}"></div>
+    <label class="switch" for="optHap"><input type="checkbox" id="optHap" ${SND.cfg.hap ? "checked" : ""}><span>${esc(t("optHap"))}<small>${esc(t("optHapSub"))}</small></span></label>
     ${CAN_SPEAK ? sw("optSpeak", "speak", t("optSpeak"), t("optSpeakSub")) : ""}</div>
   </div>
   <div class="setup-side">
@@ -2704,6 +2716,8 @@ async function readImage(f) {
 }
 
 document.addEventListener("click", async ev => {
+  if (ev.target.closest && ev.target.closest("[data-hap]")) return;
+  if (ev.isTrusted) { const bt = ev.target.closest && ev.target.closest("button, a, label.switch, [data-act]"); if (bt && !bt.disabled) hap("tap"); }
   const el = ev.target.closest("[data-act]"); if (!el) return;
   const act = el.dataset.act, s = state.session;
   switch (act) {
@@ -2858,6 +2872,7 @@ document.addEventListener("change", ev => {
   if (el.id === "impPhoto") { readImage(el.files && el.files[0]); el.value = ""; return; }
   if (el.id === "impFile") { readFile(el.files && el.files[0]); el.value = ""; return; }
   if (el.id === "impSwap") { state.imp.swap = el.checked; state.imp.touched = true; updateImport(); return; }
+  if (el.id === "optHap") { SND.cfg.hap = el.checked; sndSave(); if (el.checked) hap("ok"); return; }
   if (el.id === "optSfx") { SND.cfg.on = el.checked; sndSave(); sndUi(); if (el.checked) sfx("ok", true); return; }
   if (el.dataset && el.dataset.set) { state.settings[el.dataset.set] = el.checked; LS.set(K.settings, state.settings); }
 });

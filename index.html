@@ -1593,7 +1593,7 @@ function pickMsg(kind, key) {
   if (m.k !== key) { let i; do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === m.i); m.k = key; m.i = i; }
   return arr[m.i % arr.length];
 }
-const BUILD = "12-11 13:42";
+const BUILD = "13-11 20:38";
 /* ---------- mascottes ---------- */
 function buddyWho() { const n = (state.me && state.me.name) || ""; return /leslie/i.test(n) ? "mees" : "leslie"; }
 function mcImg(mood, cls) { return `<img class="mc ${cls || ""}" src="m/${buddyWho()}-${mood}.webp" alt="" aria-hidden="true" decoding="async" draggable="false">`; }
@@ -2515,7 +2515,7 @@ function updateZin() {
   const gapHtml = `${esc(u.gap.pre)}<input class="zin-in" id="zinInput" style="width:${sz}ch" value="${esc(s.given || "")}" ${att} ${ro}>${esc(u.gap.post)}`;
   let fb = "", acts = "";
   const nxt = `<button class="btn btn-primary btn-lg" data-act="zin-next" id="zinPrimary">${esc(t("lrnNext"))}</button>`;
-  const fullRow = `<div class="zin-full">${esc(u.gap.pre)}<mark>${esc(u.gap.t)}</mark>${esc(u.gap.post)}${spkBtn(u.full, u.gl === "es" ? "es" : u.hl)}</div>`;
+  const fullRow = `<div class="zin-full">${esc(u.gap.pre)}<mark>${esc(u.gap.t)}</mark>${esc(u.gap.post)}${spkBtn(u.full, u.gl)}</div>`;
   if (s.st === "ask") acts = `<button class="btn btn-primary btn-lg" data-act="zin-check">${esc(t("lrnCheck"))}</button><button class="btn btn-lg" data-act="zin-idk">${esc(t("lrnIdk"))}</button>`;
   else if (s.st === "wrong") { fb = `<div class="fb-box fb-bad">${mcImg("encourage", "fb-mc")}<div class="fb-body"><b>${esc(t("lrnWrongIs"))}</b>${fullRow}<div class="muted">${esc(pickMsg("retry", "z" + it.wid + "|" + s.err[it.wid]))}</div></div></div>`; acts = nxt; }
   else fb = `<div class="fb-box fb-good">${mcImg("happy", "fb-mc")}<div class="fb-body"><b>${esc(pickMsg("right", "z" + it.wid + "|" + (s.given || "")))}</b>${s.st === "almost" ? ` <span class="muted">${esc(t("lrnAlmost"))} ${esc(u.gap.t)}</span>` : ""}${fullRow}</div></div>`, acts = nxt;
@@ -2539,7 +2539,7 @@ function zinJudge(ok, almost) {
   sfx(ok ? "ok" : "bad");
   if (ok) { s.st = almost ? "almost" : "right"; s.ok++; }
   else { s.st = "wrong"; s.err[it.wid] = (s.err[it.wid] || 0) + 1; if (s.err[it.wid] <= 1) s.queue.push(it); else s.ok++; }
-  if (state.settings.speak && u.gl === "es" && CAN_SPEAK) speak(u.full, "es");
+  if (state.settings.speak && CAN_SPEAK) speak(u.full, u.gl);
   updateZin();
 }
 function zinNext() {
